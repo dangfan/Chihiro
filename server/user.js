@@ -1,5 +1,3 @@
-//TODO: check authentication!!!
-
 var md5  = require('MD5'),
     uuid = require('node-uuid');
 
@@ -30,20 +28,20 @@ exports.init = function(_db, _redis, _clients, _socket) {
 }
 
 // Login the specific user with the current socket connection
-function login(usr, callback) {
+function login(uid, usr, callback) {
     // Generate uuid as session id
     var sid = uuid.v4();
     // Bind session, user and socket
     socket.set('sid', sid);
-    clients[usr._id] = socket;
+    clients[uid] = socket;
     // Save in redis
-    redis.set('sid:' + sid, usr._id);
-    redis.hmset('users:' + usr._id,
+    redis.set('sid:' + sid, uid);
+    redis.hmset('users:' + uid,
         'email', usr.email,
         'phone', usr.phone,
         'password', usr.password);
-    redis.set('emails:' + usr.email, usr._id);
-    redis.set('phones:' + usr.phone, usr._id);
+    redis.set('emails:' + usr.email, uid);
+    redis.set('phones:' + usr.phone, uid);
     // TODO: save other things
     callback(sid);
     // TODO: check offline messages
@@ -67,16 +65,44 @@ function init(sid, callback) {
 
 // Authenticate a user by its username and password
 function authenticate(data, callback) {
-    var pass = md5(salt + data.password),
-        usr = data.username.indexOf('@') > 0
-                ? { email: data.username, password: pass }
-                : { phone: data.username, password: pass };
-    // TODO: check redis cache first
-    db.users.findOne(usr, function (err, usr) {
+    var pass = md5(salt + data.password);
+    var cond; // MongoDB find condition
+    if (data.username.indexOf('@') > 0) { // use email
+        redis.get('emails:' + data.username, function (err, usrId) {
+            if (!usrId) {
+                cond = { email: data.username, password: pass };
+                return;
+            } else {
+                redis.hgetall('users:' + usrId, function (err, usr) {
+                    if (usr.email == data.username && user.password == pass) {
+                        login(usrId, usr, callback);
+                    } else {
+                        callback('error');
+                    }
+                })
+            }
+        });
+    } else {     // use phone number
+        redis.get('phones:' + data.username, function (err, usrId) {
+            if (!usrId) {
+                cond = { phone: data.username, password: pass };
+                return;
+            } else {
+                redis.hgetall('users:' + usrId, function (err, usr) {
+                    if (usr.phone == data.username && user.password == pass) {
+                        login(usrId, usr, callback);
+                    } else {
+                        callback('error');
+                    }
+                })
+            }
+        });
+    }
+    db.users.findOne(cond, function (err, usr) {
         if (!usr) {
             callback('error');
         } else {
-            login(usr, callback, socket);
+            login(usr._id, usr, callback);
         }
     });
 };
@@ -118,7 +144,7 @@ function signup(data, callback) {
                 callback('phone duplicated');
             }
         } else {
-            login(objects[0], callback);
+            login(objects[0]._id, objects[0], callback);
         }
     });
 }
@@ -154,6 +180,7 @@ function findClosest(callback) {
 
 function updateLocation(data) {
     socket.get('sid', function (err, sid) {
+        if (!sid) return;
         redis.get('sid:' + sid, function (err, usrId) {
             db.users.update({'_id': db.ObjectId(usrId)},
                 {$set: {location: [data.longitude, data.latitude]}});
@@ -165,6 +192,7 @@ function updateLocation(data) {
 
 function updateProfile(data) {
     socket.get('sid', function (err, sid) {
+        if (!sid) return;
         redis.get('sid:' + sid, function (err, usrId) {
             // TODO: update
         });
@@ -173,53 +201,49 @@ function updateProfile(data) {
 
 // Get basic information of a user by id
 function getInfoById(usrId, callback) {
-    // Get from redis first
-    redis.hgetall('users:' + usrId, function (err, usr) {
-        if (!usr) {
-            db.users.find({_id: db.ObjectId(usrId)},
-                function (err, usr) { processUser(usr); });
-        } else {
-            processUser(usr);
-        }
-    });
-}
-
-// Get basic information of a user by id
-function getInfoById(usrId, callback) {
-    // Get from redis first
-    redis.hgetall('users:' + usrId, function (err, usr) {
-        if (!usr) {
-            db.users.findOne({_id: db.ObjectId(usrId)},
-                function (err, usr) { processUser(usr, callback); });
-        } else {
-            processUser(usr, callback);
-        }
+    socket.get('sid', function (err, sid) {
+        if (!sid) return;
+        // Get from redis first
+        redis.hgetall('users:' + usrId, function (err, usr) {
+            if (!usr) {
+                db.users.find({_id: db.ObjectId(usrId)},
+                    function (err, usr) { processUser(usr); });
+            } else {
+                processUser(usr);
+            }
+        });
     });
 }
 
 // Get basic information of a user by email
 function getInfoByEmail(email, callback) {
-    // Get from redis first
-    redis.get('emails:' + email, function (err, usrId) {
-        if (!usrId) {
-            db.users.findOne({email: email},
-                function (err, usr) { processUser(usr, callback); });
-        } else {
-            getInfoById(usrId, callback);
-        }
+    socket.get('sid', function (err, sid) {
+        if (!sid) return;
+        // Get from redis first
+        redis.get('emails:' + email, function (err, usrId) {
+            if (!usrId) {
+                db.users.findOne({email: email},
+                    function (err, usr) { processUser(usr, callback); });
+            } else {
+                getInfoById(usrId, callback);
+            }
+        });
     });
 }
 
 // Get basic information of a user by phone number
 function getInfoByPhone(phone, callback) {
-    // Get from redis first
-    redis.get('phones:' + phone, function (err, usrId) {
-        if (!usrId) {
-            db.users.findOne({phone: phone},
-                function (err, usr) { processUser(usr, callback); });
-        } else {
-            getInfoById(usrId, callback);
-        }
+    socket.get('sid', function (err, sid) {
+        if (!sid) return;
+        // Get from redis first
+        redis.get('phones:' + phone, function (err, usrId) {
+            if (!usrId) {
+                db.users.findOne({phone: phone},
+                    function (err, usr) { processUser(usr, callback); });
+            } else {
+                getInfoById(usrId, callback);
+            }
+        });
     });
 }
 
