@@ -66,27 +66,24 @@ function init(sid, callback) {
 // Authenticate a user by its username and password
 function authenticate(data, callback) {
     var pass = md5(salt + data.password);
-    var cond; // MongoDB find condition
     if (data.username.indexOf('@') > 0) { // use email
         redis.get('emails:' + data.username, function (err, usrId) {
             if (!usrId) {
-                cond = { email: data.username, password: pass };
-                return;
+                findInDB({ email: data.username, password: pass });
             } else {
                 redis.hgetall('users:' + usrId, function (err, usr) {
-                    if (usr.email == data.username && user.password == pass) {
+                    if (usr.email == data.username && usr.password == pass) {
                         login(usrId, usr, callback);
                     } else {
                         callback('error');
                     }
-                })
+                });
             }
         });
     } else {     // use phone number
         redis.get('phones:' + data.username, function (err, usrId) {
             if (!usrId) {
-                cond = { phone: data.username, password: pass };
-                return;
+                findInDB({ phone: data.username, password: pass });
             } else {
                 redis.hgetall('users:' + usrId, function (err, usr) {
                     if (usr.phone == data.username && user.password == pass) {
@@ -94,17 +91,19 @@ function authenticate(data, callback) {
                     } else {
                         callback('error');
                     }
-                })
+                });
             }
         });
     }
-    db.users.findOne(cond, function (err, usr) {
-        if (!usr) {
-            callback('error');
-        } else {
-            login(usr._id, usr, callback);
-        }
-    });
+    function findInDB(cond) {
+        db.users.findOne(cond, function (err, usr) {
+            if (!usr) {
+                callback('error');
+            } else {
+                login(usr._id, usr, callback);
+            }
+        });
+    }
 };
 
 // Log out manully
