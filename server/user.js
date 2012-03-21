@@ -28,21 +28,14 @@ exports.init = function(_db, _redis, _clients, _socket) {
 }
 
 // Login the specific user with the current socket connection
-function login(uid, usr, callback) {
+function login(usr, callback) {
     // Generate uuid as session id
     var sid = uuid.v4();
     // Bind session, user and socket
     socket.set('sid', sid);
-    clients[uid] = socket;
+    clients[usr._id] = socket;
     // Save in redis
-    redis.set('sid:' + sid, uid);
-    redis.hmset('users:' + uid,
-        'email', usr.email,
-        'phone', usr.phone,
-        'password', usr.password);
-    redis.set('emails:' + usr.email, uid);
-    redis.set('phones:' + usr.phone, uid);
-    // TODO: save other things
+    redis.set('sid:' + sid, usr._id);
     callback(sid);
     // TODO: check offline messages
 }
@@ -73,7 +66,7 @@ function authenticate(data, callback) {
             } else {
                 redis.hgetall('users:' + usrId, function (err, usr) {
                     if (usr.email == data.username && usr.password == pass) {
-                        login(usrId, usr, callback);
+                        login(usr, callback);
                     } else {
                         callback('error');
                     }
@@ -87,7 +80,7 @@ function authenticate(data, callback) {
             } else {
                 redis.hgetall('users:' + usrId, function (err, usr) {
                     if (usr.phone == data.username && user.password == pass) {
-                        login(usrId, usr, callback);
+                        login(usr, callback);
                     } else {
                         callback('error');
                     }
@@ -100,7 +93,7 @@ function authenticate(data, callback) {
             if (!usr) {
                 callback('error');
             } else {
-                login(usr._id, usr, callback);
+                login(usr, callback);
             }
         });
     }
@@ -143,7 +136,11 @@ function signup(data, callback) {
                 callback('phone duplicated');
             }
         } else {
-            login(objects[0]._id, objects[0], callback);
+            var usr = objects[0];
+            redis.set('emails:' + usr.email, usr._id);
+            redis.set('phones:' + usr.phone, usr._id);
+            setUserData(usr);
+            login(usr, callback);
         }
     });
 }
@@ -193,7 +190,11 @@ function updateProfile(data) {
     socket.get('sid', function (err, sid) {
         if (!sid) return;
         redis.get('sid:' + sid, function (err, usrId) {
-            // TODO: update
+            // set in mongo
+            db.users.update({'_id': db.ObjectId(usrId)}, {$set: data});
+            // set in redis
+            data._id = usrId;
+            setUserData(data);
         });
     });
 }
@@ -254,5 +255,17 @@ function processUser(usr, callback) {
         callback(usr);
     } else {
         callback('not found');
+    }
+}
+
+function setUserData(usr) {
+    for (key in usr) {
+        if (key == 'interests') {
+            redis.hset('users:' + usr._id, key, JSON.stringify(usr[key]));
+        } else if (key == 'friends') { // TODO: maybe different from 'interests'
+            redis.hset('users:' + usr._id, key, JSON.stringify(usr[key]));
+        } else {
+            redis.hset('users:' + usr._id, key, usr[key]);
+        }
     }
 }
