@@ -22,6 +22,13 @@ Ext.define('Chihiro.controller.Main',{
     launch: function() {
         signInView = Ext.create('Chihiro.view.Sign')
         Ext.Viewport.add(signInView);
+
+var socket = io.connect('http://localhost:8000');
+socket.emit('login', { username: "dangf09@gmail.com", password: "test" }, function (msg) {
+        socket.emit('get info by phone', '15210560993', function (msg) {
+            console.log(msg);
+        });
+    });
     }
 
 });

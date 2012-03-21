@@ -1,3 +1,5 @@
+//TODO: check authentication!!!
+
 var md5  = require('MD5'),
     uuid = require('node-uuid');
 
@@ -20,7 +22,10 @@ exports.init = function(_db, _redis, _clients, _socket) {
         signup:         signup,
         updateLocation: updateLocation,
         updateProfile:  updateProfile,
-        findClosest:    findClosest
+        findClosest:    findClosest,
+        getInfoById:    getInfoById,
+        getInfoByEmail: getInfoByEmail,
+        getInfoByPhone: getInfoByPhone
     };
 }
 
@@ -37,6 +42,8 @@ function login(usr, callback) {
         'email', usr.email,
         'phone', usr.phone,
         'password', usr.password);
+    redis.set('emails:' + usr.email, usr._id);
+    redis.set('phones:' + usr.phone, usr._id);
     // TODO: save other things
     callback(sid);
     // TODO: check offline messages
@@ -162,4 +169,67 @@ function updateProfile(data) {
             // TODO: update
         });
     });
+}
+
+// Get basic information of a user by id
+function getInfoById(usrId, callback) {
+    // Get from redis first
+    redis.hgetall('users:' + usrId, function (err, usr) {
+        if (!usr) {
+            db.users.find({_id: db.ObjectId(usrId)},
+                function (err, usr) { processUser(usr); });
+        } else {
+            processUser(usr);
+        }
+    });
+}
+
+// Get basic information of a user by id
+function getInfoById(usrId, callback) {
+    // Get from redis first
+    redis.hgetall('users:' + usrId, function (err, usr) {
+        if (!usr) {
+            db.users.findOne({_id: db.ObjectId(usrId)},
+                function (err, usr) { processUser(usr, callback); });
+        } else {
+            processUser(usr, callback);
+        }
+    });
+}
+
+// Get basic information of a user by email
+function getInfoByEmail(email, callback) {
+    // Get from redis first
+    redis.get('emails:' + email, function (err, usrId) {
+        if (!usrId) {
+            db.users.findOne({email: email},
+                function (err, usr) { processUser(usr, callback); });
+        } else {
+            getInfoById(usrId, callback);
+        }
+    });
+}
+
+// Get basic information of a user by phone number
+function getInfoByPhone(phone, callback) {
+    // Get from redis first
+    redis.get('phones:' + phone, function (err, usrId) {
+        if (!usrId) {
+            db.users.findOne({phone: phone},
+                function (err, usr) { processUser(usr, callback); });
+        } else {
+            getInfoById(usrId, callback);
+        }
+    });
+}
+
+// Remove unnecessary attributes and callback
+function processUser(usr, callback) {
+    if (usr) {
+        delete usr['password'];
+        // TODO: delete more things
+        callback(usr);
+    } else {
+        callback('not found');
+    }
 }

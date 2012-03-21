@@ -31,6 +31,9 @@ function listen(port) {
         socket.on('find closest', user.findClosest);
         socket.on('update location', user.updateLocation);
         socket.on('update profile', user.updateProfile);
+        socket.on('get info by id', user.getInfoById);
+        socket.on('get info by email', user.getInfoByEmail);
+        socket.on('get info by phone', user.getInfoByPhone);
     });
 }
 
