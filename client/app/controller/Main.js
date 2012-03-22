@@ -24,9 +24,9 @@ Ext.define('Chihiro.controller.Main',{
         Ext.Viewport.add(signInView);
 
         var socket = io.connect('http://localhost:8000');
-        socket.emit('login', { username: "t@g", password: "123" }, function (msg) {
+        socket.emit('login', { username: 'k@k', password: '123'}, function (msg) {
             console.log(msg);
-            socket.emit('update profile', { interests: ['fg', 'fgd', 'kfgd'] });
+            socket.emit('send friend request', '4f69cf302d77928810000001');
         });
     }
 });
