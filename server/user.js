@@ -99,12 +99,18 @@ function authenticate(data, callback) {
     }
 };
 
+function cleanAfterDisconnect(usrId) {
+    delete clients[usrId];
+    db.users.update({_id: db.ObjectId(usrId)}, 
+        {$set: {location: [0, -90]}});
+}
+
 // Log out manully
 function logout() {
     socket.get('sid', function (err, sid) {
         var key = 'sid:' + sid;
         redis.get(key, function (err, usrId) {
-            delete clients[usrId];
+            cleanAfterDisconnect(usrId);
             redis.del(key);
         });
     });
@@ -114,7 +120,7 @@ function logout() {
 function disconnect() {
     socket.get('sid', function (err, sid) {
         redis.get('sid:' + sid, function (err, usrId) {
-            delete clients[usrId];
+            cleanAfterDisconnect(usrId);
         });
     });
 }
@@ -123,9 +129,10 @@ function disconnect() {
 // create a new account
 function signup(data, callback) {
     db.users.insert({
-        'email':    data.email,
-        'password': md5(salt + data.password),
-        'phone':    data.phone
+        email:    data.email,
+        password: md5(salt + data.password),
+        phone:    data.phone,
+        nickname: data.nickname
     }, {
         safe: true      // Check if insert is successful
     }, function (err, objects) {
@@ -233,7 +240,7 @@ function getInfoByEmail(email, callback) {
 
 // Get basic information of a user by phone number
 function getInfoByPhone(phone, callback) {
-    socket.get('sid', function (err, sid) {
+    socket.get('sid', function  (err, sid) {
         if (!sid) return;
         // Get from redis first
         redis.get('phones:' + phone, function (err, usrId) {
