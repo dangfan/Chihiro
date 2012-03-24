@@ -4,7 +4,7 @@ Ext.Loader.setConfig({
 Ext.application({
     name: 'Chihiro',
     views:['Main','Sign','SignUp'],
-    controllers:['Main'],
+    controllers:['Sign','Main','SignUp'],
     viewport: {
         layout:{
             type:'card',

@@ -1,4 +1,5 @@
-﻿Ext.define('Chihiro.view.SignUp', {
+﻿
+Ext.define('Chihiro.view.SignUp', {
     extend: 'Ext.navigation.View',
     config: {
         fullscreen: true,
