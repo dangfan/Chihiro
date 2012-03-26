@@ -18,16 +18,5 @@ Ext.define('Chihiro.controller.Sign',{
     showSignUp: function() {
         signUpView = Ext.create('Chihiro.view.SignUp');
         Ext.Viewport.setActiveItem(signUpView);
-    },
-    launch: function() {
-        signInView = Ext.create('Chihiro.view.Sign')
-        Ext.Viewport.add(signInView);
-        console.log('im here');
-
-        var socket = io.connect('http://localhost:8000');
-        socket.emit('login', { username: 'k@k', password: '123'}, function (msg) {
-            console.log(msg);
-            socket.emit('send friend request', '4f69cf302d77928810000001');
-        });
     }
 });

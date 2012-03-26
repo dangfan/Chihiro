@@ -36,5 +36,13 @@ Ext.define('Chihiro.view.Sign', {
                 ui: 'confirm'
             }
         ]
+    },
+    animateTo: function(dir) {
+        Ext.getCmp('viewport').getLayout().setAnimation({
+            duration: 300,
+            easing: 'ease-in-out',
+            type: 'slide',
+            direction: dir
+        });
     }
 })

@@ -1,81 +1,16 @@
 Ext.define('Chihiro.view.Main', {
-    extend: 'Ext.tab.Panel',
+    extend:'Ext.Container',
+    requires: ['Chihiro.view.Sign'],
 
+    id: 'viewport',
     config: {
-        fullscreen:true,
-        tabBarPosition:'bottom',
-        items:[
-            {
-                title:'新鲜事',
-                iconCls:'star',
-                items:[
-                    {
-                        xtype:'titlebar',
-                        docked:'top',
-                        title:'新鲜事',
-                        items:[
-                            {
-                                iconCls:'refresh',
-                                align:'right'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                title:'消息',
-                items:[
-                    {
-                        xtype:'titlebar',
-                        docked:'top',
-                        title:'消息',
-                        items:[
-                            {
-                                iconCls:'compose',
-                                align:'right'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                title:'好友',
-                items:[
-                    {
-                        xtype:'titlebar',
-                        docked:'top',
-                        title:'好友',
-                        items:[
-                            {
-                                iconCls:'user',
-                                align:'right'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                title:'查找',
-                iconCls:'search',
-                items:[
-                    {
-                        xtype:'titlebar',
-                        docked:'top',
-                        title:'查找'
-                    }
-                ]
-            },
-            {
-                title:'设置',
-                iconCls:'settings',
-                items:[
-                    {
-                        xtype:'titlebar',
-                        docked:'top',
-                        title:'消息'
-                    }
-                ]
-            }
+        layout: {
+            type: 'card'
+        },
+        fullscreen: true,
+
+        items: [
+            { xclass: 'Chihiro.view.Sign' }
         ]
     }
 })
