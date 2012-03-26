@@ -36,7 +36,7 @@ function login(usr, callback) {
     clients[usr._id] = socket;
     // Save in redis
     redis.set('sid:' + sid, usr._id);
-    callback(sid);
+    callback({err: 0, msg: sid});
     // TODO: check offline messages
 }
 
@@ -138,9 +138,9 @@ function signup(data, callback) {
     }, function (err, objects) {
         if (err) {
             if (err.message.indexOf('email') != -1) {
-                callback('email duplicated');
+                callback({err: 1, msg: '该邮箱已被使用，请重试'});
             } else {
-                callback('phone duplicated');
+                callback({err: 1, msg: '该手机号已被使用，请重试'});
             }
         } else {
             var usr = objects[0];
