@@ -277,9 +277,12 @@ function sendFriendRequest(desUsrId) {
 }
 
 function emitFriendRequests(uid) {
-    while (redis.spop('friendRequests:' + uid, function (err, iuid) {
-        getInfoById(iuid, function (obj) {
-            clients[uid].emit('friend request', obj);
+    while (true) {
+        redis.spop('friendRequests:' + uid, function (err, iuid) {
+            if (!iuid) return;
+            getInfoById(iuid, function (obj) {
+                clients[uid].emit('friend request', obj);
+            });
         });
-    }));
+    }
 }
