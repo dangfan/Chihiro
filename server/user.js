@@ -68,7 +68,7 @@ function authenticate(data, callback) {
                     if (usr.email == data.username && usr.password == pass) {
                         login(usr, callback);
                     } else {
-                        callback('error');
+                        callback({err: 1, msg: '请检查用户名或密码'});
                     }
                 });
             }
@@ -82,7 +82,7 @@ function authenticate(data, callback) {
                     if (usr.phone == data.username && user.password == pass) {
                         login(usr, callback);
                     } else {
-                        callback('error');
+                        callback({err: 1, msg: '请检查用户名或密码'});
                     }
                 });
             }
