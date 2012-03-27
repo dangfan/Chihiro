@@ -33,8 +33,7 @@ function login(usr, callback) {
     // Generate uuid as session id
     var sid = uuid.v4();
     // Bind user and socket
-    socket.set('uid', usr._id);
-    console.log(usr._id);
+    socket.set('uid', usr._id.toString());
     clients[usr._id] = socket;
     // Save in redis
     redis.set('sid:' + sid, usr._id);
