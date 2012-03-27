@@ -8,23 +8,23 @@ var salt = 'Ch!hlr0:',
     socket;
 
 exports.init = function(_db, _redis, _clients, _socket) {
-    db      = _db;
-    redis   = _redis;
-    clients = _clients;
-    socket  = _socket;
+    db       = _db;
+    redis    = _redis;
+    clients  = _clients;
+    socket   = _socket;
     return {
-        init:           init,
-        authenticate:   authenticate,
-        logout:         logout,
-        disconnect:     disconnect,
-        signup:         signup,
-        updateLocation: updateLocation,
-        updateProfile:  updateProfile,
-        findClosest:    findClosest,
-        getInfoById:    getInfoById,
-        getInfoByEmail: getInfoByEmail,
-        getInfoByPhone: getInfoByPhone,
-        sendFriendRequest:   sendFriendRequest
+        init:               init,
+        authenticate:       authenticate,
+        logout:             logout,
+        disconnect:         disconnect,
+        signup:             signup,
+        updateLocation:     updateLocation,
+        updateProfile:      updateProfile,
+        findClosest:        findClosest,
+        getInfoById:        getInfoById,
+        getInfoByEmail:     getInfoByEmail,
+        getInfoByPhone:     getInfoByPhone,
+        sendFriendRequest:  sendFriendRequest
     };
 }
 

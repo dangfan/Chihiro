@@ -23,7 +23,6 @@ function listen(port) {
     sio.sockets.on('connection', function (socket) {
         // Interfaces related to users
         var user = require('./user').init(db, redis, clients, socket);
-        var friend = require('./friend').init(db, redis, clients, socket);
         socket.on('init',  user.init);
         socket.on('login', user.authenticate);
         socket.on('logout', user.logout);
