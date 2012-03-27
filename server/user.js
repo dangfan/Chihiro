@@ -194,6 +194,7 @@ function updateProfile(data) {
         // set in redis
         data._id = uid;
         setUserData(data);
+        console.log('update profile: ' + data);
     });
 }
 

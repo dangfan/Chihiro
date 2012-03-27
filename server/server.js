@@ -12,7 +12,7 @@ function listen(port) {
 
     // Basic configuration
     sio.configure(function () {
-        // sio.set('log level', 1);
+        sio.set('log level', 1);
     });
 
     // When starting up, initialise redis
