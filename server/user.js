@@ -23,7 +23,8 @@ exports.init = function(_db, _redis, _clients, _socket) {
         findClosest:    findClosest,
         getInfoById:    getInfoById,
         getInfoByEmail: getInfoByEmail,
-        getInfoByPhone: getInfoByPhone
+        getInfoByPhone: getInfoByPhone,
+        sendFriendRequest:   sendFriendRequest
     };
 }
 
@@ -31,8 +32,8 @@ exports.init = function(_db, _redis, _clients, _socket) {
 function login(usr, callback) {
     // Generate uuid as session id
     var sid = uuid.v4();
-    // Bind session, user and socket
-    socket.set('sid', sid);
+    // Bind user and socket
+    socket.set('uid', usr._id);
     clients[usr._id] = socket;
     // Save in redis
     redis.set('sid:' + sid, usr._id);
@@ -43,11 +44,10 @@ function login(usr, callback) {
 // After the app starting up,
 // init needs to be called first if the app has session id
 function init(sid, callback) {
-    // Bind this socket with the particular sid
-    socket.set('sid', sid);
-    redis.get('sid:' + sid, function (err, usrId) {
-        if (usrId) {
-            clients[usrId] = socket;
+    redis.get('sid:' + sid, function (err, uid) {
+        if (uid) {
+            socket.set('uid', uid);
+            clients[uid] = socket;
             callback('ok');
             // TODO: check offline messages
         } else {
@@ -60,11 +60,11 @@ function init(sid, callback) {
 function authenticate(data, callback) {
     var pass = md5(salt + data.password);
     if (data.username.indexOf('@') > 0) { // use email
-        redis.get('emails:' + data.username, function (err, usrId) {
-            if (!usrId) {
+        redis.get('emails:' + data.username, function (err, uid) {
+            if (!uid) {
                 findInDB({ email: data.username, password: pass });
             } else {
-                redis.hgetall('users:' + usrId, function (err, usr) {
+                redis.hgetall('users:' + uid, function (err, usr) {
                     if (usr.email == data.username && usr.password == pass) {
                         login(usr, callback);
                     } else {
@@ -74,11 +74,11 @@ function authenticate(data, callback) {
             }
         });
     } else {     // use phone number
-        redis.get('phones:' + data.username, function (err, usrId) {
-            if (!usrId) {
+        redis.get('phones:' + data.username, function (err, uid) {
+            if (!uid) {
                 findInDB({ phone: data.username, password: pass });
             } else {
-                redis.hgetall('users:' + usrId, function (err, usr) {
+                redis.hgetall('users:' + uid, function (err, usr) {
                     if (usr.phone == data.username && user.password == pass) {
                         login(usr, callback);
                     } else {
@@ -99,29 +99,25 @@ function authenticate(data, callback) {
     }
 };
 
-function cleanAfterDisconnect(usrId) {
-    delete clients[usrId];
-    db.users.update({_id: db.ObjectId(usrId)}, 
+function cleanAfterDisconnect(uid) {
+    delete clients[uid];
+    db.users.update({_id: db.ObjectId(uid)}, 
         {$set: {location: [0, -90]}});
 }
 
 // Log out manully
-function logout() {
-    socket.get('sid', function (err, sid) {
+function logout(sid) {
+    socket.get('uid', function (err, uid) {
         var key = 'sid:' + sid;
-        redis.get(key, function (err, usrId) {
-            cleanAfterDisconnect(usrId);
-            redis.del(key);
-        });
+        cleanAfterDisconnect(uid);
+        redis.del(key);
     });
 }
 
 // After disconnecting, remove the user from clients list
 function disconnect() {
-    socket.get('sid', function (err, sid) {
-        redis.get('sid:' + sid, function (err, usrId) {
-            cleanAfterDisconnect(usrId);
-        });
+    socket.get('uid', function (err, uid) {
+        cleanAfterDisconnect(uid);
     });
 }
 
@@ -154,69 +150,64 @@ function signup(data, callback) {
 
 // Find closest people around the user
 function findClosest(callback) {
-    socket.get('sid', function (err, sid) {
-        if (!sid) return;
-        redis.get('sid:' + sid, function (err, usrId) {
-            redis.get('location:' + usrId, function (err, location) {
-                db.executeDbCommand({
-                    geoNear:            'users',
-                    near:               eval(location),
-                    spherical:          true,
-                    maxDistance:        1 / 6371,       // 1km
-                    distanceMultiplier: 6371000
-                }, function (err, obj) {
-                    var data = new Array();
-                    obj.documents[0].results.forEach(function (result) {
-                        if (result.obj._id == usrId) return;
-                        data.push({
-                            dis:      result.dis,
-                            id:       result.obj._id
-                            // TODO: add more information
-                        });
+    socket.get('uid', function (err, uid) {
+        if (!uid) return;
+        redis.get('location:' + uid, function (err, location) {
+            db.executeDbCommand({
+                geoNear:            'users',
+                near:               eval(location),
+                spherical:          true,
+                maxDistance:        1 / 6371,       // 1km
+                distanceMultiplier: 6371000
+            }, function (err, obj) {
+                var data = new Array();
+                obj.documents[0].results.forEach(function (result) {
+                    if (result.obj._id == uid) return;
+                    data.push({
+                        dis:      result.dis,
+                        id:       result.obj._id,
+                        nickname: result.obj.nickname
+                        // TODO: add more information
                     });
-                    callback(data);
                 });
+                callback(data);
             });
         });
     });
 }
 
 function updateLocation(data) {
-    socket.get('sid', function (err, sid) {
-        if (!sid) return;
-        redis.get('sid:' + sid, function (err, usrId) {
-            db.users.update({'_id': db.ObjectId(usrId)},
-                {$set: {location: [data.longitude, data.latitude]}});
-            redis.set('location:' + usrId,
-                '[' + data.longitude + ',' + data.latitude + ']');
-        });
+    socket.get('uid', function (err, uid) {
+    if (!uid) return;
+        db.users.update({'_id': db.ObjectId(uid)},
+            {$set: {location: [data.longitude, data.latitude]}});
+        redis.set('location:' + uid,
+            '[' + data.longitude + ',' + data.latitude + ']');
     });
 }
 
 function updateProfile(data) {
-    socket.get('sid', function (err, sid) {
-        if (!sid) return;
-        redis.get('sid:' + sid, function (err, usrId) {
-            // set in mongo
-            db.users.update({'_id': db.ObjectId(usrId)}, {$set: data});
-            // set in redis
-            data._id = usrId;
-            setUserData(data);
-        });
+    socket.get('uid', function (err, uid) {
+        if (!uid) return;
+        // set in mongo
+        db.users.update({'_id': db.ObjectId(uid)}, {$set: data});
+        // set in redis
+        data._id = uid;
+        setUserData(data);
     });
 }
 
 // Get basic information of a user by id
-function getInfoById(usrId, callback) {
-    socket.get('sid', function (err, sid) {
-        if (!sid) return;
+function getInfoById(uid, callback) {
+    socket.get('uid', function (err, t) {
+        if (!t) return;
         // Get from redis first
-        redis.hgetall('users:' + usrId, function (err, usr) {
+        redis.hgetall('users:' + uid, function (err, usr) {
             if (!usr) {
-                db.users.find({_id: db.ObjectId(usrId)},
-                    function (err, usr) { processUser(usr); });
+                db.users.find({_id: db.ObjectId(uid)},
+                    function (err, usr) { processUser(usr, callback); });
             } else {
-                processUser(usr);
+                processUser(usr, callback);
             }
         });
     });
@@ -224,15 +215,15 @@ function getInfoById(usrId, callback) {
 
 // Get basic information of a user by email
 function getInfoByEmail(email, callback) {
-    socket.get('sid', function (err, sid) {
-        if (!sid) return;
+    socket.get('uid', function (err, t) {
+        if (!t) return;
         // Get from redis first
-        redis.get('emails:' + email, function (err, usrId) {
-            if (!usrId) {
+        redis.get('emails:' + email, function (err, uid) {
+            if (!uid) {
                 db.users.findOne({email: email},
                     function (err, usr) { processUser(usr, callback); });
             } else {
-                getInfoById(usrId, callback);
+                getInfoById(uid, callback);
             }
         });
     });
@@ -240,15 +231,15 @@ function getInfoByEmail(email, callback) {
 
 // Get basic information of a user by phone number
 function getInfoByPhone(phone, callback) {
-    socket.get('sid', function  (err, sid) {
-        if (!sid) return;
+    socket.get('uid', function  (err, t) {
+        if (!t) return;
         // Get from redis first
-        redis.get('phones:' + phone, function (err, usrId) {
-            if (!usrId) {
+        redis.get('phones:' + phone, function (err, uid) {
+            if (!uid) {
                 db.users.findOne({phone: phone},
                     function (err, usr) { processUser(usr, callback); });
             } else {
-                getInfoById(usrId, callback);
+                getInfoById(uid, callback);
             }
         });
     });
@@ -274,4 +265,21 @@ function setUserData(usr) {
             redis.hset('users:' + usr._id, key, usr[key]);
         }
     }
+}
+
+
+// send a request to another user
+function sendFriendRequest(desUsrId) {
+    socket.get('uid', function (err, uid) {
+        redis.sadd('friendRequests:' + desUsrId, uid);
+        emitFriendRequests(desUsrId);
+    });
+}
+
+function emitFriendRequests(uid) {
+    while (redis.spop('friendRequests:' + uid, function (err, iuid) {
+        getInfoById(iuid, function (obj) {
+            clients[uid].emit('friend request', obj);
+        });
+    }));
 }
