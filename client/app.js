@@ -1,4 +1,5 @@
 var socket = io.connect('http://localhost:8000');
+// var socket = io.connect('http://ec2-23-20-135-217.compute-1.amazonaws.com:8000');
 
 Ext.Loader.setConfig({
     enabled : true
