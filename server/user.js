@@ -282,7 +282,12 @@ function emitFriendRequests(uid) {
         redis.spop('friendRequests:' + uid, function (err, iuid) {
             if (!iuid) return;
             getInfoById(iuid, function (obj) {
-                clients[uid].emit('friend request', obj);
+                if (uid in clients) {
+                    clients[uid].emit('friend request', obj);
+                } else  {
+                    redis.sadd('friendRequests:' + uid, iuid);
+                    return;
+                }
             });
         });
     }
