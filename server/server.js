@@ -34,7 +34,7 @@ function listen(port) {
         socket.on('get info by id', user.getInfoById);
         socket.on('get info by email', user.getInfoByEmail);
         socket.on('get info by phone', user.getInfoByPhone);
-        socket.on('send friend request', friend.sendFriendRequest);
+        socket.on('send friend request', user.sendFriendRequest);
     });
 }
 
