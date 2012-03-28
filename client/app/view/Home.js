@@ -12,24 +12,25 @@ Ext.define('Chihiro.view.Home', {
         tabBarPosition:'bottom',
         items:[
             {
-                title:'新鲜事',
+                xtype: 'navigationview',
+                title:'消息',
                 iconCls:'star',
                 items:[
                     {
-                        xtype:'titlebar',
-                        docked:'top',
-                        title:'新鲜事',
-                        items:[
-                            {
-                                iconCls:'refresh',
-                                align:'right'
-                            }
-                        ]
+//                        xtype:'titlebar',
+//                        docked:'top',
+//                        title:'新鲜事',
+//                        items:[
+//                            {
+//                                iconCls:'refresh',
+//                                align:'right'
+//                            }
+//                        ]
                     }
                 ]
             },
             {
-                title:'消息',
+                title:'活动',
                 items:[
                     {
                         xtype:'titlebar',
@@ -45,7 +46,7 @@ Ext.define('Chihiro.view.Home', {
                 ]
             },
             {
-                title:'好友',
+                title:'通讯录',
                 items:[
                     {
                         xtype:'titlebar',
@@ -61,31 +62,9 @@ Ext.define('Chihiro.view.Home', {
                 ]
             },
             {
-                title:'查找',
-                iconCls:'search',
-                items:[
-                    {
-                        xtype:'titlebar',
-                        docked:'top',
-                        title:'查找'
-                    },
-                    {
-                        xtype: 'panel',
-                        layout: 'vbox',
-                        items: [
-                            {
-                                xtype: 'searchfield',
-                                name: 'friendSearch'
-                            },
-                            {
-                                xtype: 'list',
-                                name: 'friendList'
-//                                itemTpl: '<div class="contact">{firstName} <strong>{lastName}</strong></div>',
-//                                store: Chihiro.model.Home.searchFriendStore,
-//                                grouped: true
-                            }]
-                    }
-                ]
+                xclass: 'Chihiro.view.FindFriend',
+                title:'找朋友',
+                iconCls:'search'
             },
             {
                 title:'设置',
