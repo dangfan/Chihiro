@@ -22,9 +22,10 @@ Ext.define('Chihiro.view.Sign', {
                 instructions: '还没有账号？看右上角吧亲',
                 items:[
                     {
-                        xtype: 'emailfield',
+                        xtype: 'textfield',
                         name: 'username',
-                        label: '邮箱'
+                        label: '账号',
+                        placeHolder: '邮箱/手机号'
                     },
                     {
                         xtype: 'passwordfield',
@@ -44,7 +45,7 @@ Ext.define('Chihiro.view.Sign', {
                         if(msg.err == 0)
                         {
                             console.log('success');
-                            window.localStorage.setItem('sid',msg.sid);
+                            window.localStorage.setItem('sid',msg.msg);
                             mainView.setActiveItem(Ext.create('Chihiro.view.Home'));
                         }
                         else Ext.Msg.alert(msg.msg);

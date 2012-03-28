@@ -9,9 +9,10 @@ Ext.application({
     views:['Main','Home','SignUp','Sign'],
     controllers:['Sign','SignUp'],
     launch: function() {
-        window.localStorage.removeItem('sid');
+        //window.localStorage.removeItem('sid');
         //for showing the Signup
         var sid = window.localStorage.getItem('sid');
+        console.log(sid);
         if(sid != null)
         {
             socket.emit('init',sid, function(msg) {

@@ -98,7 +98,7 @@ Ext.define('FirstView', {
                                         if(msg.err == 0)
                                         {
                                             console.log('success');
-                                            window.localStorage.setItem('sid',msg.sid);
+                                            window.localStorage.setItem('sid',msg.msg);
                                             signUpView.push(Ext.create('InterestView'));
                                         }
                                         else Ext.Msg.alert(msg.msg);
@@ -238,6 +238,7 @@ Ext.define('InterestView', {
                     items:[
                         {
                             xtype: 'textfield',
+                            name: 'interest',
                             placeHolder: '千寻将根据您的兴趣问您推荐好友'
                         }
                     ]
@@ -261,9 +262,9 @@ Ext.define('InterestView', {
                             left: '10%',
                             width: '40%',
                             handler: function(){
-                                var value = this.parent.parent.getValues();
+                                var interest = this.parent.parent.getValues().interest;
                                 console.log(value);
-                                socket.emit('update profile',value);
+                                socket.emit('update profile',{interests:[value]});
                                 signUpView.push(Ext.create('MoreInfoView'))
                             }
                         },

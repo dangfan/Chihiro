@@ -72,6 +72,7 @@ Ext.define('emailFindFriend', {
                             socket.emit('get info by email',value['email'], function(msg) {
                                 if(msg.err == 0)
                                 {
+                                    alert(msg.obj);
                                     console.log(msg.obj);
 //                                    this.parent.parent.parent.push(Ext.create('userList', {
 //                                        title: '查找结果'
@@ -112,6 +113,7 @@ Ext.define('phoneFindFriend', {
                             socket.emit('get info by phone',value['phone'], function(msg) {
                                 if(msg.err == 0)
                                 {
+                                    alert(msg.obj);
                                     this.parent.parent.parent.push(Ext.create('userList', {
                                         title: '查找结果'
                                     }));
@@ -130,13 +132,8 @@ Ext.define('contactFindFriend', {
     extend: 'Ext.form.Panel'
 });
 Ext.define('nearbyFindFriend', {
-    extend: 'Ext.Panel',
+    extend: 'Chihiro.view.UserList',
     config: {
-        items: [
-            {
-                xtype: 'userlist'
-            }
-        ]
     }
 });
 //Ext.define('userList',{
