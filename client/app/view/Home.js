@@ -7,6 +7,7 @@
  */
 Ext.define('Chihiro.view.Home', {
     extend: 'Ext.tab.Panel',
+    xtype: 'homeView',
     config: {
         fullscreen:true,
         tabBarPosition:'bottom',
@@ -17,6 +18,7 @@ Ext.define('Chihiro.view.Home', {
                 iconCls:'star',
                 items:[
                     {
+                        title: '消息'
 //                        xtype:'titlebar',
 //                        docked:'top',
 //                        title:'新鲜事',
@@ -35,13 +37,7 @@ Ext.define('Chihiro.view.Home', {
                     {
                         xtype:'titlebar',
                         docked:'top',
-                        title:'消息',
-                        items:[
-                            {
-                                iconCls:'compose',
-                                align:'right'
-                            }
-                        ]
+                        title:'活动'
                     }
                 ]
             },
@@ -51,7 +47,7 @@ Ext.define('Chihiro.view.Home', {
                     {
                         xtype:'titlebar',
                         docked:'top',
-                        title:'好友',
+                        title:'通讯录',
                         items:[
                             {
                                 iconCls:'user',
@@ -67,16 +63,11 @@ Ext.define('Chihiro.view.Home', {
                 iconCls:'search'
             },
             {
+                xclass: 'Chihiro.view.Settings',
                 title:'设置',
-                iconCls:'settings',
-                items:[
-                    {
-                        xtype:'titlebar',
-                        docked:'top',
-                        title:'消息'
-                    }
-                ]
+                iconCls:'settings'
             }
         ]
     }
+
 })

@@ -11,7 +11,7 @@ Ext.application({
 
     views:['Main','Home','SignUp','Sign','UserList'],
 
-    controllers:['Sign','SignUp','UserList'],
+    controllers:['Sign','SignUp','UserList','Home'],
 
     launch: function() {
         //window.localStorage.removeItem('sid');

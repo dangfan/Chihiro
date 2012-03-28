@@ -141,6 +141,7 @@ Ext.define('contactFindFriend', {
 });
 Ext.define('nearbyFindFriend', {
     extend: 'Chihiro.view.UserList',
+    xtype: 'nearbySearch',
     config: {
     }
 });
