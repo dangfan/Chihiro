@@ -185,12 +185,12 @@ function findClosest(callback) {
                 var data = new Array();
                 obj.documents[0].results.forEach(function (result) {
                     if (result.obj._id == uid) return;
-                    data.push({
-                        dis:      result.dis,
-                        id:       result.obj._id,
-                        nickname: result.obj.nickname
-                        // TODO: add more information
-                    });
+                    var obj = result.obj;
+                    obj.dis = result.dis;
+                    delete obj.password;
+                    delete obj.email;
+                    delete obj.phone;
+                    data.push(obj);
                 });
                 callback(data);
 
