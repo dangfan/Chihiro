@@ -38,6 +38,8 @@ function login(usr, callback) {
     // Save in redis
     redis.set('sid:' + sid, usr._id);
     callback({err: 0, msg: sid});
+
+    console.log('user ' + uid + 'is now online.');
     // TODO: check offline messages
 }
 
@@ -58,6 +60,7 @@ function init(sid, callback) {
 
 // Authenticate a user by its username and password
 function authenticate(data, callback) {
+    if (!data.username || !data.password) return;
     var pass = md5(salt + data.password);
     if (data.username.indexOf('@') > 0) { // use email
         redis.get('emails:' + data.username, function (err, uid) {
@@ -103,6 +106,8 @@ function cleanAfterDisconnect(uid) {
     delete clients[uid];
     db.users.update({_id: db.ObjectId(uid)}, 
         {$set: {location: [0, -90]}});
+
+    console.log('user ' + uid + 'is now offline.');
 }
 
 // Log out manully
