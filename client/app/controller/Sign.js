@@ -5,7 +5,7 @@
  * Time: 下午11:50
  * To change this template use File | Settings | File Templates.
  */
-var signUpView, signInView;
+var signUpView, signInView,homeView;
 Ext.define('Chihiro.controller.Sign',{
     extend: 'Ext.app.Controller',
     config: {
