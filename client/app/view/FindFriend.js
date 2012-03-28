@@ -5,7 +5,7 @@
  * Time: 下午3:41
  * To change this template use File | Settings | File Templates.
  */
-var userList;
+var userList, nowView;
 Ext.define('Chihiro.view.FindFriend', {
     extend: 'Ext.navigation.View',
     config: {
@@ -38,9 +38,10 @@ Ext.define('FindWayList', {
         listeners: {
             select: function(view, record) {
                 console.log(this.parent);
-                this.parent.push(Ext.create(record.get('way')+ 'FindFriend', {
+                nowView = Ext.create(record.get('way')+ 'FindFriend', {
                     title: record.get('text')
-                }));
+                })
+                this.parent.push(nowView);
             }
         }
     }
@@ -68,15 +69,12 @@ Ext.define('emailFindFriend', {
                         ui: 'confirm',
                         handler: function(){
                             var value = this.parent.parent.getValues();
-                            console.log(value['email']);
                             socket.emit('get info by email',value['email'], function(msg) {
                                 if(msg.err == 0)
                                 {
-                                    alert(msg.obj);
-                                    console.log(msg.obj);
-//                                    this.parent.parent.parent.push(Ext.create('userList', {
-//                                        title: '查找结果'
-//                                    }));
+                                    alert('found');
+                                    console.log(nowView.parent);
+                                    this.parent.parent.parent.push('Chihiro.view.UserList');
                                 }
                                 else alert(msg.obj);
                             });

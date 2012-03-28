@@ -6,8 +6,8 @@ Ext.Loader.setConfig({
 });
 Ext.application({
     name: 'Chihiro',
-    views:['Main','Home','SignUp','Sign'],
-    controllers:['Sign','SignUp'],
+    views:['Main','Home','SignUp','Sign','UserList'],
+    controllers:['Sign','SignUp','UserList'],
     launch: function() {
         //window.localStorage.removeItem('sid');
         //for showing the Signup

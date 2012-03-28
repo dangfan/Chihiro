@@ -16,6 +16,6 @@ Ext.define('Chihiro.controller.SignUp',{
         }
     },
     showSignIn: function() {
-        Ext.Viewport.setActiveItem(Ext.create('Chihiro.view.Sign'));
+        mainView.setActiveItem(Ext.create('Chihiro.view.Sign'));
     }
 });

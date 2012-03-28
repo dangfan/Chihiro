@@ -263,8 +263,8 @@ Ext.define('InterestView', {
                             width: '40%',
                             handler: function(){
                                 var interest = this.parent.parent.getValues().interest;
-                                console.log(value);
-                                socket.emit('update profile',{interests:[value]});
+                                console.log(interest);
+                                socket.emit('update profile',{interests:[interest]});
                                 signUpView.push(Ext.create('MoreInfoView'))
                             }
                         },

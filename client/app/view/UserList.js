@@ -104,17 +104,17 @@ Ext.define('Chihiro.view.UserList', {
     config: {
         height:1000,
         store: {
-            fields: ['name', 'description','id','distance','status','image','location','phone','mail','gender'
+            fields: ['name', 'signiture','id','distance','status','image','location','phone','email','gender'
             ,'birthday','school'],
             data: [
                 {
-                    description: "男，公，雄",
+                    signiture: "男，公，雄",
                     id: "407788",
                     gender:"男",
                     birthday:"1991年的某一天",
                     school:"五道口男子技术学校",
                     phone:"***",
-                    mail:"***",
+                    email:"***",
                     image:'http://kiva.org/img/w80h80/1053365.jpg',
                     //image:"http://hdn.xnimg.cn/photos/hdn421/20100403/2025/large_fdEG_41708n019118.jpg",
                     distance: "750",
@@ -130,13 +130,13 @@ Ext.define('Chihiro.view.UserList', {
                     status: "我想找个人一起自习"
                 },
                 {
-                    description: "男，公",
+                    signiture: "男，公",
                     id: "40778",
                     gender:"女",
                     birthday:"1992年的某一天",
                     school:"六道口男子技术学校",
                     phone:"***",
-                    mail:"***",
+                    email:"***",
                     //image:'http://kiva.org/img/w80h80/1053365.jpg',
                     image:"http://hdn.xnimg.cn/photos/hdn421/20100403/2025/large_fdEG_41708n019118.jpg",
                     distance: "750",
