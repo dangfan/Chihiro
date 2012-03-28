@@ -45,7 +45,7 @@ Ext.define('Chihiro.view.Sign', {
                         if(msg.err == 0)
                         {
                             console.log('success');
-                            window.localStorage.setItem('sid',msg.msg);
+                            window.localStorage.setItem('sid', msg.msg);
                             mainView.setActiveItem(Ext.create('Chihiro.view.Home'));
                         }
                         else Ext.Msg.alert(msg.msg);
