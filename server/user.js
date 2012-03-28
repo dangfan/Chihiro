@@ -39,7 +39,7 @@ function login(usr, callback) {
     redis.set('sid:' + sid, usr._id);
     callback({err: 0, msg: sid});
 
-    console.log('user ' + uid + 'is now online.');
+    console.log('user ' + usr._id + ' is now online.');
     // TODO: check offline messages
 }
 
@@ -107,7 +107,7 @@ function cleanAfterDisconnect(uid) {
     db.users.update({_id: db.ObjectId(uid)}, 
         {$set: {location: [0, -90]}});
 
-    console.log('user ' + uid + 'is now offline.');
+    console.log('user ' + uid + ' is now offline.');
 }
 
 // Log out manully
@@ -129,6 +129,7 @@ function disconnect() {
 // Provide email, phone number and password to
 // create a new account
 function signup(data, callback) {
+    if (!data.email || !data.password || !data.phone || !data.nickname) return;
     db.users.insert({
         email:    data.email,
         password: md5(salt + data.password),
@@ -148,6 +149,9 @@ function signup(data, callback) {
             redis.set('emails:' + usr.email, usr._id);
             redis.set('phones:' + usr.phone, usr._id);
             setUserData(usr);
+
+            console.log('new user ' + usr.nickname + ' is signed up.');
+
             login(usr, callback);
         }
     });
@@ -175,6 +179,9 @@ function findClosest(callback) {
                         // TODO: add more information
                     });
                 });
+
+                console.log('user ' + uid + ' found closest people.');
+
                 callback(data);
             });
         });
@@ -188,6 +195,8 @@ function updateLocation(data) {
             {$set: {location: [data.longitude, data.latitude]}});
         redis.set('location:' + uid,
             '[' + data.longitude + ',' + data.latitude + ']');
+
+        console.log('user ' + uid + ' updated its location.');
     });
 }
 
@@ -199,7 +208,8 @@ function updateProfile(data) {
         // set in redis
         data._id = uid;
         setUserData(data);
-        console.log('update profile: ' + data);
+        
+        console.log('user ' + uid + ' updated its profile.');
     });
 }
 
@@ -256,9 +266,9 @@ function processUser(usr, callback) {
     if (usr) {
         delete usr['password'];
         // TODO: delete more things
-        callback(usr);
+        callback({err: 0, obj: usr});
     } else {
-        callback('not found');
+        callback({err: 1, msg: '未找到用户'});
     }
 }
 
