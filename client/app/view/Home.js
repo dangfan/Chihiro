@@ -68,6 +68,22 @@ Ext.define('Chihiro.view.Home', {
                         xtype:'titlebar',
                         docked:'top',
                         title:'查找'
+                    },
+                    {
+                        xtype: 'panel',
+                        layout: 'vbox',
+                        items: [
+                            {
+                                xtype: 'searchfield',
+                                name: 'friendSearch'
+                            },
+                            {
+                                xtype: 'list',
+                                name: 'friendList'
+//                                itemTpl: '<div class="contact">{firstName} <strong>{lastName}</strong></div>',
+//                                store: Chihiro.model.Home.searchFriendStore,
+//                                grouped: true
+                            }]
                     }
                 ]
             },

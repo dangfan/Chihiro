@@ -18,14 +18,17 @@ Ext.define('Chihiro.view.Sign', {
             },
             {
                 xtype: 'fieldset',
+                name: 'fieldSet',
                 instructions: '还没有账号？看右上角吧亲',
                 items:[
                     {
                         xtype: 'emailfield',
+                        name: 'username',
                         label: '邮箱'
                     },
                     {
                         xtype: 'passwordfield',
+                        name: 'password',
                         label: '密码'
                     }
                 ]
@@ -33,16 +36,21 @@ Ext.define('Chihiro.view.Sign', {
             {
                 xtype: 'button',
                 text: '登录',
-                ui: 'confirm'
+                ui: 'confirm',
+                handler: function(){
+                    var value = this.parent.getValues();
+                    delete value.null;
+                    socket.emit('login',value, function(msg) {
+                        if(msg.err == 0)
+                        {
+                            console.log('success');
+                            window.localStorage.setItem('sid',msg.sid);
+                            mainView.setActiveItem(Ext.create('Chihiro.view.Home'));
+                        }
+                        else Ext.Msg.alert(msg.msg);
+                    });
+                }
             }
         ]
-    },
-    animateTo: function(dir) {
-        Ext.getCmp('viewport').getLayout().setAnimation({
-            duration: 300,
-            easing: 'ease-in-out',
-            type: 'slide',
-            direction: dir
-        });
     }
 })

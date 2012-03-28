@@ -22,14 +22,17 @@ Ext.define('FirstView', {
                 xtype: 'fieldset',
                 id: 'field',
                 defaults:{
-                    labelWidth: '90px'
+                    labelWidth: '95px',
+                    required: true,
+                    allowBlank: false
                 },
                 items:[
                     {
                         xtype: 'emailfield',
                         name: 'email',
                         label: '邮箱',
-                        placeHolder: '邮箱注册后不可修改'
+                        placeHolder: '邮箱注册后不可修改',
+                        valueType: 'email'
                     },
                     {
                         xtype: 'passwordfield',
@@ -38,6 +41,7 @@ Ext.define('FirstView', {
                     },
                     {
                         xtype: 'passwordfield',
+                        name: 'confirmPW',
                         label: '确认密码'
                     },
                     {
@@ -66,24 +70,44 @@ Ext.define('FirstView', {
                         text: '下一步',
                         ui: 'confirm',
                         left: '10%',
+                        enabled: false,
                         handler: function(){
                             var value = this.parent.parent.getValues();
-                            delete value.null;
                             console.log(value);
-                            socket.emit('signup',value,
-                            function(msg)
+                            if(value.email.length == 0 || value.password.length == 0 || value.phone.length == 0 || value.nickname.length == 0)
                             {
-                                if(msg.err == 0)
-                                {
-                                    window.localStorage.setItem('sid',msg.sid);
-                                    signUpView.push(Ext.create('InterestView'));
-                                }
-                                else alert(msg.msg);
-                            });
+                                Ext.Msg.alert('请完整填写信息！');
+                            }
+                            else if(!value.email.match(/^[-_A-Za-z0-9]+@([_A-Za-z0-9]+.)+[A-Za-z0-9]{2,3}$/))
+                            {
+                                //this.parent.parent.email.focus();
+                                Ext.Msg.alert('邮箱格式不正确');
+                            }
+                            else if(value.confirmPW != value.password)
+                            {
+                                //this.parent.parent.item[password].focus();
+                                Ext.Msg.alert('两次密码输入不同');
+                            }
+                            else
+                            {
+                                delete value.confirmPW;
+                                console.log('here');
+                                socket.emit('signup',value,
+                                    function(msg)
+                                    {
+                                        if(msg.err == 0)
+                                        {
+                                            console.log('success');
+                                            window.localStorage.setItem('sid',msg.sid);
+                                            signUpView.push(Ext.create('InterestView'));
+                                        }
+                                        else Ext.Msg.alert(msg.msg);
+                                    });
+                            }
+
                         }
                     },
                     {
-                        xtype: 'button',
                         text: '返回',
                         ui: 'decline',
                         right: '10%',
@@ -93,6 +117,27 @@ Ext.define('FirstView', {
             }
         ]
     }
+//    validateForm: function(value) {
+//        var valid = true;
+//        if(value.email.length == 0 || value.password.length == 0 || value.phone.length == 0 || value.nickname.length == 0)
+//        {
+//            Ext.Msg.alert('请完整填写信息！');
+//            valid = false;
+//        }
+//        else if(!value.email.match(/^[-_A-Za-z0-9]+@([_A-Za-z0-9]+.)+[A-Za-z0-9]{2,3}$/))
+//        {
+//            //this.parent.parent.email.focus();
+//            Ext.Msg.alert('邮箱格式不正确');
+//            valid = false;
+//        }
+//        else if(value.confirmPW != value.password)
+//        {
+//            //this.parent.parent.item[password].focus();
+//            Ext.Msg.alert('两次密码输入不同');
+//            valid = false;
+//        }
+//        return valid;
+//    }
 });
 Ext.define('MoreInfoView', {
     extend: 'Ext.form.Panel',
@@ -142,7 +187,7 @@ Ext.define('MoreInfoView', {
                     },
                     {
                         xtype: 'textareafield',
-                        name: 'sign',
+                        name: 'signiture',
                         label: '个性签名'
                     }
                 ]
@@ -158,8 +203,24 @@ Ext.define('MoreInfoView', {
                     {
                         text: '提交',
                         ui: 'confirm',
-                        left: '15%',
-                        width: '70%'
+                        left: '10%',
+                        width: '40%',
+                        handler: function(){
+                            var value = this.parent.parent.getValues();
+                            delete value.null;
+                            console.log(value);
+                            socket.emit('update profile',value);
+                            mainView.setActiveItem(Ext.create('Chihiro.view.Home'));
+                        }
+                    },
+                    {
+                        text: '以后再说',
+                        ui: 'decline',
+                        right: '10%',
+                        width: '40%',
+                        handler: function() {
+                            mainView.setActiveItem(Ext.create('Chihiro.view.Home'));
+                        }
                     }
                 ]
             }
@@ -181,6 +242,11 @@ Ext.define('InterestView', {
                         }
                     ]
                 },
+//                {
+//                    xtype: 'list',
+//                    itemTpl: '<div class="contact">{interestItem}</div>',
+//                    store: interestStore
+//                },
                 {
                     xtype: 'panel',
                     layout: 'hbox',
@@ -195,6 +261,9 @@ Ext.define('InterestView', {
                             left: '10%',
                             width: '40%',
                             handler: function(){
+                                var value = this.parent.parent.getValues();
+                                console.log(value);
+                                socket.emit('update profile',value);
                                 signUpView.push(Ext.create('MoreInfoView'))
                             }
                         },
@@ -202,7 +271,10 @@ Ext.define('InterestView', {
                             text: '以后再说',
                             ui: 'decline',
                             right: '10%',
-                            width: '40%'
+                            width: '40%',
+                            handler: function() {
+                                mainView.setActiveItem(Ext.create('Chihiro.view.Home'));
+                            }
                         }
                     ]
                 }
