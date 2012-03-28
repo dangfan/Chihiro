@@ -31,7 +31,7 @@ Ext.define('Chihiro.view.UserListItem', {
             }
         },
 
-        cls: Ext.baseCSSPrefix,
+        cls: Ext.baseCSSPrefix + 'list-item',
 
         name: {
             cls: 'name'

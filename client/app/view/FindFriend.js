@@ -72,9 +72,14 @@ Ext.define('emailFindFriend', {
                             socket.emit('get info by email',value['email'], function(msg) {
                                 if(msg.err == 0)
                                 {
-                                    alert('found');
-                                    console.log(nowView.parent);
-                                    this.parent.parent.parent.push('Chihiro.view.UserList');
+                                    var ul = Ext.create('Chihiro.view.UserList', {
+                                        store: {
+                                            fields: ['name', 'signiture','id','distance','status','image','location','phone','email','gender'
+                                                ,'birthday','school'],
+                                            data: msg.obj
+                                        }
+                                    });
+                                    nowView.parent.push(ul);
                                 }
                                 else alert(msg.obj);
                             });
@@ -111,10 +116,15 @@ Ext.define('phoneFindFriend', {
                             socket.emit('get info by phone',value['phone'], function(msg) {
                                 if(msg.err == 0)
                                 {
-                                    alert(msg.obj);
-                                    this.parent.parent.parent.push(Ext.create('userList', {
-                                        title: '查找结果'
-                                    }));
+                                    alert('found');
+                                    var ul = Ext.create('Chihiro.view.UserList', {
+                                        store: {
+                                            fields: ['name', 'signiture','id','distance','status','image','location','phone','email','gender'
+                                                ,'birthday','school'],
+                                            data: msg.obj
+                                        }
+                                    });
+                                    nowView.parent.push(ul);
                                 }
                                 else alert(msg.usr);
                             });
