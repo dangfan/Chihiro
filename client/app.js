@@ -16,6 +16,7 @@ Ext.application({
         if(sid != null)
         {
             socket.emit('init',sid, function(msg) {
+            	console.log(msg);
                 if(msg == 'ok')
                 {
                     mainView = Ext.create('Chihiro.view.Main', {

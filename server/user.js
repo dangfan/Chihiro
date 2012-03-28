@@ -64,6 +64,7 @@ function init(sid, callback) {
             socket.set('uid', uid);
             clients[uid] = socket;
             callback('ok');
+            console.log('user ' + uid + ' is now online.');
             // TODO: check offline messages
         } else {
             callback('error');
