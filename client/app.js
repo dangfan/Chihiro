@@ -9,7 +9,7 @@ Ext.Loader.setConfig({
 Ext.application({
     name: 'Chihiro',
 
-    views:['Main','Home','SignUp','Sign','UserList'],
+    views:['Main','Home','SignUp','Sign','UserList','Detail'],
 
     controllers:['Sign','SignUp','UserList','Home'],
 
