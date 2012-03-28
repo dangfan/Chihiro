@@ -95,7 +95,7 @@ function authenticate(data, callback) {
                 findInDB({ phone: data.username, password: pass });
             } else {
                 redis.hgetall('users:' + uid, function (err, usr) {
-                    if (usr.phone == data.username && user.password == pass) {
+                    if (usr.phone == data.username && usr.password == pass) {
                         login(usr, callback);
                     } else {
                         callback({err: 1, msg: '请检查用户名或密码'});
