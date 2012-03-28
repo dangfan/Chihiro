@@ -28,6 +28,19 @@ exports.init = function(_db, _redis, _clients, _socket) {
     };
 }
 
+function loadMessages() {
+    // Topics
+    redis.on('message', function (channel, msg) {
+        var info = channel.split(':'),
+            data = eval(msg);
+        redis.hget('users:' + data.uid, 'nickname', function (err, nickname) {
+            data.nickname = nickname;
+            data.tid = info[1];
+            socket.emit(info[0], data);
+        });
+    });
+}
+
 // Login the specific user with the current socket connection
 function login(usr, callback) {
     // Generate uuid as session id
@@ -38,9 +51,9 @@ function login(usr, callback) {
     // Save in redis
     redis.set('sid:' + sid, usr._id);
     callback({err: 0, msg: sid});
-
+    // Load offline messages
+    loadMessages();
     console.log('user ' + usr._id + ' is now online.');
-    // TODO: check offline messages
 }
 
 // After the app starting up,
@@ -172,17 +185,16 @@ function findClosest(callback) {
                 var data = new Array();
                 obj.documents[0].results.forEach(function (result) {
                     if (result.obj._id == uid) return;
-                    data.push({
-                        dis:      result.dis,
-                        id:       result.obj._id,
-                        nickname: result.obj.nickname
-                        // TODO: add more information
-                    });
+                    var obj = result.obj;
+                    obj.dis = result.dis;
+                    delete obj.password;
+                    delete obj.email;
+                    delete obj.phone;
+                    data.push(obj);
                 });
+                callback(data);
 
                 console.log('user ' + uid + ' found closest people.');
-
-                callback(data);
             });
         });
     });
@@ -264,7 +276,9 @@ function getInfoByPhone(phone, callback) {
 // Remove unnecessary attributes and callback
 function processUser(usr, callback) {
     if (usr) {
-        delete usr['password'];
+        delete usr.password;
+        delete usr.email;
+        delete usr.phone;
         // TODO: delete more things
         callback({err: 0, obj: usr});
     } else {
