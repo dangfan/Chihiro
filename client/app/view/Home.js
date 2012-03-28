@@ -15,7 +15,7 @@ Ext.define('Chihiro.view.Home', {
             {
                 xtype: 'navigationview',
                 title:'消息',
-                iconCls:'star',
+                iconCls:'info',
                 items:[
                     {
                         title: '消息'
@@ -33,6 +33,7 @@ Ext.define('Chihiro.view.Home', {
             },
             {
                 title:'活动',
+                iconCls:'star',
                 items:[
                     {
                         xtype:'titlebar',
@@ -43,6 +44,7 @@ Ext.define('Chihiro.view.Home', {
             },
             {
                 title:'通讯录',
+                iconCls:'user',
                 items:[
                     {
                         xtype:'titlebar',

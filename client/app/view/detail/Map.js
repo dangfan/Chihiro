@@ -5,8 +5,8 @@ Ext.define('Chihiro.view.detail.Map', {
         mapOptions: {
             // center: this.mapPosition,
             disableDefaultUI: true,
-            zoom: 5,
-            draggable: false
+            zoom: 17,
+            draggable: true
         }
-	}
+    }
 });

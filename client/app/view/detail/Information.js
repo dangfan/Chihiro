@@ -24,7 +24,7 @@ Ext.define('Chihiro.view.detail.Information', {
                  '<strong>手机:</strong> {phone}<br />',
                  '<strong>邮箱:</strong> {mail}<br />',
             '</p>',
-            '<p><strong>兴趣爱好</strong><br />{description}</p>'
+            '<p><strong>兴趣爱好</strong><br />{signiture}</p>'
             // {compiled: true}
         )
     }
