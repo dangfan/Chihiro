@@ -12,7 +12,7 @@ Ext.define('Chihiro.view.UserListItem', {
     requires: ['Ext.Img'],
 
     config: {
-        height:100,
+	    height:100,
         dataMap: {
             getName: {
                 setHtml: 'name'
@@ -106,55 +106,55 @@ Ext.define('Chihiro.view.UserList', {
         emptyText: '没有找到任何人哦',
         store: {
             fields: ['name', 'signiture','id','distance','status','image','location','phone','email','gender'
-            ,'birthday','school']
-//            data: [
-//                {
-//                    signiture: "男，公，雄",
-//                    id: "407788",
-//                    gender:"男",
-//                    birthday:"1991年的某一天",
-//                    school:"五道口男子技术学校",
-//                    phone:"***",
-//                    email:"***",
-//                    image:'http://kiva.org/img/w80h80/1053365.jpg',
-//                    //image:"http://hdn.xnimg.cn/photos/hdn421/20100403/2025/large_fdEG_41708n019118.jpg",
-//                    distance: "750",
-//                    location: {
-//                        country: "China",
-//                        country_code: "CN",
-//                        geo: {
-//                            level: "country",
-//                            pairs: "39 116",
-//                            type: "point"},
-//                        town: "Haidian"},
-//                    name: "党凡",
-//                    status: "我想找个人一起自习"
-//                },
-//                {
-//                    signiture: "男，公",
-//                    id: "40778",
-//                    gender:"女",
-//                    birthday:"1992年的某一天",
-//                    school:"六道口男子技术学校",
-//                    phone:"***",
-//                    email:"***",
-//                    //image:'http://kiva.org/img/w80h80/1053365.jpg',
-//                    image:"http://hdn.xnimg.cn/photos/hdn421/20100403/2025/large_fdEG_41708n019118.jpg",
-//                    distance: "750",
-//                    location: {
-//                        country: "China",
-//                        country_code: "CN",
-//                        geo: {
-//                            level: "country",
-//                            pairs: "39 116",
-//                            type: "point"},
-//                        town: "Haidian"},
-//                    name: "党主席",
-//                    status: "我想找个人一起搞基"
-//                }
-//            ]
+            ,'birthday','school'],
+			data: [
+                {
+                    signiture: "男，公，雄",
+                    id: "407788",
+                    gender:"男",
+                    birthday:"1991年的某一天",
+                    school:"五道口男子技术学校",
+                    phone:"***",
+                    email:"***",
+                    image:'http://kiva.org/img/w80h80/1053365.jpg',
+                    //image:"http://hdn.xnimg.cn/photos/hdn421/20100403/2025/large_fdEG_41708n019118.jpg",
+                    distance: "250米",
+                    location: {
+                        country: "China",
+                        country_code: "CN",
+                        geo: {
+                            level: "country",
+                            pairs: "40.003 116.329",
+                            type: "point"},
+                        town: "Haidian"},
+                    name: "党凡",
+                    status: "我想找1个人一起自习"
+                },
+                {
+                    signiture: "男，公",
+                    id: "40778",
+                    gender:"女",
+                    birthday:"1992年的某一天",
+                    school:"六道口男子技术学校",
+                    phone:"***",
+                    email:"***",
+                    image:'http://kiva.org/img/w80h80/1053361.jpg',
+                    //image:"http://hdn.xnimg.cn/photos/hdn421/20100403/2025/large_fdEG_41708n019118.jpg",
+                    distance: "600米",
+                    location: {
+                        country: "China",
+                        country_code: "CN",
+                        geo: {
+                            level: "country",
+                            pairs: "39 116",
+                            type: "point"},
+                        town: "Haidian"},
+                    name: "党主席",
+                    status: "我想找2个人一起自习"
+                }
+            ]
         },
-        //ui   : 'loans',
+        ui   : 'loans',
         useComponents: true,
         defaultType: 'userlistitem',
         deselectOnContainerClick: false
