@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Chihiro.view.Settings', {
+Ext.define('Chihiro.view.homeViews.Settings', {
     extend: 'Ext.navigation.View',
     config: {
         fullscreen: true,

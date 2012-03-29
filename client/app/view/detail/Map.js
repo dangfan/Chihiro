@@ -3,7 +3,7 @@ Ext.define('Chihiro.view.detail.Map', {
     xtype: 'detailMap',
     config: {
         mapOptions: {
-            // center: this.mapPosition,
+            // center: this.mapPositieon,
             disableDefaultUI: true,
             zoom: 17,
             draggable: true

@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 var userList, nowView;
-Ext.define('Chihiro.view.FindFriend', {
+Ext.define('Chihiro.view.homeViews.FindFriend', {
     extend: 'Ext.navigation.View',
     config: {
         fullscreen: true,
@@ -72,7 +72,7 @@ Ext.define('emailFindFriend', {
                             socket.emit('get info by email',value['email'], function(msg) {
                                 if(msg.err == 0)
                                 {
-                                    var ul = Ext.create('Chihiro.view.UserList', {
+                                    var ul = Ext.create('Chihiro.view.homeViews.UserList', {
                                         store: {
                                             fields: ['name', 'signiture','id','distance','status','image','location','phone','email','gender'
                                                 ,'birthday','school'],
@@ -116,8 +116,7 @@ Ext.define('phoneFindFriend', {
                             socket.emit('get info by phone',value['phone'], function(msg) {
                                 if(msg.err == 0)
                                 {
-                                    alert('found');
-                                    var ul = Ext.create('Chihiro.view.UserList', {
+                                    var ul = Ext.create('Chihiro.view.homeViews.UserList', {
                                         store: {
                                             fields: ['name', 'signiture','id','distance','status','image','location','phone','email','gender'
                                                 ,'birthday','school'],
@@ -140,10 +139,8 @@ Ext.define('contactFindFriend', {
     extend: 'Ext.form.Panel'
 });
 Ext.define('nearbyFindFriend', {
-    extend: 'Chihiro.view.UserList',
-    xtype: 'nearbySearch',
-    config: {
-    }
+    extend: 'Chihiro.view.homeViews.UserList',
+    xtype: 'nearbySearch'
 });
 //Ext.define('userList',{
 //    extend: 'Ext.dataview.List',

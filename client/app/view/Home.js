@@ -60,12 +60,12 @@ Ext.define('Chihiro.view.Home', {
                 ]
             },
             {
-                xclass: 'Chihiro.view.FindFriend',
+                xclass: 'Chihiro.view.homeViews.FindFriend',
                 title:'找朋友',
                 iconCls:'search'
             },
             {
-                xclass: 'Chihiro.view.Settings',
+                xclass: 'Chihiro.view.homeViews.Settings',
                 title:'设置',
                 iconCls:'settings'
             }

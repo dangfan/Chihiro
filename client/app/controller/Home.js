@@ -5,23 +5,7 @@
  * Time: 下午10:59
  * To change this template use File | Settings | File Templates.
  */
-var geo = Ext.create('Ext.util.Geolocation', {
-    autoUpdate: true,
-    frequency: 30000,
-    listeners: {
-        locationupdate: function(geo) {
-            socket.emit('update location',{longitude: geo.getLongitude(), latitude: geo.getLatitude()});
-            console.log('i search!! see:'+ geo.getLongitude());
-        },
-        locationerror: function(geo, bTimeout, bPermissionDenied, bLocationUnavailable, message) {
-            if(bTimeout){
-                alert('Timeout occurred.');
-            } else {
-                alert('Error occurred.');
-            }
-        }
-    }
-});;
+
 Ext.define('Chihiro.controller.Home',{
     extend: 'Ext.app.Controller',
     config: {
@@ -36,6 +20,23 @@ Ext.define('Chihiro.controller.Home',{
         }
     },
     login: function(comp, obj){
+        var geo = Ext.create('Ext.util.Geolocation', {
+            autoUpdate: true,
+            frequency: 30000,
+            listeners: {
+                locationupdate: function(geo) {
+                    socket.emit('update location',{longitude: geo.getLongitude(), latitude: geo.getLatitude()});
+                    console.log('i search!! see:'+ geo.getLongitude());
+                },
+                locationerror: function(geo, bTimeout, bPermissionDenied, bLocationUnavailable, message) {
+                    if(bTimeout){
+                        alert('Timeout occurred.');
+                    } else {
+                        alert('Error occurred.');
+                    }
+                }
+            }
+        });
         geo.updateLocation();
     },
     findClosestPpl: function(comp, obj){

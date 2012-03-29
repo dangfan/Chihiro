@@ -21,8 +21,6 @@ Ext.define('Chihiro.view.detail.Information', {
                 '<strong>生日:</strong> {birthday}<br />',
                  '<strong>签名:</strong>{status}<br />',
                  '<strong>学校:</strong> {school}<br />',
-                 '<strong>手机:</strong> {phone}<br />',
-                 '<strong>邮箱:</strong> {mail}<br />',
             '</p>',
             '<p><strong>兴趣爱好</strong><br />{signiture}</p>'
             // {compiled: true}
