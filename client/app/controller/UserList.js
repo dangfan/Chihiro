@@ -43,7 +43,7 @@ Ext.define('Chihiro.controller.UserList', {
         console.log(list);
         console.log(user);
         if (!this.view) {
-            this.view = Ext.create('Chihiro.view.Detail');
+            this.view = Ext.create('Chihiro.view.detail.Detail');
         }
 
         var view = this.view;

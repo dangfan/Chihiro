@@ -13,51 +13,19 @@ Ext.define('Chihiro.view.Home', {
         tabBarPosition:'bottom',
         items:[
             {
-                xtype: 'navigationview',
+                xclass: 'Chihiro.view.homeViews.Message',
                 title:'消息',
-                iconCls:'info',
-                items:[
-                    {
-                        title: '消息'
-//                        xtype:'titlebar',
-//                        docked:'top',
-//                        title:'新鲜事',
-//                        items:[
-//                            {
-//                                iconCls:'refresh',
-//                                align:'right'
-//                            }
-//                        ]
-                    }
-                ]
+                iconCls:'info'
             },
             {
+                xclass: 'Chihiro.view.homeViews.Activities',
                 title:'活动',
-                iconCls:'star',
-                items:[
-                    {
-                        xtype:'titlebar',
-                        docked:'top',
-                        title:'活动'
-                    }
-                ]
+                iconCls:'star'
             },
             {
+                xclass: 'Chihiro.view.homeViews.Contact',
                 title:'通讯录',
-                iconCls:'user',
-                items:[
-                    {
-                        xtype:'titlebar',
-                        docked:'top',
-                        title:'通讯录',
-                        items:[
-                            {
-                                iconCls:'user',
-                                align:'right'
-                            }
-                        ]
-                    }
-                ]
+                iconCls:'user'
             },
             {
                 xclass: 'Chihiro.view.homeViews.FindFriend',

@@ -1,4 +1,4 @@
-Ext.define('Chihiro.view.homeViews.Detail', {
+Ext.define('Chihiro.view.detail.Detail', {
     extend: 'Ext.Panel',
     xtype: 'detail',
 
