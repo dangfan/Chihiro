@@ -72,10 +72,11 @@ Ext.define('emailFindFriend', {
                             socket.emit('get info by email',value['email'], function(msg) {
                                 if(msg.err == 0)
                                 {
+                                    console.log(msg.obj);
                                     var ul = Ext.create('Chihiro.view.homeViews.UserList', {
                                         store: {
-                                            fields: ['name', 'signiture','id','distance','status','image','location','phone','email','gender'
-                                                ,'birthday','school'],
+                                            fields: ['name', 'signiture','id','dis','interest','image','location','phone','email','gender'
+                                                ,'birthday','school','nickname'],
                                             data: msg.obj
                                         }
                                     });
@@ -118,8 +119,8 @@ Ext.define('phoneFindFriend', {
                                 {
                                     var ul = Ext.create('Chihiro.view.homeViews.UserList', {
                                         store: {
-                                            fields: ['name', 'signiture','id','distance','status','image','location','phone','email','gender'
-                                                ,'birthday','school'],
+                                            fields: ['name', 'signiture','id','dis','interest','image','location','phone','email','gender'
+                                                ,'birthday','school','nickname'],
                                             data: msg.obj
                                         }
                                     });
@@ -141,6 +142,7 @@ Ext.define('contactFindFriend', {
 Ext.define('nearbyFindFriend', {
     extend: 'Chihiro.view.homeViews.UserList',
     xtype: 'nearbySearch'
+
 });
 //Ext.define('userList',{
 //    extend: 'Ext.dataview.List',

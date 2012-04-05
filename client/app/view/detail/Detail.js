@@ -58,7 +58,11 @@ Ext.define('Chihiro.view.detail.Detail', {
     updateUser: function(newUser) {
         var carousel = this.down('carousel'),  information = this.down('detailInformation');
         map = this.down('detailMap'),
-        coords = newUser.get('location').geo.pairs.split(' ').map(parseFloat);
+        //coords = newUser.get('location').geo.pairs.split(' ').map(parseFloat);
+        //coords = newUser.get('location').geo.pairs.split(' ').map(parseFloat);
+        //alert(coords);
+        coords = ['40','116'];
+
         information.setData(newUser.data);
 
 

@@ -15,11 +15,11 @@ Ext.define('Chihiro.view.homeViews.UserListItem', {
 	    height:100,
         dataMap: {
             getName: {
-                setHtml: 'name'
+                setHtml: 'nickname'
             },
 
             getStatus: {
-                setHtml: 'status'
+                setHtml: 'signiture'
             },
 
             getAvatar: {
@@ -27,7 +27,7 @@ Ext.define('Chihiro.view.homeViews.UserListItem', {
             },
 
             getDistance: {
-                setHtml: 'distance'
+                setHtml: 'dis'
             }
         },
 
@@ -105,18 +105,18 @@ Ext.define('Chihiro.view.homeViews.UserList', {
         height:1000,
         emptyText: '没有找到任何人哦',
         store: {
-            fields: ['name', 'signiture','id','distance','status','image','location','gender'
-            ,'birthday','school'],
+            fields: ['name', 'signiture','id','dis','interest','image','location','phone','email','gender'
+                ,'birthday','school','nickname'],
 			data: [
                 {
-                    signiture: "男，公，雄",
+                    interest: "男，公，雄",
                     id: "407788",
                     gender:"男",
                     birthday:"1991年的某一天",
                     school:"五道口男子技术学校",
                     image:'http://kiva.org/img/w80h80/1053365.jpg',
                     //image:"http://hdn.xnimg.cn/photos/hdn421/20100403/2025/large_fdEG_41708n019118.jpg",
-                    distance: "250米",
+                    dis: "250",
                     location: {
                         country: "China",
                         country_code: "CN",
@@ -126,17 +126,18 @@ Ext.define('Chihiro.view.homeViews.UserList', {
                             type: "point"},
                         town: "Haidian"},
                     name: "党凡",
-                    status: "我想找1个人一起自习"
+                    nickename:"党凡",
+                    signiture: "我想找1个人一起自习"
                 },
                 {
-                    signiture: "男，公",
+                    interest: "男，公",
                     id: "40778",
                     gender:"女",
                     birthday:"1992年的某一天",
                     school:"六道口男子技术学校",
                     image:'http://kiva.org/img/w80h80/1053361.jpg',
                     //image:"http://hdn.xnimg.cn/photos/hdn421/20100403/2025/large_fdEG_41708n019118.jpg",
-                    distance: "600米",
+                    dis: "600",
                     location: {
                         country: "China",
                         country_code: "CN",
@@ -146,7 +147,8 @@ Ext.define('Chihiro.view.homeViews.UserList', {
                             type: "point"},
                         town: "Haidian"},
                     name: "党主席",
-                    status: "我想找2个人一起自习"
+                    nickname:"我叫党主席",
+                    signiture: "我想找2个人一起自习"
                 }
             ]
         },
