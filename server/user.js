@@ -50,7 +50,7 @@ function login(usr, callback) {
     clients[usr._id] = socket;
     // Save in redis
     redis.set('sid:' + sid, usr._id);
-    callback({err: 0, msg: sid});
+    callback({err: 0, sid: sid, obj: usr});
     // Load offline messages
     loadMessages();
     console.log('user ' + usr._id + ' is now online.');
@@ -108,7 +108,7 @@ function authenticate(data, callback) {
     function findInDB(cond) {
         db.users.findOne(cond, function (err, usr) {
             if (!usr) {
-                callback('error');
+                callback({err: 1, msg: '请检查用户名或密码'});
             } else {
                 login(usr, callback);
             }
@@ -191,6 +191,7 @@ function findClosest(callback) {
                     delete obj.password;
                     delete obj.email;
                     delete obj.phone;
+                    delete obj.friends;
                     data.push(obj);
                 });
                 callback(data);
