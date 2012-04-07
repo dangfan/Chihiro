@@ -50,6 +50,8 @@ function login(usr, callback) {
     clients[usr._id] = socket;
     // Save in redis
     redis.set('sid:' + sid, usr._id);
+    delete usr['null'];
+    delete usr.password;
     callback({err: 0, sid: sid, obj: usr});
     // Load offline messages
     loadMessages();
@@ -192,6 +194,7 @@ function findClosest(callback) {
                     delete obj.email;
                     delete obj.phone;
                     delete obj.friends;
+                    delete obj['null'];
                     data.push(obj);
                 });
                 callback(data);
@@ -281,7 +284,8 @@ function processUser(usr, callback) {
         delete usr.password;
         delete usr.email;
         delete usr.phone;
-        // TODO: delete more things
+        delete usr['null'];
+        delete usr.friends;
         callback({err: 0, obj: usr});
     } else {
         callback({err: 1, msg: '未找到用户'});

@@ -1,43 +1,60 @@
-//var socket = io.connect('http://localhost:8000');
-var socket = io.connect('http://ec2-23-20-135-217.compute-1.amazonaws.com:8000');
-var mainView;
-
-Ext.Loader.setConfig({
-    enabled : true
+ //<debug>
+Ext.Loader.setPath({
+    'Ext': 'sdk/src'
 });
+//</debug>
 
 Ext.application({
+    controllers: ['SignIn', 'SignUp', 'Setting', 'List', 'Home', 'Find'],
+
     name: 'Chihiro',
 
-    views:['Main','Home','SignUp','Sign','homeViews.UserList','detail.Detail'],
+    requires: [
+        'Ext.MessageBox'
+    ],
 
-    controllers:['Sign','SignUp','UserList','Home'],
+    views: ['SignIn',
+        'signup.Main', 'signup.InterestInfo', 'signup.OptionalInfo', 'signup.RequiredInfo',
+        'Home',
+        'message.List',
+        'contact.List',
+        'activity.List',
+        'find.Main', 'find.Email', 'find.Phone', 'find.Contact', 'find.Nearby',
+        'setting.Main',
+        'userlist.List', 'userlist.Detail', 'userlist.ListItem'
+    ],
+
+    icon: {
+        57: 'resources/icons/Icon.png',
+        72: 'resources/icons/Icon~ipad.png',
+        114: 'resources/icons/Icon@2x.png',
+        144: 'resources/icons/Icon~ipad@2x.png'
+    },
+
+    phoneStartupScreen: 'resources/loading/Homescreen.jpg',
+    tabletStartupScreen: 'resources/loading/Homescreen~ipad.jpg',
 
     launch: function() {
-        //window.localStorage.removeItem('sid');
-        //for showing the Signup
-        var sid = window.localStorage.getItem('sid');
-        if (sid != null)
-        {
-            socket.emit('init',sid, function(msg) {
-            	console.log(msg);
-                if (msg == 'ok') {
-                    mainView = Ext.create('Chihiro.view.Main', {
-                        items:[
-                            { xclass: 'Chihiro.view.Home'}
-                        ]
-                    });
-                }
-                else noLogin();
-            });
-        }
-        else noLogin();
-        function noLogin() {
-            mainView = Ext.create('Chihiro.view.Main', {
-                items:[
-                    { xclass: 'Chihiro.view.Sign'}
-                ]
-            });
-        }
+        // Destroy the #appLoadingIndicator element
+        Ext.fly('appLoadingIndicator').destroy();
+
+        Ext.create('Chihiro.view.Home');
+
+        // Initialize the signin view
+        Ext.Viewport.add(Ext.create('Chihiro.view.SignIn'));
+
+        Ext.Viewport.getLayout().setAnimation({
+            type: 'pop'
+        });
+    },
+
+    onUpdated: function() {
+        Ext.Msg.confirm(
+            "Application Update",
+            "This application has just successfully been updated to the latest version. Reload now?",
+            function() {
+                window.location.reload();
+            }
+        );
     }
 });
