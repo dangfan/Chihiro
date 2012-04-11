@@ -7,6 +7,8 @@ Ext.Loader.setPath({
 Ext.application({
     controllers: ['SignIn', 'SignUp', 'Setting', 'List', 'Home', 'Find'],
 
+    models: ['User'],
+
     name: 'Chihiro',
 
     requires: [
@@ -31,8 +33,8 @@ Ext.application({
         144: 'resources/icons/Icon~ipad@2x.png'
     },
 
-    phoneStartupScreen: 'resources/loading/Homescreen.jpg',
-    tabletStartupScreen: 'resources/loading/Homescreen~ipad.jpg',
+    phoneStartupScreen: 'resources/loading/Homescreen.png',
+    tabletStartupScreen: 'resources/loading/Homescreen~ipad.png',
 
     launch: function() {
         // Destroy the #appLoadingIndicator element

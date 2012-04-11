@@ -1,4 +1,4 @@
-Ext.define('Chihiro.view.userlist.List', {
+Ext.define('Chihiro.view.messagelist.List', {
     extend: 'Ext.DataView',
     xtype: 'userlist',
 

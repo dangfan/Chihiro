@@ -10,7 +10,7 @@ Ext.define('Chihiro.view.find.Main', {
 
     config: {
         autoDestroy: false,
-        defaultBackButtonText: '返回',
+        useTitleForBackButtonText: true,
         items:[{
             title: '找朋友',
             xtype: 'list',

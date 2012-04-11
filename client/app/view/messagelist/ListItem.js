@@ -1,4 +1,4 @@
-Ext.define('Chihiro.view.userlist.ListItem', {
+Ext.define('Chihiro.view.messagelist.ListItem', {
     extend: 'Ext.dataview.component.DataItem',
     xtype : 'listitem',
     requires: ['Ext.Img'],
