@@ -1,11 +1,13 @@
 Ext.define('Chihiro.view.find.Phone', {
     extend:'Ext.form.Panel',
+    id: 'findbyphone',
 
     requires: [
         'Ext.field.Number'
     ],
 
     config:{
+        title: '按手机号查找好友',
         items:[
             {
                 xtype:'fieldset',

@@ -14,6 +14,11 @@ Ext.define('Chihiro.controller.find.Find', {
         }
     },
 
+    launch: function() {
+        Ext.create('Chihiro.view.find.Email');
+        Ext.create('Chihiro.view.find.Phone');
+    },
+
     onItemTap: function(view, index, target, record) {
         var way = record.get('way'),
             panel = this.getPanel(),
@@ -31,9 +36,7 @@ Ext.define('Chihiro.controller.find.Find', {
                 controller.getUserlist().setData(list);
             });
         } else {
-            panel.push(Ext.create('Chihiro.view.find.' + record.get('way'), {
-                title: record.get('text')
-            }));
+            panel.push(Ext.getCmp('findby' + record.get('way')));
         }
     }
 });
