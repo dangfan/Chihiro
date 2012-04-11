@@ -13,6 +13,7 @@ Ext.define('Chihiro.view.find.Email', {
                     {
                         xtype:'emailfield',
                         name:'email',
+                        id:'emailfield',
                         placeHolder:'输入好友邮箱地址'
                     }
                 ]
@@ -20,7 +21,8 @@ Ext.define('Chihiro.view.find.Email', {
             {
                 xtype:'button',
                 text:'确认',
-                ui:'confirm'
+                ui:'confirm',
+                id:'emailbutton'
             }
         ]
     }
