@@ -13,14 +13,16 @@ Ext.define('Chihiro.view.find.Phone', {
                     {
                         xtype:'numberfield',
                         name:'phone',
-                        placeHolder:'输入好友手机号'
+                        placeHolder:'输入好友手机号',
+                        id:'phonefield'
                     }
                 ]
             },
             {
                 xtype:'button',
                 text:'确认',
-                ui:'confirm'
+                ui:'confirm',
+                id:'phonebutton'
             }
         ]
     }

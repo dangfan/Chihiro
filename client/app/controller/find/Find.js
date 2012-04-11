@@ -1,4 +1,4 @@
-Ext.define('Chihiro.controller.Find', {
+Ext.define('Chihiro.controller.find.Find', {
     extend: 'Ext.app.Controller',
 
     config: {

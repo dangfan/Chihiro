@@ -5,7 +5,7 @@ Ext.Loader.setPath({
 //</debug>
 
 Ext.application({
-    controllers: ['SignIn', 'SignUp', 'Setting', 'List', 'Home', 'Find'],
+    controllers: ['SignIn', 'SignUp', 'Setting', 'List', 'Home', 'find.Find','find.Email','find.Phone'],
 
     name: 'Chihiro',
 
