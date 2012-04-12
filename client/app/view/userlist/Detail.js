@@ -39,7 +39,8 @@ Ext.define('Chihiro.view.userlist.Detail', {
             },
             {
                 xtype: 'button',
-                text: '加为好基友'
+                text: '加为好友',
+                id: 'addFriendBtn'
             }
         ]
     },

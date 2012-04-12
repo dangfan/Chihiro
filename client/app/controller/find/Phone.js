@@ -32,7 +32,7 @@ Ext.define('Chihiro.controller.find.Phone', {
                 }));
                 controller.getUserlist().setData([msg.obj]);
             }
-            else alert('This user is not exists!');
+            else alert('This user does not exist!');
         });
     }
 });

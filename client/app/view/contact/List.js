@@ -7,7 +7,8 @@ Ext.define('Chihiro.view.contact.List', {
         scrollable: true,
         defaultBackButtonText: '返回',
         items:[{
-            title: '通讯录'
+            title: '通讯录',
+            xtype: 'userlist'
         }]
     }
 });

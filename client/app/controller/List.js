@@ -7,7 +7,8 @@ Ext.define('Chihiro.controller.List', {
         refs: {
             userList: 'userlist',
             searchField: 'searchfield',
-            refreshButton: 'button[iconCls=refresh]'
+            refreshButton: 'button[iconCls=refresh]',
+            addFriendBtn: '#addFriendBtn'
         },
 
         control: {
@@ -19,6 +20,9 @@ Ext.define('Chihiro.controller.List', {
             },
             'searchfield': {
                 action: 'onSearch'
+            },
+            'addFriendBtn': {
+                tap: 'addFriend'
             }
         }
     },
@@ -26,7 +30,11 @@ Ext.define('Chihiro.controller.List', {
     init: function() {
 
     },
-
+    addFriend: function() {
+        socket.emit('send friend request',this.getUserList().getSelection()[0].raw._id);
+        alert("好友申请已经发送");
+        //TODO: Will need callback msg indicating whether this person is already a friend
+    },
     onListTap: function(list, user) {
         if (!this.view) {
             this.view = Ext.create('Chihiro.view.userlist.Detail');
