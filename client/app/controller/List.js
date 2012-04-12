@@ -31,7 +31,7 @@ Ext.define('Chihiro.controller.List', {
 
     },
     addFriend: function() {
-        socket.emit('send friend request',this.getUserList().getSelection()[0].raw._id);
+        socket.emit('send friend request',Ext.getCmp('realuserlist').getSelection()[0].raw._id);
         alert("好友申请已经发送");
         //TODO: Will need callback msg indicating whether this person is already a friend
     },

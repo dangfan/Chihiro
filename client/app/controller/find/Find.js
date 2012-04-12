@@ -15,8 +15,8 @@ Ext.define('Chihiro.controller.find.Find', {
     },
 
     launch: function() {
-        Ext.create('Chihiro.view.find.Email');
-        Ext.create('Chihiro.view.find.Phone');
+       // Ext.create('Chihiro.view.find.Email');
+        //Ext.create('Chihiro.view.find.Phone');
     },
 
     onItemTap: function(view, index, target, record) {
@@ -33,10 +33,10 @@ Ext.define('Chihiro.controller.find.Find', {
                 panel.push(Ext.create('Chihiro.view.find.Nearby', {
                     title: '查找附近的人'
                 }));
-                controller.getUserlist().setData(list);
+                Ext.getCmp(realuserlist).setData([msg.obj]);
             });
         } else {
-            panel.push(Ext.getCmp('findby' + record.get('way')));
+            panel.push(Ext.create('Chihiro.view.find.' + record.get('way')));
         }
     }
 });

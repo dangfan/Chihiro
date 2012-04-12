@@ -3,7 +3,7 @@ Ext.define('Chihiro.controller.find.Phone', {
 
     config: {
         refs: {
-            button: '#phonebutton',
+            button: 'button[action=phonebutton]',
             userlist: 'userlist',
             panel: 'findfriendspanel',
             field:'#phonefield'
@@ -30,7 +30,7 @@ Ext.define('Chihiro.controller.find.Phone', {
                 panel.push(Ext.create('Chihiro.view.userlist.List', {
                     title: '手机号查找结果'
                 }));
-                controller.getUserlist().setData([msg.obj]);
+                Ext.getCmp(realuserlist).setData([msg.obj]);
             }
             else alert('This user does not exist!');
         });

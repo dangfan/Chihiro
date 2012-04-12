@@ -1,6 +1,6 @@
 Ext.define('Chihiro.view.find.Phone', {
     extend:'Ext.form.Panel',
-    id: 'findbyphone',
+    //id: 'findbyphone',
 
     requires: [
         'Ext.field.Number'
@@ -24,7 +24,7 @@ Ext.define('Chihiro.view.find.Phone', {
                 xtype:'button',
                 text:'确认',
                 ui:'confirm',
-                id:'phonebutton'
+                action:'phonebutton'
             }
         ]
     }
