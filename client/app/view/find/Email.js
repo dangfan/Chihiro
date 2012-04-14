@@ -1,6 +1,6 @@
 Ext.define('Chihiro.view.find.Email', {
     extend:'Ext.form.Panel',
-    //id: 'findbyemail',
+    id: 'findbyemail',
 
     requires: [
         'Ext.field.Email'
@@ -24,7 +24,7 @@ Ext.define('Chihiro.view.find.Email', {
                 xtype:'button',
                 text:'确认',
                 ui:'confirm',
-                action:'emailbutton'
+                id:'emailbutton'
             }
         ]
     }

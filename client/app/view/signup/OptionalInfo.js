@@ -1,6 +1,7 @@
 Ext.define('Chihiro.view.signup.OptionalInfo', {
     extend: 'Ext.form.Panel',
 
+
     requires: [
         'Ext.field.Select',
         'Ext.field.DatePicker'
