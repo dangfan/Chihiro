@@ -5,7 +5,8 @@ Ext.Loader.setPath({
 //</debug>
 
 Ext.application({
-    controllers: ['SignIn', 'SignUp', 'Setting', 'List', 'Home', 'find.Find','find.Email','find.Phone'],
+    controllers: ['SignIn', 'SignUp', 'Setting', 'List', 'Home', 'find.Find','find.Email','find.Phone',
+        'message.Message','message.ChatList','message.Friend','setting.Main'],
 
     models: ['User', 'Message'],
 
@@ -23,7 +24,8 @@ Ext.application({
         'activity.List',
         'find.Main', 'find.Email', 'find.Phone', 'find.Contact', 'find.Nearby',
         'setting.Main',
-        'userlist.List', 'userlist.Detail', 'userlist.ListItem'
+        'userlist.List', 'userlist.Detail', 'userlist.ListItem',
+        'message.List','message.ChatList','message.ChatListItem','message.Friends','message.Content','message.Sentence'
     ],
 
     icon: {

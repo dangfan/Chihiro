@@ -9,7 +9,7 @@ Ext.define('Chihiro.view.find.Main', {
     ],
 
     config: {
-        autoDestroy: false,
+        //autoDestroy: false,
         useTitleForBackButtonText: true,
         items:[{
             title: '找朋友',
@@ -21,7 +21,8 @@ Ext.define('Chihiro.view.find.Main', {
                     { text: '按邮箱地址查找好友', way: 'email' },
                     { text: '按手机号查找好友', way: 'phone' },
                     { text: '通过手机通讯录', way: 'contact' },
-                    { text: '查找附近的人', way: 'Nearby' }
+                    { text: '查找附近的人', way: 'Nearby' },
+                    { text: '查找相同兴趣的人', way: 'interest'}
                 ]
             },
             itemTpl: '{text}',
