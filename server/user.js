@@ -24,7 +24,9 @@ exports.init = function(_db, _redis, _clients, _socket) {
         getInfoById:        getInfoById,
         getInfoByEmail:     getInfoByEmail,
         getInfoByPhone:     getInfoByPhone,
-        sendFriendRequest:  sendFriendRequest
+        sendFriendRequest:  sendFriendRequest,
+        addFriend:          addFriend,
+        removeFriend:       removeFriend
     };
 }
 
@@ -50,12 +52,46 @@ function login(usr, callback) {
     clients[usr._id] = socket;
     // Save in redis
     redis.set('sid:' + sid, usr._id);
-    delete usr['null'];
-    delete usr.password;
-    callback({err: 0, sid: sid, obj: usr});
-    // Load offline messages
-    loadMessages();
-    console.log('user ' + usr._id + ' is now online.');
+    // delete usr['null'];
+    if (!usr.friends) {
+        redis.smembers('friends:' + usr._id, function (err, obj) {
+            usr.friends = obj;
+            next();
+        });
+    } else {
+        next();
+    }
+    function next() {
+        var tmp = usr.friends;
+        var length = tmp.length;
+        usr.friends = new Array();
+        for (var uid in tmp) {
+            uid = tmp[uid];
+            redis.hgetall('users:' + uid, function (err, u) {
+                if (!('_id' in u)) {
+                    db.users.findOne({_id: db.ObjectId(uid)},
+                        function (err, u) {
+                            processUser(u, function(t) {
+                                usr.friends.push(t.obj);
+                                if (!--length) finish();
+                            });
+                        });
+                } else {
+                    processUser(u, function (t) {
+                        usr.friends.push(t.obj);
+                        if (!--length) finish();
+                    });
+                }
+            });
+        }
+        if (!length) finish();
+        function finish() {
+            callback({err: 0, sid: sid, obj: usr});
+            // Load offline messages
+            loadMessages();
+            console.log('user ' + usr._id + ' is now online.');
+        }
+    }
 }
 
 // After the app starting up,
@@ -313,17 +349,38 @@ function sendFriendRequest(desUsrId) {
 }
 
 function emitFriendRequests(uid) {
+    queue = new Array();
     while (true) {
         redis.spop('friendRequests:' + uid, function (err, iuid) {
-            if (!iuid) return;
+            if (!iuid) {
+                redis.sadd('friendRequests:' + uid, queue);
+                return;
+            }
             getInfoById(iuid, function (obj) {
                 if (uid in clients) {
                     clients[uid].emit('friend request', obj);
                 } else  {
-                    redis.sadd('friendRequests:' + uid, iuid);
-                    return;
+                    queue.push(iuid);
                 }
             });
         });
     }
+}
+
+// accept a friend request
+function addFriend(desUsrId) {
+    socket.get('uid', function (err, uid) {
+        redis.sadd('friends:' + uid, desUsrId);
+        db.users.update({'_id': db.ObjectId(uid)},
+            {$addToSet: {friends: desUsrId}});
+    });
+}
+
+// remove a friend
+function removeFriend(desUsrId) {
+    socket.get('uid', function (err, uid) {
+        redis.srem('friends:' + uid, desUsrId);
+        db.users.update({'_id': db.ObjectId(uid)},
+            {$pull: {friends: desUsrId}});
+    });
 }

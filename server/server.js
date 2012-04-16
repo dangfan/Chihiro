@@ -12,7 +12,7 @@ function listen(port) {
 
     // Basic configuration
     sio.configure(function () {
-        sio.set('log level', 1);
+        //sio.set('log level', 1);
     });
 
     // When starting up, initialise redis
@@ -35,6 +35,8 @@ function listen(port) {
         socket.on('get info by email', user.getInfoByEmail);
         socket.on('get info by phone', user.getInfoByPhone);
         socket.on('send friend request', user.sendFriendRequest);
+        socket.on('add friend', user.addFriend);
+        socket.on('remove friend', user.removeFriend);
     });
 }
 
