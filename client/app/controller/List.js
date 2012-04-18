@@ -39,6 +39,15 @@ Ext.define('Chihiro.controller.List', {
         if (!this.view) {
             this.view = Ext.create('Chihiro.view.userlist.Detail');
         }
+        if(Ext.getCmp('homeView').getActiveItem().title=='通讯录'){
+            this.view.getCmp('addFriendBtn').setHidden(true);
+            this.view.getCmp('deleteFriendBtn').setHidden(false);
+            this.view.getCmp('talktofriendBtn').setHidden(false);
+        }else if(Ext.getCmp('homeView').getActiveItem().title=='找朋友'){
+            this.view.getCmp('addFriendBtn').setHidden(false);
+            this.view.getCmp('deleteFriendBtn').setHidden(true);
+            this.view.getCmp('talktofriendBtn').setHidden(true);
+        }
 
         var view = this.view;
         view.setUser(user);

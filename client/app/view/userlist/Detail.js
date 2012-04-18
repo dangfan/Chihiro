@@ -41,6 +41,16 @@ Ext.define('Chihiro.view.userlist.Detail', {
                 xtype: 'button',
                 text: '加为好友',
                 id: 'addFriendBtn'
+            },
+            {
+                xtype: 'button',
+                text: '删除好友',
+                id: 'deleteFriendBtn'
+            },
+            {
+                xtype: 'button',
+                text: '聊天',
+                id: "talktofriendBtn"
             }
         ]
     },
