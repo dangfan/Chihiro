@@ -2,13 +2,9 @@ Ext.define('Chihiro.view.contact.List', {
     extend: 'Ext.navigation.View',
 
     xtype: 'contactpanel',
-
+    id: 'contactnavigationview',
     config: {
         scrollable: true,
-        defaultBackButtonText: '返回',
-        items:[{
-            title: '通讯录',
-            xtype: 'userlist'
-        }]
+        defaultBackButtonText: '返回'
     }
 });
