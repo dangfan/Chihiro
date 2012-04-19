@@ -23,6 +23,9 @@ Ext.define('Chihiro.controller.List', {
             },
             'addFriendBtn': {
                 tap: 'addFriend'
+            },
+            'deleteFriendBtn': {
+                tap: 'deleteFriend'
             }
         }
     },
@@ -31,9 +34,12 @@ Ext.define('Chihiro.controller.List', {
 
     },
     addFriend: function() {
-        socket.emit('send friend request',this.getUserList().getSelection()[0].raw._id);
+        socket.emit('send friend request',Ext.getCmp('userlist').getSelection()[0].raw._id);
         alert("好友申请已经发送");
         //TODO: Will need callback msg indicating whether this person is already a friend
+    },
+    deleteFriend: function() {
+        
     },
     onListTap: function(list, user) {
         if (!this.view) {
@@ -73,6 +79,11 @@ Ext.define('Chihiro.controller.List', {
     },
 
     onDetailHideAnimationStart: function() {
-        this.getUserList().deselectAll();
+        if(Ext.getCmp('friendlist')){
+            Ext.getCmp('friendlist').deselectAll();
+        }
+        if(Ext.getCmp('userlist')){
+            Ext.getCmp('userlist').deselectAll();
+        }
     }
 });
