@@ -7,12 +7,20 @@ Ext.define('Chihiro.controller.Home', {
         },
         control: {
             homeView: {
-                activate: 'doGeolocating'
+                activate: 'listening'
             }
         }
     },
 
-    doGeolocating: function() {
+    listening: function() {
+        this.locateGeo();
+        socket.on('friend request', function(user) {
+            alert("somebody add me!!");
+            console.log(user);
+        });
+    },
+
+    locateGeo: function() {
         Ext.create('Ext.util.Geolocation', {
             autoUpdate: true,
             frequency: 300000,
