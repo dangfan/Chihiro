@@ -1,4 +1,4 @@
-var db,
+﻿var db,
     redis,
     clients,
     socket;
@@ -28,7 +28,7 @@ function addActivity(activity, callback) {
             safe: true      // Check if insert is successful
         }, function (err, objects) {
             if (err) {
-                callback({err: 1, msg: '���ӻʧ��'});
+                callback({err: 1, msg: '添加活动失败'});
             } else {
                 // set in redis
                 var activity = objects[0];

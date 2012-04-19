@@ -282,7 +282,7 @@ function findByInterests(callback) {
     });
 }
 
-function updateLocation(data) {
+function updateLocation(data, callback) {
     socket.get('uid', function (err, uid) {
     if (!uid) return;
         db.users.update({'_id': db.ObjectId(uid)},
@@ -292,9 +292,10 @@ function updateLocation(data) {
 
         console.log('user ' + uid + ' updated its location.');
     });
+    callback({err: 0, msg: '地点更新成功'});
 }
 
-function updateProfile(data) {
+function updateProfile(data, callback) {
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         // set in mongo
@@ -305,6 +306,7 @@ function updateProfile(data) {
         
         console.log('user ' + uid + ' updated its profile.');
     });
+    callback({err: 0, msg: '资料更新成功'});
 }
 
 // Get basic information of a user by id
@@ -404,19 +406,21 @@ function emitFriendRequests(uid) {
 }
 
 // accept a friend request
-function addFriend(desUsrId) {
+function addFriend(desUsrId, callback) {
     socket.get('uid', function (err, uid) {
         redis.sadd('friends:' + uid, desUsrId);
         db.users.update({'_id': db.ObjectId(uid)},
             {$addToSet: {friends: desUsrId}});
     });
+    callback({err: 0, msg: '添加好友成功'});
 }
 
 // remove a friend
-function removeFriend(desUsrId) {
+function removeFriend(desUsrId, callback) {
     socket.get('uid', function (err, uid) {
         redis.srem('friends:' + uid, desUsrId);
         db.users.update({'_id': db.ObjectId(uid)},
             {$pull: {friends: desUsrId}});
     });
+    callback({err: 0, msg: '删除好友成功'});
 }
