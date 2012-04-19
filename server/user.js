@@ -388,16 +388,18 @@ function sendFriendRequest(desUsrId) {
     socket.get('uid', function (err, uid) {
         redis.sadd('friendRequests:' + desUsrId, uid);
         console.log('user ' + uid + ' added ' + desUsrId + ' as friend');
-        // emitFriendRequests(desUsrId);
+        emitFriendRequests(desUsrId);
     });
 }
 
 function emitFriendRequests(uid) {
     queue = new Array();
-    while (true) {
+    var loop = true;
+    while (loop) {
         redis.spop('friendRequests:' + uid, function (err, iuid) {
             if (!iuid) {
                 redis.sadd('friendRequests:' + uid, queue);
+                loop = false;
                 return;
             }
             getInfoById(iuid, function (obj) {
