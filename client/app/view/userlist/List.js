@@ -2,6 +2,7 @@ Ext.define('Chihiro.view.userlist.List', {
     extend: 'Ext.DataView',
     xtype: 'userlist',
 
+    id: 'realuserlist',
     config: {
         store: {
             model: 'Chihiro.model.User',

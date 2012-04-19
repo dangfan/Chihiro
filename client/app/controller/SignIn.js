@@ -32,6 +32,9 @@ Ext.define('Chihiro.controller.SignIn', {
                 Ext.Msg.alert(msg.msg);
             } else {
                 window.localStorage.setItem('sid', msg.sid);
+                friendList=msg.obj.friends;
+                console.log(msg.obj.friends);
+                console.log(friendList);
                 Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
                 // TODO: save user object
             }

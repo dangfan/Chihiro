@@ -44,13 +44,13 @@ Ext.define('Chihiro.view.userlist.Detail', {
             },
             {
                 xtype: 'button',
-                text: '删除好友',
-                id: 'deleteFriendBtn'
+                text: '聊天',
+                id: "talktofriendBtn"
             },
             {
                 xtype: 'button',
-                text: '聊天',
-                id: "talktofriendBtn"
+                text: '删除好友',
+                id: 'deleteFriendBtn'
             }
         ]
     },
