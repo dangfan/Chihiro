@@ -391,22 +391,14 @@ function sendFriendRequest(desUsrId) {
 }
 
 function emitFriendRequests(uid) {
-    queue = new Array();
-    var loop = true;
-    while (loop) {
-        redis.spop('friendRequests:' + uid, function (err, iuid) {
-            if (!iuid) {
-                redis.sadd('friendRequests:' + uid, queue);
-                loop = false;
-                return;
-            }
-            getInfoById(iuid, function (obj) {
-                if (uid in clients) {
+    if (uid in clients) {
+        redis.smembers('friendRequests:' + uid, function (err, uids) {
+            for (iuid in uids) {
+                getInfoById(iuid, function (obj) {
                     clients[uid].emit('friend request', obj);
-                } else  {
-                    queue.push(iuid);
-                }
-            });
+                });
+            }
+            redis.srem('friendRequests:' + uid, uids);
         });
     }
 }
