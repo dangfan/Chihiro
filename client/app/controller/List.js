@@ -24,6 +24,7 @@ Ext.define('Chihiro.controller.List', {
             'addFriendBtn': {
                 tap: 'addFriend'
             }
+
         }
     },
 
@@ -73,6 +74,11 @@ Ext.define('Chihiro.controller.List', {
     },
 
     onDetailHideAnimationStart: function() {
-        this.getUserList().deselectAll();
+        if(Ext.getCmp('friendlist')){
+            Ext.getCmp('friendlist').deselectAll();
+        }
+        if(Ext.getCmp('userlist')){
+            Ext.getCmp('userlist').deselectAll();
+        }
     }
 });

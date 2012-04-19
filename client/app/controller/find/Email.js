@@ -28,9 +28,10 @@ Ext.define('Chihiro.controller.find.Email', {
             Ext.Viewport.setMasked(false);
             if(msg.err == 0) {
                 panel.push(Ext.create('Chihiro.view.userlist.List', {
-                    title: '邮箱查找结果'
+                    title: '邮箱查找结果',
+                    id: 'userlist'
                 }));
-                var a  = controller.getUserlist();
+                var a  = Ext.getCmp('userlist');
                 a.setData([msg.obj]);
             }
             else alert('This user does not exist!');

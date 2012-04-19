@@ -18,6 +18,7 @@ Ext.define('Chihiro.controller.contact.Contact',{
                 Ext.create('Chihiro.view.userlist.List',{
                     id: 'friendlist'
                 });
+                Ext.getCmp('friendlist').setData(friendList);
                 Ext.getCmp('contactnavigationview').push(Ext.getCmp('friendlist'));
             }
         }

@@ -29,9 +29,10 @@ Ext.define('Chihiro.controller.find.Phone', {
             if(msg.err == 0) {
                 console.log(msg);
                 panel.push(Ext.create('Chihiro.view.userlist.List', {
-                    title: '手机号查找结果'
+                    title: '手机号查找结果',
+                    id: 'userlist'
                 }));
-                controller.getUserlist().setData([msg.obj]);
+                Ext.getCmp('userlist').setData([msg.obj]);
             }
             else alert('This user does not exist!');
         });
