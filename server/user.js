@@ -385,7 +385,8 @@ function setUserData(usr) {
 function sendFriendRequest(desUsrId) {
     socket.get('uid', function (err, uid) {
         redis.sadd('friendRequests:' + desUsrId, uid);
-        emitFriendRequests(desUsrId);
+        console.log('user ' + uid + ' added ' + desUsrId + ' as friend');
+        // emitFriendRequests(desUsrId);
     });
 }
 
