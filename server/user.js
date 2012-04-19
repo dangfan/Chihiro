@@ -21,6 +21,7 @@ exports.init = function(_db, _redis, _clients, _socket) {
         updateLocation:     updateLocation,
         updateProfile:      updateProfile,
         findClosest:        findClosest,
+        findByInterests:    findByInterests,
         getInfoById:        getInfoById,
         getInfoByEmail:     getInfoByEmail,
         getInfoByPhone:     getInfoByPhone,
@@ -250,28 +251,32 @@ function findByInterests(callback) {
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.get('location:' + uid, function (err, location) {
-            db.executeDbCommand({
-                geoNear:            'users',
-                near:               eval(location),
-                spherical:          true,
-                maxDistance:        1 / 6371,       // 1km
-                distanceMultiplier: 6371000
-            }, function (err, obj) {
-                var data = new Array();
-                obj.documents[0].results.forEach(function (result) {
-                    if (result.obj._id == uid) return;
-                    var obj = result.obj;
-                    obj.dis = result.dis;
-                    delete obj.password;
-                    delete obj.email;
-                    delete obj.phone;
-                    delete obj.friends;
-                    delete obj['null'];
-                    data.push(obj);
-                });
-                callback(data);
+            redis.get('users:' + uid, function (err, usr) {
+                interests = eval(usr.interests);
+                db.executeDbCommand({
+                    geoNear:            'users',
+                    near:               eval(location),
+                    spherical:          true,
+                    maxDistance:        1 / 6371,       // 1km
+                    distanceMultiplier: 6371000
+                }, function (err, obj) {
+                    var data = new Array();
+                    obj.documents[0].results.forEach(function (result) {
+                        var obj = result.obj;
+                        if (obj._id == uid) return;
+                        if (obj.interests.filter(function(n){return interests.indexOf(n)!=-1}).length == 0) return;
+                        obj.dis = result.dis;
+                        delete obj.password;
+                        delete obj.email;
+                        delete obj.phone;
+                        delete obj.friends;
+                        delete obj['null'];
+                        data.push(obj);
+                    });
+                    callback(data);
 
-                console.log('user ' + uid + ' found closest people.');
+                    console.log('user ' + uid + ' found people by interests.');
+                });
             });
         });
     });
