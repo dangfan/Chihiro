@@ -32,9 +32,7 @@ Ext.define('Chihiro.controller.SignIn', {
                 Ext.Msg.alert(msg.msg);
             } else {
                 window.localStorage.setItem('sid', msg.sid);
-                friendList=msg.obj.friends;
-                console.log(msg.obj.friends);
-                console.log(friendList);
+                //console.log(msg);
                 Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
                 // TODO: save user object
             }
@@ -49,7 +47,7 @@ Ext.define('Chihiro.controller.SignIn', {
         var sid = window.localStorage.getItem('sid');
         if (sid) {
             socket.emit('init', sid, function(msg) {
-                if (msg == 'ok') {
+                if (!msg.err) {
                     Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
                 }
             });
