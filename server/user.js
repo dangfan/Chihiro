@@ -282,7 +282,7 @@ function findByInterests(callback) {
     });
 }
 
-function updateLocation(data, callback) {
+function updateLocation(data) {
     socket.get('uid', function (err, uid) {
     if (!uid) return;
         db.users.update({'_id': db.ObjectId(uid)},
@@ -292,7 +292,6 @@ function updateLocation(data, callback) {
 
         console.log('user ' + uid + ' updated its location.');
     });
-    callback({err: 0, msg: '地点更新成功'});
 }
 
 function updateProfile(data, callback) {
