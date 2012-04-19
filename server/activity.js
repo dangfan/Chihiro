@@ -34,7 +34,7 @@ function addActivity(activity, callback) {
                 var activity = objects[0];
                 for (key in activity)
                     redis.hset('activities:' + activity._id, key, activity[key]);
-                // TODO callback
+                callback({err: 0, msg: '添加活动成功'});
             }
         });
     });
@@ -45,13 +45,9 @@ function removeActivity(activity_id) {
         if (!uid) return;
         redis.hgetall('activities:' + activity_id, function (err, activity) {
             if (!activity) {
-                // TODO check user
-                // TODO remove user from db
+                
             } else {
-                if (activity.creator_id != uid) return;
-                // TODO remove user from db
-                // TODO remove user from redis
-                // TODO remove participants from redis
+                
             }
         });
     });
@@ -75,7 +71,6 @@ function participateActivity(activity) {
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.sadd('activity_participants:' + activity._id, uid);
-        // TODO add in mongo
     });
 }
 
@@ -83,7 +78,6 @@ function unparticipateActivity(activity) {
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.srem('activity_participants:' + activity._id, uid);
-        // TODO rem in mongo
     });
 }
 
