@@ -99,13 +99,15 @@ function login(usr, callback) {
 function init(sid, callback) {
     redis.get('sid:' + sid, function (err, uid) {
         if (uid) {
-            socket.set('uid', uid);
-            clients[uid] = socket;
-            callback('ok');
-            console.log('user ' + uid + ' is now online.');
-            // TODO: check offline messages
+            redis.hgetall('users:' + uid, function (err, usr) {
+                if (usr) {
+                    login(usr, callback);
+                } else {
+                    callback({err: 1, msg: 'Please login'});
+                }
+            });
         } else {
-            callback('error');
+            callback({err: 1, msg: 'Please login'});
         }
     });
 }
@@ -211,6 +213,39 @@ function signup(data, callback) {
 
 // Find closest people around the user
 function findClosest(callback) {
+    socket.get('uid', function (err, uid) {
+        if (!uid) return;
+        redis.get('location:' + uid, function (err, location) {
+            db.executeDbCommand({
+                geoNear:            'users',
+                near:               eval(location),
+                spherical:          true,
+                maxDistance:        1 / 6371,       // 1km
+                distanceMultiplier: 6371000
+            }, function (err, obj) {
+                var data = new Array();
+                obj.documents[0].results.forEach(function (result) {
+                    if (result.obj._id == uid) return;
+                    var obj = result.obj;
+                    obj.dis = result.dis;
+                    delete obj.password;
+                    delete obj.email;
+                    delete obj.phone;
+                    delete obj.friends;
+                    delete obj['null'];
+                    data.push(obj);
+                });
+                callback(data);
+
+                console.log('user ' + uid + ' found closest people.');
+            });
+        });
+    });
+}
+
+
+// Find nearby users by interests
+function findByInterests(callback) {
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.get('location:' + uid, function (err, location) {
