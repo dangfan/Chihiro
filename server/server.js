@@ -29,6 +29,7 @@ function listen(port) {
         socket.on('disconnect', user.disconnect);
         socket.on('signup', user.signup);
         socket.on('find closest', user.findClosest);
+        socket.on('find by interests', user.findByInterests);
         socket.on('update location', user.updateLocation);
         socket.on('update profile', user.updateProfile);
         socket.on('get info by id', user.getInfoById);
