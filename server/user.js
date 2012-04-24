@@ -33,6 +33,7 @@ exports.init = function(_db, _redis, _clients, _socket) {
 
 function loadMessages(uid) {
     emitFriendRequests(uid);
+    emitFriendConfirmed(uid);
     // Topics
     redis.on('message', function (channel, msg) {
         var info = channel.split(':'),
@@ -397,7 +398,6 @@ function emitFriendRequests(uid) {
         redis.smembers('friendRequests:' + uid, function (err, uids) {
             for (i in uids) {
                 getInfoById(uids[i], function (obj) {
-                    console.log(obj);
                     clients[uid].emit('friend request', obj.obj);
                 });
                 redis.srem('friendRequests:' + uid, uids[i]);
@@ -410,18 +410,39 @@ function emitFriendRequests(uid) {
 function addFriend(desUsrId, callback) {
     socket.get('uid', function (err, uid) {
         redis.sadd('friends:' + uid, desUsrId);
+        redis.sadd('friends:' + desUsrId, uid);
         db.users.update({'_id': db.ObjectId(uid)},
             {$addToSet: {friends: desUsrId}});
+        db.users.update({'_id': db.ObjectId(desUsrId)},
+            {$addToSet: {friends: uid}});
+        redis.sadd('friendConfirmed:' + desUsrId, uid);
+        emitFriendConfirmed(desUsrId);
     });
     callback({err: 0, msg: '添加好友成功'});
+}
+
+function emitFriendConfirmed(uid) {
+    if (uid in clients) {
+        redis.smembers('friendConfirmed:' + uid, function (err, uids) {
+            for (i in uids) {
+                getInfoById(uids[i], function (obj) {
+                    clients[uid].emit('friend confirmed', obj.obj);
+                });
+                redis.srem('friendConfirmed:' + uid, uids[i]);
+            }
+        });
+    }
 }
 
 // remove a friend
 function removeFriend(desUsrId, callback) {
     socket.get('uid', function (err, uid) {
         redis.srem('friends:' + uid, desUsrId);
+        redis.srem('friends:' + desUsrId, uid);
         db.users.update({'_id': db.ObjectId(uid)},
             {$pull: {friends: desUsrId}});
+        db.users.update({'_id': db.ObjectId(desUsrId)},
+            {$pull: {friends: uid}});
     });
     callback({err: 0, msg: '删除好友成功'});
 }
