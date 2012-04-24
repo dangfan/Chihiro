@@ -395,13 +395,13 @@ function sendFriendRequest(desUsrId) {
 function emitFriendRequests(uid) {
     if (uid in clients) {
         redis.smembers('friendRequests:' + uid, function (err, uids) {
-            for (iuid in uids) {
-                getInfoById(iuid, function (obj) {
-                    clients[uid].emit('friend request', obj);
+            for (i in uids) {
+                getInfoById(uids[i], function (obj) {
+                    console.log(obj);
+                    clients[uid].emit('friend request', obj.obj);
                 });
-                redis.srem('friendRequests:' + uid, iuid);
+                redis.srem('friendRequests:' + uid, uids[i]);
             }
-            //redis.srem('friendRequests:' + uid, uids);
         });
     }
 }
