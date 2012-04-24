@@ -399,8 +399,9 @@ function emitFriendRequests(uid) {
                 getInfoById(iuid, function (obj) {
                     clients[uid].emit('friend request', obj);
                 });
+                redis.srem('friendRequests:' + uid, iuid);
             }
-            redis.srem('friendRequests:' + uid, uids);
+            //redis.srem('friendRequests:' + uid, uids);
         });
     }
 }
@@ -418,7 +419,7 @@ function addFriend(desUsrId, callback) {
 // remove a friend
 function removeFriend(desUsrId, callback) {
     socket.get('uid', function (err, uid) {
-        redis.srem('friends:' + uid, desUsrId, null);
+        redis.srem('friends:' + uid, desUsrId);
         db.users.update({'_id': db.ObjectId(uid)},
             {$pull: {friends: desUsrId}});
     });
