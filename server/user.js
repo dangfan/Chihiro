@@ -31,7 +31,8 @@ exports.init = function(_db, _redis, _clients, _socket) {
     };
 }
 
-function loadMessages() {
+function loadMessages(uid) {
+    emitFriendRequests(uid);
     // Topics
     redis.on('message', function (channel, msg) {
         var info = channel.split(':'),
@@ -90,7 +91,7 @@ function login(usr, callback) {
         function finish() {
             callback({err: 0, sid: sid, obj: usr});
             // Load offline messages
-            loadMessages();
+            loadMessages(usr._id);
             console.log('user ' + usr._id + ' is now online.');
         }
     }
