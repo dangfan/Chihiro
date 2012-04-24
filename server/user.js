@@ -418,7 +418,7 @@ function addFriend(desUsrId, callback) {
 // remove a friend
 function removeFriend(desUsrId, callback) {
     socket.get('uid', function (err, uid) {
-        redis.srem('friends:' + uid, desUsrId);
+        redis.srem('friends:' + uid, desUsrId, null);
         db.users.update({'_id': db.ObjectId(uid)},
             {$pull: {friends: desUsrId}});
     });
