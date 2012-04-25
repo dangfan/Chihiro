@@ -23,6 +23,7 @@ function listen(port) {
     sio.sockets.on('connection', function (socket) {
         // Interfaces related to users
         var user = require('./user').init(db, redis, clients, socket);
+        var message = require('./message').init(redis, clients, socket);
         socket.on('init',  user.init);
         socket.on('login', user.authenticate);
         socket.on('logout', user.logout);
@@ -30,6 +31,7 @@ function listen(port) {
         socket.on('signup', user.signup);
         socket.on('find closest', user.findClosest);
         socket.on('find by interests', user.findByInterests);
+        socket.on('find by phones', user.findByPhones);
         socket.on('update location', user.updateLocation);
         socket.on('update profile', user.updateProfile);
         socket.on('get info by id', user.getInfoById);

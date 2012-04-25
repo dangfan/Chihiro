@@ -25,6 +25,7 @@ exports.init = function(_db, _redis, _clients, _socket) {
         getInfoById:        getInfoById,
         getInfoByEmail:     getInfoByEmail,
         getInfoByPhone:     getInfoByPhone,
+        findByPhones:       findByPhones,
         sendFriendRequest:  sendFriendRequest,
         addFriend:          addFriend,
         removeFriend:       removeFriend
@@ -445,4 +446,22 @@ function removeFriend(desUsrId, callback) {
             {$pull: {friends: uid}});
     });
     callback({err: 0, msg: '删除好友成功'});
+}
+
+function findByPhones(phones, callback) {
+    socket.get('uid', function  (err, t) {
+        if (!t) return;
+        var list = new Array();
+        var counter = 1
+        for (i in phones) {
+            getInfoByPhone(phones[i], function (obj) {
+                if (obj.obj) {
+                    list.push(obj.obj);
+                }
+                if (++counter == phones.length) {
+                    callback(list);
+                }
+            });
+        }
+    });
 }
