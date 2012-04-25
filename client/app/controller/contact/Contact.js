@@ -19,7 +19,13 @@ Ext.define('Chihiro.controller.contact.Contact',{
                     id: 'friendlist'
                 });
                 Ext.getCmp('friendlist').setData(friendList);
-                Ext.getCmp('contactnavigationview').push(Ext.getCmp('friendlist'));
+                //Ext.getCmp('friendlist').setData(friendList);
+                /*Ext.getCmp('contactnavigationview').add(Ext.create('Ext.TitleBar',{
+                    docked: 'top',
+                    title: '好友'
+                }));*/
+                Ext.getCmp('contactnavigationview').add(Ext.getCmp('friendlist'));
+                console.log(Ext.getCmp('contactnavigationview'));
             }
         }
     }
