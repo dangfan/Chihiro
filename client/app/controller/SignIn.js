@@ -13,10 +13,23 @@ Ext.define('Chihiro.controller.SignIn', {
             },
             gotoSignUpViewBtn: {
                 tap: 'doGotoSignUpView'
+            },
+            loginView: {
+                show: 'resetView'
             }
         }
     },
-
+    resetView: function() {
+        Ext.getCmp('homeView').setActiveItem(0);
+        var items = Ext.getCmp('homeView').getItems().items;
+        console.log(items.items);
+        for(var i = 0; i < items.length; i++) {
+            console.log(items[i].getXTypes());
+        };
+        console.log(Ext.getCmp('homeView'));
+        //Ext.create('Chihiro.view.Home');
+        //Ext.Viewport.setActiveItem(Ext.getCmp('loginView'));
+    },
     doSignin: function() {
         var val = this.getLoginView().getValues();
         if (val.username == "") {
@@ -29,7 +42,7 @@ Ext.define('Chihiro.controller.SignIn', {
         }
         socket.emit('login', val, function (msg) {
             if (msg.err) {
-                Ext.Msg.alert(msg.msg);
+                Ext.Msg.alert('登录失败',msg.msg);
             } else {
                 window.localStorage.setItem('sid', msg.sid);
                 friendList=msg.obj.friends;

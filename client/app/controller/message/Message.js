@@ -20,7 +20,6 @@ Ext.define('Chihiro.controller.message.Message', {
     activeItemChange: function( a,value, oldValue, eOpts ) {
         var currentTitle = value.title;
         var button = this.getButton();
-        //console.log(currentTitle);
         var items = button.innerItems;
 
         items[0].removeCls('x-button-pressed');

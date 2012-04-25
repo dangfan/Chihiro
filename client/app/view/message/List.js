@@ -44,11 +44,11 @@ Ext.define('Chihiro.view.message.List', {
                 title:'好友'
             },
             {
-                xtype:'chatlist',
+                xtype:'grouplist',
                 title:'群组'
             },
             {
-                xtype:'chatlist',
+                //xtype:'chatlist',
                 title:'讨论组'
             }
         ]

@@ -16,6 +16,7 @@ Ext.define('Chihiro.controller.Setting', {
         Ext.Msg.confirm("退出登录", "确定要退出登录吗？", function(choice) {
             if(choice == 'yes') {
                 window.localStorage.removeItem('sid');
+                socket.emit('logout');
                 Ext.Viewport.setActiveItem(Ext.getCmp('loginView'));
             }
         });
