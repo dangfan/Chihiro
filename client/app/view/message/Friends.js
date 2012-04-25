@@ -60,10 +60,12 @@ Ext.define('Chihiro.view.message.Friends', {
                     },
                     {
                         xtype: 'textfield',
-                        width: '76%'
+                        width: '76%',
+                        id:'MessageTextField'
                     },
                     {
                         iconMask: true,
+                        id:'msgSendButton',
                         ui: 'plain',
                         iconCls: 'compose',
                         title:'Send',

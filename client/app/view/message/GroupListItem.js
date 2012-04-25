@@ -1,21 +1,22 @@
-Ext.define('Chihiro.view.message.ChatListItem', {
+Ext.define('Chihiro.view.message.GroupListItem', {
     extend: 'Ext.dataview.component.DataItem',
-    xtype : 'chatlistitem',
+
+    xtype : 'grouplistitem',
     requires: ['Ext.Img'],
 
     config: {
         height:100,
         dataMap: {
             getName: {
-                setHtml: 'nickname'
+                setHtml: 'name'
             },
 
             getStatus: {
-                setHtml: 'signiture'
+                setHtml: 'announcement'
             },
 
             getAvatar: {
-                setSrc: 'portrait'
+                setSrc: 'image'
             },
 
             getUnread: {

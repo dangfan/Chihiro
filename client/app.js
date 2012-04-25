@@ -9,7 +9,7 @@ Ext.application({
         'contact.Contact',
         'message.Message','message.ChatList','message.Friend','setting.Main'],
 
-    models: ['User', 'Message'],
+    models: ['User', 'Message','ChattingFriends','ChattingContent'],
 
     name: 'Chihiro',
 
@@ -26,7 +26,7 @@ Ext.application({
         'find.Main', 'find.Email', 'find.Phone', 'find.Contact', 'find.Nearby',
         'setting.Main',
         'userlist.List', 'userlist.Detail', 'userlist.ListItem',
-        'message.List','message.ChatList','message.ChatListItem','message.Friends','message.Content','message.Sentence'
+        'message.List','message.GroupList','message.GroupListItem','message.ChatList','message.ChatListItem','message.Friends','message.Content','message.Sentence'
     ],
 
     icon: {
