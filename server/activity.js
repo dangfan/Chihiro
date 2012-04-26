@@ -40,14 +40,21 @@ function addActivity(activity, callback) {
     });
 }
 
-function removeActivity(activity_id) {
+function removeActivity(activity_id, callback) {
     socket.get('uid', function (err, uid) {
         if (!uid) return;
+        // find in redis
         redis.hgetall('activities:' + activity_id, function (err, activity) {
             if (!activity) {
-                
+                // find in mongo
+                // delete in mongo
+                // callback
             } else {
-                
+                // delete in redis
+                redis.del('activities:' + activity_id);
+                // find in mongo
+                // delete in mongo
+                // callback
             }
         });
     });

@@ -22,10 +22,10 @@ function emitMessages(uid) {
     redis.smembers('messages:' + uid, function (err, msgs) {
         for (msg in msgs) {
             socket.emit('messages', {
-                from: msg.split('|')[0], 
-                messages: msg.substring(msg.indexOf('|') + 1)
+                from: msgs[msg].split('|')[0], 
+                messages: msgs[msg].substring(msg.indexOf('|') + 1)
             })
-            redis.sadd('oldmessages:' + uid, msg);
+            redis.sadd('oldmessages:' + uid, msgs[msg]);
         }
     });
 }
