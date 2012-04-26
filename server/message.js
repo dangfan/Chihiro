@@ -13,6 +13,7 @@ exports.init = function(_redis, _clients, _socket) {
 function sendMessage(data) {
     socket.get('uid', function (err, uid) {
         redis.sadd('messages:' + data.uid, uid + '|' + new Date() + '|' + data.msg);
+        console.log('messages:' + data.uid, uid + '|' + new Date() + '|' + data.msg);
         emitMessages(data.uid);
     })
 }
