@@ -2,13 +2,14 @@ Ext.define('Chihiro.view.userlist.List', {
     extend: 'Ext.DataView',
     xtype: 'userlist',
 
+    store: {
+        model: 'Chihiro.model.User',
+        id: 'liststore'
+        /*data: [
+         {id: 'id',name: 'name',nickname: 'nickname'}
+         ]*/
+    },
     config: {
-        store: {
-            model: 'Chihiro.model.User'
-            /*data: [
-                {id: 'id',name: 'name',nickname: 'nickname'}
-            ]*/
-        },
         ui:'loans',
         useComponents: true,
         defaultType: 'listitem',

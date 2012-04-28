@@ -46,6 +46,8 @@ Ext.define('Chihiro.controller.SignIn', {
             } else {
                 window.localStorage.setItem('sid', msg.sid);
                 friendList=msg.obj.friends;
+                //console.log(msg);
+                //console.log(friendList);
                 Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
                 // TODO: save user object
             }
@@ -62,6 +64,7 @@ Ext.define('Chihiro.controller.SignIn', {
             socket.emit('init', sid, function(msg) {
                 if (!msg.err) {
                     friendList=msg.obj.friends;
+                    //console.log(msg);
                     //console.log(friendList);
                     Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
                 }
