@@ -15,8 +15,8 @@ function sendMessage(data) {
     socket.get('uid', function (err, uid) {
         var date = new Date();
         socket.emit('messages', {
-            from: uid
-            time: date
+            from: uid,
+            time: date,
             messages: data.msg
         });
         redis.sadd('oldmessages:' + data.uid, uid + '|' + new Date() + '|' + data.msg);
