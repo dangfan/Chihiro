@@ -13,8 +13,10 @@ exports.init = function(_redis, _clients, _socket) {
 // TODO: offline messages
 function sendMessage(data) {
     socket.get('uid', function (err, uid) {
+        var date = new Date();
         socket.emit('messages', {
-            from: msg
+            from: uid
+            time: date
             messages: data.msg
         });
         redis.sadd('oldmessages:' + data.uid, uid + '|' + new Date() + '|' + data.msg);
