@@ -17,7 +17,7 @@ function sendMessage(data) {
         redis.hget('users:' + uid, 'nickname', function (err, nickname) {
             clients[data.uid].emit('messages', 
                 from: uid,
-                name: nickname,
+                nickname: nickname,
                 time: date,
                 message: data.msg
             });
