@@ -14,10 +14,10 @@ exports.init = function(_redis, _clients, _socket) {
 function sendMessage(data) {
     socket.get('uid', function (err, uid) {
         var date = new Date();
-        redis.hgetall('users:' + uid, function (err, usr) {
+        redis.hget('users:' + uid, 'nickname', function (err, nickname) {
             clients[data.uid].emit('messages', 
                 from: uid,
-                nickname: usr.nickname,
+                name: nickname,
                 time: date,
                 message: data.msg
             });
