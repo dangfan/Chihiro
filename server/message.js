@@ -17,7 +17,7 @@ function sendMessage(data) {
         clients[data.uid].emit('messages', {
             from: uid,
             time: date,
-            messages: data.msg
+            message: data.msg
         });
         redis.sadd('oldmessages:' + data.uid, uid + '|' + date + '|' + data.msg);
     });
