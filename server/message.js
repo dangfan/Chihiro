@@ -27,7 +27,7 @@ function emitMessages(uid) {
             })
             redis.sadd('oldmessages:' + uid, msgs[msg]);
         }
-        redsi.del('messages:' + uid);
+        redis.del('messages:' + uid);
     });
 }
 
