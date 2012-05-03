@@ -22,10 +22,9 @@ function sendMessage(data) {
                 // message: data.msg
                 from: uid
             });
+            redis.sadd('oldmessages:' + data.uid, uid + '|' + date + '|' + data.msg);
+            console.log('message to:' + data.uid, nickname + '|' + uid + '|' + date + '|' + data.msg);
         });
-
-        redis.sadd('oldmessages:' + data.uid, uid + '|' + date + '|' + data.msg);
-        console.log('message to:' + data.uid, uid + '|' + date + '|' + data.msg);
     });
 }
 
