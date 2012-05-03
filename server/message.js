@@ -20,7 +20,7 @@ function sendMessage(data) {
                 // nickname: nickname,
                 // time: date,
                 // message: data.msg
-                from: uid
+                // from: uid
             //});
             redis.sadd('oldmessages:' + data.uid, uid + '|' + date + '|' + data.msg);
             console.log('message to:' + data.uid, nickname + '|' + uid + '|' + date + '|' + data.msg);
