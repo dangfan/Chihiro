@@ -15,12 +15,12 @@ function sendMessage(data) {
     socket.get('uid', function (err, uid) {
         var date = new Date();
         redis.hget('users:' + uid, 'nickname', function (err, nickname) {
-            clients[data.uid].emit('messages', 
+            // clients[data.uid].emit('messages', 
                 // from: uid,
                 // nickname: nickname,
                 // time: date,
                 // message: data.msg
-            });
+            // });
         });
 
         redis.sadd('oldmessages:' + data.uid, uid + '|' + date + '|' + data.msg);
