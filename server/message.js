@@ -16,10 +16,10 @@ function sendMessage(data) {
         var date = new Date();
         redis.hget('users:' + uid, 'nickname', function (err, nickname) {
             clients[data.uid].emit('messages', 
-                from: uid,
-                nickname: nickname,
-                time: date,
-                message: data.msg
+                // from: uid,
+                // nickname: nickname,
+                // time: date,
+                // message: data.msg
             });
         });
 
