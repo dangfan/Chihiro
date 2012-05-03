@@ -14,7 +14,7 @@ function sendMessage(data) {
     socket.get('uid', function (err, uid) {
         redis.sadd('messages:' + data.uid, uid + '|' + new Date() + '|' + data.msg);
         emitMessages(data.uid);
-    })
+    });
 }
 
 // TODO: offline messages
@@ -24,7 +24,7 @@ function emitMessages(uid) {
             socket.emit('messages', {
                 from: msgs[msg].split('|')[0], 
                 messages: msgs[msg].split('|')[2]
-            })
+            });
             redis.sadd('oldmessages:' + uid, msgs[msg]);
         }
         redis.del('messages:' + uid);
