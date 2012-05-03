@@ -13,7 +13,6 @@ exports.init = function(_redis, _clients, _socket) {
 function sendMessage(data) {
     socket.get('uid', function (err, uid) {
         redis.sadd('messages:' + data.uid, uid + '|' + new Date() + '|' + data.msg);
-        console.log('messages:' + data.uid, uid + '|' + new Date() + '|' + data.msg);
         emitMessages(data.uid);
     })
 }
@@ -24,10 +23,11 @@ function emitMessages(uid) {
         for (msg in msgs) {
             socket.emit('messages', {
                 from: msgs[msg].split('|')[0], 
-                messages: msgs[msg].substring(msg.indexOf('|') + 1)
+                messages: msgs[msg].split('|')[2]
             })
             redis.sadd('oldmessages:' + uid, msgs[msg]);
         }
+        redsi.del('messages:' + uid);
     });
 }
 
