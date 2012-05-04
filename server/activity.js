@@ -13,7 +13,7 @@ exports.init = function(_db, _redis, _clients, _socket) {
         removeActivity:             removeActivity,
         updateActivityDetails:      updateActivityDetails,
         participateActivity:        participateActivity,
-        unparticipateActivity:      unparticipateActivity
+        unparticipateActivity:      unparticipateActivity,
         findActivityByTitle:        findActivityByTitle,
         findActivityByLocation:     findActivityByLocation,
         findActivityByCreator:      findActivityByCreator,
