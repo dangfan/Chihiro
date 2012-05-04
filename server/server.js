@@ -24,6 +24,7 @@ function listen(port) {
         // Interfaces related to users
         var user = require('./user').init(db, redis, clients, socket);
         var message = require('./message').init(redis, clients, socket);
+        var activity = require('./activity').init(db, redis, clients, socket);
         socket.on('init',  user.init);
         socket.on('login', user.authenticate);
         socket.on('logout', user.logout);
@@ -41,6 +42,7 @@ function listen(port) {
         socket.on('add friend', user.addFriend);
         socket.on('remove friend', user.removeFriend);
         socket.on('send message', message.sendMessage);
+        socket.on('add activity', activity.addActivity);
     });
 }
 
