@@ -13,7 +13,6 @@ exports.init = function(_redis, _clients, _socket) {
 // TODO: offline messages
 function sendMessage(data) {
     socket.get('uid', function (err, uid) {
-        console.log('message to:' + data.uid, nickname + '|' + uid + '|' + date + '|' + data.msg);
         var date = new Date();
         redis.hget('users:' + uid, 'nickname', function (err, nickname) {
             clients[data.uid].emit('messages', {
@@ -23,6 +22,7 @@ function sendMessage(data) {
                 message: data.msg
             });
             redis.sadd('messages:' + data.uid, uid + '|' + date + '|' + data.msg);
+            console.log('message to:' + data.uid, nickname + '|' + uid + '|' + date + '|' + data.msg);
         });
     });
 }
