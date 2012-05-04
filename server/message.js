@@ -13,8 +13,10 @@ exports.init = function(_redis, _clients, _socket) {
 // TODO: offline messages
 function sendMessage(data) {
     socket.get('uid', function (err, uid) {
+        if (!uid) return;
         var date = new Date();
         redis.hget('users:' + uid, 'nickname', function (err, nickname) {
+            if (!nickname) return;
             clients[data.uid].emit('messages', {
                 from: uid,
                 nickname: nickname,
