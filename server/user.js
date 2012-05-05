@@ -1,5 +1,6 @@
 var md5  = require('MD5'),
-    uuid = require('node-uuid');
+    uuid = require('node-uuid'),
+    fs   = require('fs');
 
 var salt = 'Ch!hlr0:',
     db,
@@ -28,7 +29,8 @@ exports.init = function(_db, _redis, _clients, _socket) {
         findByPhones:       findByPhones,
         sendFriendRequest:  sendFriendRequest,
         addFriend:          addFriend,
-        removeFriend:       removeFriend
+        removeFriend:       removeFriend,
+        updatePortrait:     updatePortrait
     };
 }
 
@@ -193,7 +195,8 @@ function signup(data, callback) {
         email:    data.email,
         password: md5(salt + data.password),
         phone:    data.phone,
-        nickname: data.nickname
+        nickname: data.nickname,
+        portrait: 'default.png'
     }, {
         safe: true      // Check if insert is successful
     }, function (err, objects) {
@@ -309,6 +312,17 @@ function updateProfile(data, callback) {
         console.log('user ' + uid + ' updated its profile.');
     });
     callback({err: 0, msg: '资料更新成功'});
+}
+
+function updatePortrait(data, callback){
+    socket.get('uid', function (err, uid) {
+        if (!uid) return;
+        var decodedImage = new Buffer(data, 'base64');
+        fs.writeFile('../client/portraits/' + uid +'.jpg', decodedImage,
+            function (err) { callback(err); });
+        db.users.update({'_id': db.ObjectId(uid)}, {$set: {portrait: uid+'.jpg'}});
+        redis.hset('users:' + usr._id, 'portrait', uid+'.jpg');
+    });
 }
 
 // Get basic information of a user by id
