@@ -1,6 +1,6 @@
 Ext.define('Chihiro.view.setting.Info', {
     extend: 'Ext.form.Panel',
-
+    xtype:'userInfo',
 
     requires: [
         'Ext.field.Select',

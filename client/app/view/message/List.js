@@ -10,7 +10,7 @@ Ext.define('Chihiro.view.message.List', {
         items:[
             {
                 xtype: 'toolbar',
-                ui: 'dark',
+                ui: 'neutral',
                 docked: 'top',
                 scrollable: false,
                 items: [
@@ -18,9 +18,40 @@ Ext.define('Chihiro.view.message.List', {
                         xtype: 'spacer'
                     },
                     {
+                        xtype: 'image',
+                        id:'MyImage',
+                        src: 'http://hdn.xnimg.cn/photos/hdn121/20120331/1930/tiny_GRdJ_60512g019117.jpg',
+                        marginTop:5,
+                        marginLeft:35,
+                        height:50,
+                        width:50
+                    },
+                    {
+                        xtype:'panel',
+                        id:'MyInfoPanel',
+                        padding:8,
+                        html:'<span class="nickname"><b>徐涵</b></span><br /><p style="font-size: 12px"><b>软工要跪啊！</b></p>'
+                    },
+                    {
+                        xtype: 'spacer'
+                    },
+                    {
+                        xtype: 'spacer'
+                    },
+                    {
+                        xtype: 'spacer'
+                    },
+                    {
+                        xtype: 'spacer'
+                    },
+                    {
+                        xtype: 'spacer'
+                    },
+                    {
                         xtype: 'segmentedbutton',
                         id:'chatgroup',
                         allowDepress: false,
+                        //docked:'right',
                         items: [
                             {
                                 text: '好友',
@@ -35,7 +66,7 @@ Ext.define('Chihiro.view.message.List', {
                         ]
                     },
                     {
-                        xtype: 'spacer'
+                        xtype: 'spacer',
                     }
                 ]
             },

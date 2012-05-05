@@ -14,9 +14,27 @@ Ext.define('Chihiro.controller.Home', {
 
     listening: function() {
         this.locateGeo();
+
         socket.on('friend request', function(user) {
             alert("somebody add me!!");
-            console.log(user);
+            //console.log(user);
+            Ext.getCmp('ChattingFriends').setData(user);
+        });
+
+        socket.on('messages', function(msg) {
+            console.log(msg);
+            Ext.getCmp('ChattingContent').setData([
+                {
+                    id: msg.from,
+                    image:'',
+                    nickname:msg.nickname,
+                    xindex:'1',
+                    message:msg.message,
+                    time:msg.time
+                }]);
+
+            var scroller = Ext.getCmp('ChattingContent').getScrollable();
+            scroller.getScroller().scrollToEnd();
         });
     },
 

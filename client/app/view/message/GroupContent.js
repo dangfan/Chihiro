@@ -1,7 +1,7 @@
-Ext.define('Chihiro.view.message.Content', {
+Ext.define('Chihiro.view.message.GroupContent', {
     extend: 'Ext.DataView',
-    xtype: 'content',
-    id:'ChattingContent',
+    xtype: 'groupcontent',
+    id:'GroupChattingContent',
 
     config: {
         store: {

@@ -7,7 +7,8 @@ Ext.Loader.setPath({
 Ext.application({
     controllers: ['SignIn', 'SignUp', 'Setting', 'List', 'Home', 'find.Find','find.Email','find.Phone',
         'contact.Contact',
-        'message.Message','message.ChatList','message.Friend','setting.Main'],
+        'message.Message','message.ChatList','message.Friend','message.Group','message.Other',
+        'setting.Main'],
 
     models: ['User', 'Message','ChattingFriends','ChattingContent'],
 
@@ -26,7 +27,9 @@ Ext.application({
         'find.Main', 'find.Email', 'find.Phone', 'find.Contact', 'find.Nearby',
         'setting.Main',
         'userlist.List', 'userlist.Detail', 'userlist.ListItem',
-        'message.List','message.GroupList','message.GroupListItem','message.ChatList','message.ChatListItem','message.Friends','message.Content','message.Sentence'
+        'message.List','message.GroupList','message.Groups','message.ChatList','message.ChatListItem','message.Friends','message.Content',
+        'message.Sentence','message.ChattingFriendData','message.ChattingGroupData','message.ChattingFriendPanel','message.GroupContent',
+        'message.other.Nickname','message.other.InviteToGroup'
     ],
 
     icon: {
