@@ -1,7 +1,6 @@
-Ext.define('Chihiro.view.message.Friends', {
+Ext.define('Chihiro.view.message.Groups', {
     extend: 'Ext.Panel',
-    xtype: 'friends',
-    id:'chattingfriendpanel',
+    xtype: 'groups',
 
     config: {
         modal: true,
@@ -27,8 +26,8 @@ Ext.define('Chihiro.view.message.Friends', {
                 items: [
                     {
                         xtype: 'image',
-                        id:'FriendImage',
-                        //src: 'http://kiva.org/img/w80h80/1053365.jpg',
+                        id:'GroupImage',
+                        //src: 'http://kiva.org/img/w80h80/1053367.jpg',
                         marginTop:5,
                         marginLeft:15,
                         height:50,
@@ -36,9 +35,9 @@ Ext.define('Chihiro.view.message.Friends', {
                     },
                     {
                         xtype:'panel',
-                        id:'friendInfoPanel',
+                        id:'groupInfoPanel',
                         padding:8
-                        //html:'<span class="nickname"><b>党主席</b></span><br /><p style="font-size: 12px"><b>好基友一辈子</b></p>'
+                        //html:'<span class="nickname"><b>{nickname}</b></span><br /><p style="font-size: 12px"><b>{lastmsg}</b></p>'
                     },
                     {
                         xtype: 'spacer'
@@ -47,17 +46,17 @@ Ext.define('Chihiro.view.message.Friends', {
                         iconMask: true,
                         ui: 'plain',
                         iconCls: 'delete',
-                        id: 'deleteButton'
+                        id: 'groupDeleteButton'
                     }
                 ]
             },
             {
-                xtype: 'content'
+                xtype: 'groupcontent'
             },
             {
                 xtype: 'toolbar',
                 docked: 'bottom',
-                itemId: 'msgToolbar',
+                itemId: 'groupMsgToolbar',
                 items: [
                     {
                         iconMask: true,
@@ -68,11 +67,11 @@ Ext.define('Chihiro.view.message.Friends', {
                     {
                         xtype: 'textfield',
                         width: '76%',
-                        id:'MessageTextField'
+                        id:'GroupMessageTextField'
                     },
                     {
                         iconMask: true,
-                        id:'msgSendButton',
+                        id:'groupMsgSendButton',
                         ui: 'plain',
                         iconCls: 'compose',
                         title:'Send',
@@ -88,5 +87,10 @@ Ext.define('Chihiro.view.message.Friends', {
         var me = this;
         me.fireEvent('hideanimationstart', me);
         me.callParent();
+    },
+
+    updateUser: function(newUser) {
+        var carousel = this.down('toolbar'),  information = this.down('image');
+        information.setData(newUser.data);
     }
 });

@@ -1,10 +1,11 @@
-Ext.define('Chihiro.view.userlist.Detail', {
+Ext.define('Chihiro.view.activitylist.Detail', {
     extend: 'Ext.Panel',
-    xtype: 'detail',
+    xtype: 'activitydetail',
+    id: 'activitydetail',
 
     requires: [
         'Ext.carousel.Carousel',
-        'Chihiro.view.userlist.Information'
+        'Chihiro.view.activitylist.BasicInformation'
     ],
 
     config: {
@@ -33,24 +34,21 @@ Ext.define('Chihiro.view.userlist.Detail', {
                 xtype: 'carousel',
                 flex: 1,
                 items: [
-                      { xtype: 'detailInformation' }
-//                    { xtype: 'detailMap' }
+                    {
+                        xtype: 'basicinformation'
+                    },
+                    {
+                        xtype: 'detailinformation'
+                    },
+                    {
+                        xtype: 'detailMap'
+                    }
                 ]
             },
             {
                 xtype: 'button',
-                text: '加为好友',
-                id: 'addFriendBtn'
-            },
-            {
-                xtype: 'button',
-                text: '聊天',
-                id: "talktofriendBtn"
-            },
-            {
-                xtype: 'button',
-                text: '删除好友',
-                id: 'deleteFriendBtn'
+                text: '我要参加',
+                id: 'ParticipateBtn'
             }
         ]
     },
@@ -66,8 +64,14 @@ Ext.define('Chihiro.view.userlist.Detail', {
     },
 
     updateUser: function(newUser) {
-        var carousel = this.down('carousel'),  information = this.down('detailInformation');
-        information.setData(newUser.data);
+        var carousel = this.down('carousel'),
+            basicInformation = this.down('basicinformation'),
+            detailInformation = this.down('detailinformation'),
+            map = this.down('detailMap');
+        basicInformation.setData(newUser.data);
+        detailInformation.setData(newUser.data);
+        map.setMapCenter(newUser.data.mark);
+        map.setMapOptions({zoom: newUser.data.zoom});
     }
 
 });

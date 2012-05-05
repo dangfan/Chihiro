@@ -23,9 +23,9 @@ Ext.define('Chihiro.controller.SignIn', {
         Ext.getCmp('homeView').setActiveItem(0);
         var items = Ext.getCmp('homeView').getItems().items;
         console.log(items.items);
-        for(var i = 0; i < items.length; i++) {
-            console.log(items[i].getXTypes());
-        };
+//        for(var i = 0; i < items.length; i++) {
+//            console.log(items[i].getXTypes());
+//        };
         console.log(Ext.getCmp('homeView'));
         //Ext.create('Chihiro.view.Home');
         //Ext.Viewport.setActiveItem(Ext.getCmp('loginView'));
@@ -64,8 +64,10 @@ Ext.define('Chihiro.controller.SignIn', {
             socket.emit('init', sid, function(msg) {
                 if (!msg.err) {
                     friendList=msg.obj.friends;
+                    console.log(friendList);
                     //console.log(msg);
                     //console.log(friendList);
+
                     Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
                 }
             });

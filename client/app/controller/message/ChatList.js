@@ -6,18 +6,24 @@ Ext.define('Chihiro.controller.message.ChatList', {
 
         refs: {
             chatList: 'chatlist',
-            groupList:'grouplist'
+            groupList:'grouplist',
+            panel:'friends',
+            groupinfopanle:'#groupInfoPanel',
+            myimage:'#MyImage'
         },
 
         control: {
             'chatlist': {
-                select: 'onListTap'
+                select: 'onChatListTap'
             },
             'grouplist':{
-                select: 'onListTap'
+                select: 'onGroupListTap'
             },
             'friends': {
                 hideanimationstart: 'onFriendsHideAnimationStart'
+            },
+            myimage:{
+                tap:'GotoSetting'
             }
         }
     },
@@ -32,42 +38,30 @@ Ext.define('Chihiro.controller.message.ChatList', {
         });
     },
 
-    onListTap: function(list, user) {
+    onChatListTap: function(list, user) {
         if (!this.view) {
             this.view = Ext.create('Chihiro.view.message.Friends');
-            Ext.getCmp('ChattingContent').setData([
-                {
-                    id: "407788",
-                    nickname:"党熊",
-                    xindex:'0',
-                    message:'Hello! I am a bear!',
-                    time:"4月12日 下午17:55"
-                },
-                {
-                    id: "407789",
-                    nickname:"我叫党主席",
-                    xindex:"1",
-                    message:'Yes! You are a bear!',
-                    time:"4月12日 下午17:56"
-                },{
-                    id: "407790",
-                    nickname:"党熊",
-                    xindex:'0',
-                    message:'Oh yeah! I am a bear!',
-                    time:"4月12日 下午17:57"
-                },
-                {
-                    id: "407791",
-                    nickname:"我叫党主席",
-                    xindex:"1",
-                    message:'Congratulations! You are a bear!',
-                    time:"4月12日 下午17:58"
-                }]);
-            //alert( Ext.getCmp('ChattingFriends').getSelection()[0].raw._id);
         }
 
+        var me = Ext.getCmp('ChattingContent');
+        var store = me.getStore();
+        store.load();
+
+        Ext.getCmp('ChattingContent').setData([
+            {
+                id: "407788",
+                nickname:"程序猿",
+                xindex:'1',
+                message:'Hello!这是好友聊天的测试消息!',
+                time:"4月12日 下午17:55"
+            }]);
+
         var view = this.view;
-        view.setUser(user);
+        Ext.getCmp('FriendImage').setSrc(user.data.portrait);
+        var a = user.data.nickname;
+        var b = user.data.signiture;
+        Ext.getCmp('friendInfoPanel').setHtml('<span class="nickname"><b>'+a+'</b></span><br />' +
+            '<p style="font-size: 12px"><b>'+b+'</b></p>');
 
         if (this.getProfile() == "phone") {
             view.setWidth(null);
@@ -80,10 +74,59 @@ Ext.define('Chihiro.controller.message.ChatList', {
             Ext.Viewport.add(view);
         }
 
+        chatobject = 'friend';
+
+        view.show();
+    },
+
+    onGroupListTap: function(list, user) {
+        if (!this.view) {
+            this.view = Ext.create('Chihiro.view.message.Friends');
+        }
+
+        var me = Ext.getCmp('ChattingContent');
+        var store = me.getStore();
+        store.load();
+
+        Ext.getCmp('ChattingContent').setData([
+            {
+                id: "407788",
+                nickname:"程序猿",
+                xindex:'1',
+                message:'Hello!这是群组聊天的测试消息!',
+                time:"4月12日 下午17:55"
+            }]);
+
+        var view = this.view;
+        view.setUser(user);
+        Ext.getCmp('FriendImage').setSrc(user.data.portrait);
+        var a = user.data.nickname;
+        var b = user.data.announcement;
+        Ext.getCmp('friendInfoPanel').setHtml('<span class="nickname"><b>'+a+'</b></span><br />' +
+            '<p style="font-size: 12px"><b>'+b+'</b></p>');
+
+        if (this.getProfile() == "phone") {
+            view.setWidth(null);
+            view.setHeight('85%');
+            view.setTop(null);
+            view.setLeft(0);
+        }
+
+        if (!view.getParent()) {
+            Ext.Viewport.add(view);
+        }
+
+        chatobject = 'group';
+
         view.show();
     },
 
     onFriendsHideAnimationStart: function() {
         this.getChatList().deselectAll();
+    },
+
+    GotoSetting:function(img,obj,other){
+
+        Ext.getCmp('homeView').setActiveItem(4);
     }
 });
