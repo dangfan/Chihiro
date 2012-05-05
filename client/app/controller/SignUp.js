@@ -46,7 +46,9 @@ Ext.define('Chihiro.controller.SignUp',{
             Ext.Msg.alert('两次密码输入不同');
         } else {
             delete val.confirmPW;
+            console.log('hello');
             socket.emit('signup', val, function(msg) {
+                console.log(msg);
                 if (!msg.err) {
                     window.localStorage.setItem('sid', msg.msg);
                     Ext.Viewport.setActiveItem(Ext.getCmp('signupView'));

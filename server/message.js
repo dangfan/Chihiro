@@ -10,23 +10,22 @@ exports.init = function(_redis, _clients, _socket) {
 }
 
 // send text message to a user
+// TODO: offline messages
 function sendMessage(data) {
     socket.get('uid', function (err, uid) {
-        redis.sadd('messages:' + data.uid, uid + '|' + new Date() + '|' + data.msg);
-        emitMessages(data.uid);
-    })
-}
-
-// TODO: offline messages
-function emitMessages(uid) {
-    redis.smembers('messages:' + uid, function (err, msgs) {
-        for (msg in msgs) {
-            socket.emit('messages', {
-                from: msgs[msg].split('|')[0], 
-                messages: msgs[msg].substring(msg.indexOf('|') + 1)
-            })
-            redis.sadd('oldmessages:' + uid, msgs[msg]);
-        }
+        if (!uid) return;
+        var date = new Date();
+        redis.hget('users:' + uid, 'nickname', function (err, nickname) {
+            if (!nickname) return;
+            clients[data.uid].emit('messages', {
+                from: uid,
+                nickname: nickname,
+                time: date,
+                message: data.msg
+            });
+            redis.sadd('messages:' + data.uid, uid + '|' + date + '|' + data.msg);
+            console.log('message to:' + data.uid, nickname + '|' + uid + '|' + date + '|' + data.msg);
+        });
     });
 }
 

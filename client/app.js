@@ -6,11 +6,10 @@ Ext.Loader.setPath({
 
 Ext.application({
     controllers: ['SignIn', 'SignUp', 'Setting', 'List', 'Home', 'find.Find','find.Email','find.Phone',
-        'contact.Contact',
-        'message.Message','message.ChatList','message.Friend','message.Group','message.Other',
-        'setting.Main'],
+        'contact.Contact', 'activity.Find',
+        'message.Message','message.ChatList','message.Friend','message.Group','message.Other','setting.Main'],
 
-    models: ['User', 'Message','ChattingFriends','ChattingContent'],
+    models: ['User', 'Message','ChattingFriends','ChattingContent','Activity'],
 
     name: 'Chihiro',
 

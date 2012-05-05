@@ -8,7 +8,8 @@ Ext.define('Chihiro.controller.List', {
             userList: 'userlist',
             searchField: 'searchfield',
             refreshButton: 'button[iconCls=refresh]',
-            addFriendBtn: '#addFriendBtn'
+            addFriendBtn: '#addFriendBtn',
+            deleteFriendBtn: '#deleteFriendBtn'
         },
 
         control: {
@@ -35,11 +36,30 @@ Ext.define('Chihiro.controller.List', {
     },
     addFriend: function() {
         socket.emit('send friend request',Ext.getCmp('userlist').getSelection()[0].raw._id);
+        console.log(Ext.getCmp('userlist').getSelection()[0].raw._id);
         alert("好友申请已经发送");
         //TODO: Will need callback msg indicating whether this person is already a friend
     },
     deleteFriend: function() {
-        
+        //socket.emit('send friend request',Ext.getCmp('userlist').getSelection()[0].raw._id);
+        var friendId = Ext.getCmp('friendlist').getSelection()[0].raw._id;
+        var i;
+        for(i=0;friendList[i]._id!=friendId;i++);
+        friendList.splice(i,1);
+        Ext.getCmp('friendlist').setData(friendList);
+        //console.log(Ext.getCmp('friendlist').getStore());
+        //window.localStorage.setItem('friends', friendList);
+        //console.log(window.localStorage);
+        //console.log(Ext.getCmp('friendlist').store);
+        //Ext.getCmp('friendlist').store.load();
+        var store=Ext.create('Ext.data.Store',{
+            model: 'Chihiro.model.User'
+        });
+        store.setData(friendList);
+        store.sync();
+        //store.load();
+        console.log(store);
+        console.log(window.localStorage);
     },
     onListTap: function(list, user) {
         if (!this.view) {

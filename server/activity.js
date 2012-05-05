@@ -9,13 +9,15 @@ exports.init = function(_db, _redis, _clients, _socket) {
     clients  = _clients;
     socket   = _socket;
     return {
-        addActivity:             addActivity,
-        removeActivity:          removeActivity,
-        updateActivityDetails:   updateActivityDetails,
-        participateActivity:     participateActivity,
-        unparticipateActivity:   unparticipateActivity
-        findActivityByInterests: findActivityByInterests,
-        findActivityByLocation:  findActivityByLocation
+        addActivity:                addActivity,
+        removeActivity:             removeActivity,
+        updateActivityDetails:      updateActivityDetails,
+        participateActivity:        participateActivity,
+        unparticipateActivity:      unparticipateActivity,
+        findActivityByTitle:        findActivityByTitle,
+        findActivityByLocation:     findActivityByLocation,
+        findActivityByCreator:      findActivityByCreator,
+        findActivityByParticipants: findActivityByParticipants
     };
 }
 
@@ -86,6 +88,14 @@ function unparticipateActivity(activity) {
         if (!uid) return;
         redis.srem('activity_participants:' + activity._id, uid);
     });
+}
+
+function findActivityByCreator(uid, callback) {
+    
+}
+
+function findActivityByParticipants(uid, callback) {
+
 }
 
 // data includes: title, ordertype.

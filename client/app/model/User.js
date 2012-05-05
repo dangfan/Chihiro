@@ -5,6 +5,7 @@ Ext.define('Chihiro.model.User', {
         proxy: {
             type: 'localstorage',
             id: 'friends'
-        }
+        },
+        autoLoad: true
     }
 });
