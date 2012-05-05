@@ -30,19 +30,20 @@ Ext.define('Chihiro.controller.activity.Find',{
         }
     },
     showNearActivity: function(){
-        if(Ext.getCmp('homeView').getActiveItem().title=='活动'){
+        /*if(Ext.getCmp('homeView').getActiveItem().title=='活动'){
             if(!Ext.getCmp('activitylist')){
-                /*Ext.Viewport.setMasked({
+                Ext.Viewport.setMasked({
                     xtype: 'loadmask',
                     message: '载入中...'
                 });
                 //接收活动信息
-                Ext.Viewport.setMasked(false);*/
-                //TODO: 向服务器发查找活动的消息
+                Ext.Viewport.setMasked(false);
+
                 Ext.create('Chihiro.view.activitylist.List');
                 Ext.getCmp('activitypanel').add(Ext.getCmp('activitylist'));
             }
-        }
+        }*/
+        //TODO: 向服务器发查找活动的消息
     },
     refreshActivity: function(){
         //TODO: 重新获取

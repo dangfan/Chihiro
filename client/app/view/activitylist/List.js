@@ -1,7 +1,7 @@
 Ext.define('Chihiro.view.activitylist.List',{
     extend: 'Ext.DataView',
     xtype: 'activitylist',
-    id: 'activitylist',
+
     config: {
         ui:'loans',
         useComponents: true,

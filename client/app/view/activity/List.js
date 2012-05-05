@@ -33,6 +33,10 @@ Ext.define('Chihiro.view.activity.List', {
                         action: 'createActivity'
                     }
                 ]
+            },
+            {
+                xtype: 'activitylist',
+                id: 'activitylist'
             }
         ]
     }
