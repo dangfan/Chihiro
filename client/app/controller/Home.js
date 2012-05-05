@@ -36,6 +36,11 @@ Ext.define('Chihiro.controller.Home', {
             var scroller = Ext.getCmp('ChattingContent').getScrollable();
             scroller.getScroller().scrollToEnd();
         });
+
+        socket.on('friend confirmed', function(obj) {
+            friendList.push(obj.uid);
+            //TODO: 等待乾坤的addFriend接口
+        });
     },
 
     locateGeo: function() {
