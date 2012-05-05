@@ -44,7 +44,7 @@ Ext.define('Chihiro.controller.List', {
     },
 
     deleteFriend: function() {
-        //socket.emit('send friend request',Ext.getCmp('userlist').getSelection()[0].raw._id);
+        socket.emit('remove friend',Ext.getCmp('friendlist').getSelection()[0].raw._id);
 
         var friendId = Ext.getCmp('friendlist').getSelection()[0].raw._id;
         var i;
@@ -55,21 +55,6 @@ Ext.define('Chihiro.controller.List', {
         var store = Ext.getCmp('friendlist').getStore();
         store.load();
         Ext.getCmp('friendlist').setData(friendList);
-
-        //Ext.getCmp('friendlist').setData(friendList);
-        //console.log(Ext.getCmp('friendlist').getStore());
-        //window.localStorage.setItem('friends', friendList);
-
-        //console.log(Ext.getCmp('friendlist').store);
-        //Ext.getCmp('friendlist').store.load();
-        //var store=Ext.create('Ext.data.Store',{
-        //    model: 'Chihiro.model.User'
-        //});
-        //store.setData(friendList);
-        //store.sync();
-        //store.load();
-        //console.log(store);
-        //console.log(window.localStorage);
     },
 
     onListTap: function(list, user) {

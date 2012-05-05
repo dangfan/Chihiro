@@ -21,7 +21,7 @@ Ext.define('Chihiro.view.activity.BasicActivityInfo',{
                     {
                         xtype: 'datepickerfield',
                         label: '日期',
-                        name: 'location',
+                        name: 'date',
                         dateFormat: 'Y/m/d/',
                         value: new Date(),
                         picker: {
@@ -30,8 +30,29 @@ Ext.define('Chihiro.view.activity.BasicActivityInfo',{
                         }
                     },
                     {
+                        xtype: 'panel',
+                        name: 'time',
+                        layout: 'hbox',
+                        items:[
+                            {
+                                xtype: 'textfield',
+                                name: 'starttime',
+                                label: '起始时间',
+                                placeHolder: '00:00',
+                                flex: 1
+                            },
+                            {
+                                xtype: 'textfield',
+                                name: 'endtime',
+                                label: '结束时间',
+                                placeHolder: '00:00',
+                                flex: 1
+                            }
+                        ]
+                    },
+                    {
                         xtype:'textfield',
-                        name:'place',
+                        name:'location',
                         label:'地点'
                     },
                     {

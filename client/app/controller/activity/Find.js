@@ -23,6 +23,9 @@ Ext.define('Chihiro.controller.activity.Find',{
             },
             activitydetail:{
                 hideanimationstart: 'onHide'
+            },
+            'button[action=participate]':{
+                tap: 'participateActivity'
             }
         }
     },
@@ -35,13 +38,14 @@ Ext.define('Chihiro.controller.activity.Find',{
                 });
                 //接收活动信息
                 Ext.Viewport.setMasked(false);*/
+                //TODO: 向服务器发查找活动的消息
                 Ext.create('Chihiro.view.activitylist.List');
                 Ext.getCmp('activitypanel').add(Ext.getCmp('activitylist'));
             }
         }
     },
     refreshActivity: function(){
-
+        //TODO: 重新获取
     },
     createActivity: function(){
         //var createForm = Ext.create('Chihiro.view.activity.Create');
@@ -50,12 +54,7 @@ Ext.define('Chihiro.controller.activity.Find',{
                 id: 'createactivity'
             });
         }
-        /*if(!Ext.getCmp('basicactivityinfo')){
-            Ext.create('Chihiro.view.activity.BasicActivityInfo',{
-                id: 'basicactivityinfo'
-            });
-        }*/
-        console.log(Ext.getCmp('createactivity'));
+        //console.log(Ext.getCmp('createactivity'));
         Ext.Viewport.setActiveItem(Ext.getCmp('createactivity'));
     },
     onItemTap: function(list, user){
@@ -82,5 +81,8 @@ Ext.define('Chihiro.controller.activity.Find',{
         if(Ext.getCmp('activitylist')){
             Ext.getCmp('activitylist').deselectAll();
         }
+    },
+    participateActivity: function(){
+        //TODO: 向服务器发送参加消息
     }
 })

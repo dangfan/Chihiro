@@ -9,9 +9,10 @@ Ext.define('Chihiro.view.activitylist.List',{
             model: 'Chihiro.model.Activity',
             id: 'activityliststore',
             data:[{
-                id: 'id',
                 name: 'name',
-                time: 'time',
+                starttime: 'stime',
+                endtime: 'etime',
+                date: 'date',
                 location: 'location',
                 mark: { latitude: 37.381592, longitude: 122.135672 },
                 cost: 'cost',

@@ -46,6 +46,7 @@ Ext.define('Chihiro.controller.SignIn', {
             } else {
                 window.localStorage.setItem('sid', msg.sid);
                 friendList=msg.obj.friends;
+				sname=msg.obj.nickname;
                 //console.log(msg);
                 //console.log(friendList);
                 Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
@@ -66,7 +67,7 @@ Ext.define('Chihiro.controller.SignIn', {
                     friendList=msg.obj.friends;
                     console.log(friendList);
                     console.log(msg.obj);
-
+					sname=msg.obj.nickname;
                     var nickname = msg.obj.nickname;
                     var signiture = msg.obj.signiture;
                     Ext.getCmp('MyImage').setSrc('http://hdn.xnimg.cn/photos/hdn121/20120331/1930/tiny_GRdJ_60512g019117.jpg');
