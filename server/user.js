@@ -310,8 +310,10 @@ function updateProfile(data, callback) {
         setUserData(data);
         
         console.log('user ' + uid + ' updated its profile.');
+
+        if (callback)
+            callback({err: 0, msg: '资料更新成功'});
     });
-    callback({err: 0, msg: '资料更新成功'});
 }
 
 function updatePortrait(data, callback){
