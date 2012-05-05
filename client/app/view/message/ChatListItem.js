@@ -69,7 +69,6 @@ Ext.define('Chihiro.view.message.ChatListItem', {
     },
 
     applyAvatar: function(config) {
-        console.log(this.getAvatar());
         return Ext.factory(config, Ext.Img, this.getAvatar());
     },
 

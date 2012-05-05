@@ -20,7 +20,7 @@ Ext.define('Chihiro.view.message.List', {
                     {
                         xtype: 'image',
                         id:'MyImage',
-                        src: 'http://hdn.xnimg.cn/photos/hdn121/20120331/1930/tiny_GRdJ_60512g019117.jpg',
+                        //src: 'http://hdn.xnimg.cn/photos/hdn121/20120331/1930/tiny_GRdJ_60512g019117.jpg',
                         marginTop:5,
                         marginLeft:35,
                         height:50,
@@ -29,8 +29,8 @@ Ext.define('Chihiro.view.message.List', {
                     {
                         xtype:'panel',
                         id:'MyInfoPanel',
-                        padding:8,
-                        html:'<span class="nickname"><b>徐涵</b></span><br /><p style="font-size: 12px"><b>软工要跪啊！</b></p>'
+                        padding:8
+                        //html:'<span class="nickname"><b>徐涵</b></span><br /><p style="font-size: 12px"><b>软工要跪啊！</b></p>'
                     },
                     {
                         xtype: 'spacer'
@@ -66,13 +66,14 @@ Ext.define('Chihiro.view.message.List', {
                         ]
                     },
                     {
-                        xtype: 'spacer',
+                        xtype: 'spacer'
                     }
                 ]
             },
             {
                 xtype:'chatlist',
-                title:'好友'
+                title:'好友',
+                id:'ChattingFriends'
             },
             {
                 xtype:'grouplist',

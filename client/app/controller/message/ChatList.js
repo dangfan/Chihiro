@@ -33,6 +33,7 @@ Ext.define('Chihiro.controller.message.ChatList', {
     },
 
     launch: function(){
+
         socket.emit('find closest', function(list) {
             Ext.getCmp('ChattingFriends').setData(list);
         });
@@ -42,10 +43,6 @@ Ext.define('Chihiro.controller.message.ChatList', {
         if (!this.view) {
             this.view = Ext.create('Chihiro.view.message.Friends');
         }
-
-        var me = Ext.getCmp('ChattingContent');
-        var store = me.getStore();
-        store.load();
 
         Ext.getCmp('ChattingContent').setData([
             {

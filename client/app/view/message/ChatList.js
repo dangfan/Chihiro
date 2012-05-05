@@ -2,7 +2,7 @@
 Ext.define('Chihiro.view.message.ChatList', {
     extend: 'Ext.DataView',
     xtype: 'chatlist',
-    id:'ChattingFriends',
+
 
     config: {
         store: {

@@ -16,9 +16,21 @@ Ext.define('Chihiro.controller.Home', {
         this.locateGeo();
 
         socket.on('friend request', function(user) {
-            alert("somebody add me!!");
-            //console.log(user);
-            Ext.getCmp('ChattingFriends').setData(user);
+            console.log(user);
+
+            var chattinglists = Ext.getCmp('ChattingFriends');
+            var myChattingFriend = chattinglists.getData();
+            var newuser = [user];
+            for(i=0; i < myChattingFriend.length;i++){
+                newuser.push(myChattingFriend[i]);
+            }
+            //myChattingFriend.push(newuser);
+
+            chattinglists.setData([]);
+            var store = chattinglists.getStore();
+            store.load();
+            chattinglists.setData(newuser);
+            //console.log(myChattingFriend);
         });
 
         socket.on('messages', function(msg) {
