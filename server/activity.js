@@ -22,6 +22,7 @@ exports.init = function(_db, _redis, _clients, _socket) {
 }
 
 function addActivity(activity, callback) {
+    console.log('add activity');
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         activity.creator_id = uid;
@@ -81,6 +82,7 @@ function participateActivity(activity) {
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.sadd('activity_participants:' + activity._id, uid);
+        console.log('activity participate:' + activity._id + '|' + activity.name + '|' + uid);
     });
 }
 
@@ -88,6 +90,7 @@ function unparticipateActivity(activity) {
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.srem('activity_participants:' + activity._id, uid);
+        console.log('activity unparticipate:' + activity._id + '|' + activity.name + '|' + uid);
     });
 }
 
