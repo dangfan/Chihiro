@@ -23,7 +23,7 @@ exports.init = function(_db, _redis, _clients, _socket) {
 }
 
 function addActivity(activity, callback) {
-    socket = this;
+    var socket = this;
     console.log('add activity');
     socket.get('uid', function (err, uid) {
         if (!uid) return;
@@ -50,7 +50,7 @@ function addActivity(activity, callback) {
 }
 
 function removeActivity(activityid, callback) {
-    socket = this;
+    var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         // find in redis
@@ -71,7 +71,7 @@ function removeActivity(activityid, callback) {
 }
 
 function updateActivityDetails(activity) {
-    socket = this;
+    var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.hget('activities:' + activity._id, 'creator_id', function(err, cid) {
@@ -86,7 +86,7 @@ function updateActivityDetails(activity) {
 }
 
 function participateActivity(activityid) {
-    socket = this;
+    var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.sadd('activity_participants:' + activityid, uid);
@@ -96,7 +96,7 @@ function participateActivity(activityid) {
 }
 
 function unparticipateActivity(activityid) {
-    socket = this;
+    var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.srem('activity_participants:' + activityid, uid);

@@ -36,6 +36,12 @@ function loadMessages(uid, socket) {
     emitFriendRequests(uid);
     emitFriendConfirmed(uid);
     // Topics
+    redis.smembers('user_topics:' + uid, function (err, topics) {
+        for (id in topics) {
+            redis.subscribe('topic:' + topics[id]);
+            redis.subscribe('draw:' + topics[id]);
+        }
+    });
     redis.on('message', function (channel, msg) {
         var info = channel.split(':'),
             data = eval(msg);
