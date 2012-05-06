@@ -22,11 +22,11 @@ Ext.define('Chihiro.controller.SignIn', {
     resetView: function() {
         Ext.getCmp('homeView').setActiveItem(0);
         var items = Ext.getCmp('homeView').getItems().items;
-        console.log(items.items);
+        //console.log(items.items);
 //        for(var i = 0; i < items.length; i++) {
 //            console.log(items[i].getXTypes());
 //        };
-        console.log(Ext.getCmp('homeView'));
+        //console.log(Ext.getCmp('homeView'));
         //Ext.create('Chihiro.view.Home');
         //Ext.Viewport.setActiveItem(Ext.getCmp('loginView'));
     },
