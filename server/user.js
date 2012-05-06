@@ -454,7 +454,7 @@ function emitFriendConfirmed(uid) {
 }
 
 // remove a friend
-function removeFriend(desUsrId, callback) {
+function removeFriend(desUsrId) {
     socket.get('uid', function (err, uid) {
         redis.srem('friends:' + uid, desUsrId);
         redis.srem('friends:' + desUsrId, uid);
@@ -463,7 +463,6 @@ function removeFriend(desUsrId, callback) {
         db.users.update({'_id': db.ObjectId(desUsrId)},
             {$pull: {friends: uid}});
     });
-    callback({err: 0, msg: '删除好友成功'});
 }
 
 function findByPhones(phones, callback) {

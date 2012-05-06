@@ -51,7 +51,10 @@ Ext.define('Chihiro.controller.Home', {
 
         socket.on('friend confirmed', function(obj) {
             friendList.push(obj.uid);
-            //TODO: 等待乾坤的addFriend接口
+            Ext.getCmp('friendlist').setData([]);
+            var store = Ext.getCmp('friendlist').getStore();
+            store.load();
+            Ext.getCmp('friendlist').setData(friendList);
         });
     },
 
@@ -65,6 +68,7 @@ Ext.define('Chihiro.controller.Home', {
                         longitude: geo.getLongitude(),
                         latitude: geo.getLatitude()
                     });
+					myLocation=geo;
                 }
             }
         })

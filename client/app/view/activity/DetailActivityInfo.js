@@ -4,23 +4,23 @@ Ext.define('Chihiro.view.activity.DetailActivityInfo',{
 
     config:{
         title: '详细信息',
+        layout: 'vbox',
         items:[
             {
-                xtype: 'field'
+                xtype: 'textareafield',
+                name: 'detail',
+                scrollable: false,
+                label: '不超过1000字'
             },
             {
                 xtype:'panel',
-                layout:'hbox',
                 defaults:{
-                    xtype:'button',
-                    flex:1,
-                    width:'40%'
+                    xtype:'button'
                 },
                 items:[
                     {
-                        text:'确定',
+                        text:'提交',
                         ui:'confirm',
-                        left:'10%',
                         enabled:false,
                         action: 'createConfirm'
                     }
