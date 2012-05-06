@@ -42,7 +42,7 @@ function addActivity(activity, callback) {
                 console.log('activity created:' + activity._id + '|' + activity.name + '|' + uid);
                 callback({err: 0, msg: '添加活动成功'});
                 redis.set('activity_location:' + activity._id,
-                    '[' + activity.mark.longitude + ',' + activity.mark.longitude + ']');
+                    '[' + activity.mark.longitude + ',' + activity.mark.latitude + ']');
                 redis.sadd('activities_createdby:' + uid, activity._id);
             }
         });
