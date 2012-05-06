@@ -3,7 +3,7 @@ Ext.define('Chihiro.view.activity.MapLocate',{
     xtype: 'maplocate',
     scrollable: false,
     config: {
-        title: '确认坐标',
+        title: '设置缩放系数',
         layout: 'vbox',
         fullscreen: true,
         scrollable: false,
@@ -43,7 +43,9 @@ Ext.define('Chihiro.view.activity.MapLocate',{
                     },
                     {
                         xtype: 'panel',
-                        html: '<p align="middle"><h1> 若图示不正确，请返回上一层重新设置地点 </h1></p>'
+                        html: [
+                            '若图示不正确，请返回上一层重新设置地点</br>通过放大缩小地图设置合适的缩放比例'
+                        ]
                     }
                 ]
             }

@@ -5,7 +5,9 @@ Ext.define('Chihiro.model.Activity',{
         fields: [
             'id',
             'name',
-            'time',
+            'starttime',
+            'endtime',
+            'date',
             'location',
             'mark',
             'cost',

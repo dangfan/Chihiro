@@ -6,33 +6,23 @@ Ext.define('Chihiro.view.setting.Status', {
     ],
 
     config:{
-        title:'头像与签名',
+        title:'兴趣与签名',
         items:[
             {
                 xtype:'fieldset',
                 items:[
                     {
-                        xtype: 'selectfield',
-                        label: '我的状态',
-                        name: 'status',
-                        options: [{
-                            text: '在线',
-                            value: 0
-                        }, {
-                            text: '隐身',
-                            value: 1
-                        },{
-                            text:'离开',
-                            value:2
-                        }
-                        ]
+                        xtype:'textfield',
+                        name:'interests',
+                        label:'兴趣',
+                        placeHolder:'用空格隔开多项'
                     },
                     {
-                        xtype:'textfield',
+                        xtype:'textareafield',
                         name:'signature',
-                        label:'个性签名',
-                        placeHolder:'诚征好基友！'
+                        label:'个性签名'
                     }
+
                 ]
             },
             {

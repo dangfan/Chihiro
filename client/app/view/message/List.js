@@ -55,18 +55,22 @@ Ext.define('Chihiro.view.message.List', {
                         items: [
                             {
                                 text: '好友',
+                                //badgeText:'2',
                                 pressed: true
                             },
                             {
                                 text: '群组'
-                            },
-                            {
-                                text: '讨论组'
                             }
                         ]
                     },
                     {
                         xtype: 'spacer'
+                    },
+                    {
+                        iconMask: true,
+                        id:'ChatHelper',
+                        ui: 'plain',
+                        iconCls: 'add'
                     }
                 ]
             },
@@ -78,10 +82,6 @@ Ext.define('Chihiro.view.message.List', {
             {
                 xtype:'grouplist',
                 title:'群组'
-            },
-            {
-                //xtype:'chatlist',
-                title:'讨论组'
             }
         ]
     }

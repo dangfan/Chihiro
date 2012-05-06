@@ -59,27 +59,29 @@ Ext.define('Chihiro.controller.message.Friend', {
 
             var scroller = Ext.getCmp('ChattingContent').getScrollable();
             scroller.getScroller().scrollToEnd();
-            this.fireEvent('Send',view, index, target, record);
         }
 
         var scroller = Ext.getCmp('ChattingContent').getScrollable();
         scroller.getScroller().scrollToEnd();
 
         var uid = Ext.getCmp('ChattingFriends').getSelection()[0].raw._id;
-        //var uid = '4f8122c25f193cab1c000033';
-        for(var i = 0; i < friendList.length;i++)
-        {
-            if(friendList[i] == uid) {
-                socket.emit('send message',{uid:uid,msg:msg});
-                return;
-            }
-        }
-        socket.emit('add friend',uid, function(result) {
-            if(result.err) aleart('添加好友失败了:(');
-            else friendList.push(uid);
-            //TODO: 等待乾坤的addfriend接口
-        });
         console.log({uid:uid,msg:msg});
+        socket.emit('send message',{uid:uid,msg:msg});
+
+//        //var uid = '4f8122c25f193cab1c000033';
+//        for(var i = 0; i < friendList.length;i++)
+//        {
+//            if(friendList[i] == uid) {
+//                socket.emit('send message',{uid:uid,msg:msg});
+//                return;
+//            }
+//        }
+//        socket.emit('add friend',uid, function(result) {
+//            if(result.err) aleart('添加好友失败了:(');
+//            else friendList.push(uid);
+//            //TODO: 等待乾坤的addfriend接口
+//        });
+
     },
 
     ShowActions:function(img,obj,other){

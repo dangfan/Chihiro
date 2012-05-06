@@ -5,7 +5,9 @@ Ext.define('Chihiro.controller.message.Message', {
         refs: {
             chatlist: 'chatlist',
             carousel: '#messagepanel',
-            button:'#chatgroup'
+            button:'#chatgroup',
+            icon:'#ChatHelper',
+            floatingbutton:'#floatingButton'
         },
         control: {
             carousel: {
@@ -13,6 +15,12 @@ Ext.define('Chihiro.controller.message.Message', {
             },
             button:{
                 toggle:'toggle'
+            },
+            icon:{
+                tap:'ChatHelperOptions'
+            },
+            floatingbutton:{
+                toggle:'HelperHander'
             }
         }
     },
@@ -24,47 +32,140 @@ Ext.define('Chihiro.controller.message.Message', {
 
         items[0].removeCls('x-button-pressed');
         items[1].removeCls('x-button-pressed');
-        items[2].removeCls('x-button-pressed');
         if(currentTitle === '好友'){
             items[0].addCls('x-button-pressed');
         };
         if(currentTitle === '群组'){
             items[1].addCls('x-button-pressed');
         };
-        if(currentTitle === '讨论组'){
-            items[2].addCls('x-button-pressed');
-        };
+        if(Ext.getCmp('floatingPanel'))
+        {
+            if(!Ext.getCmp('floatingPanel').isHidden())
+                Ext.getCmp('floatingPanel').hide();
+        }
     },
 
     toggle:function(a,b,c,d){
         var title = b.getText();
-        //console.log(title);
         var carou = this.getCarousel();
         var index = carou.getActiveIndex();
 
         if(title === '群组'&& index === 0 )
             carou.next();
 
-        if(title === '讨论组'&& index === 1)
-            carou.next();
-
-        if(title === '讨论组'&& index === 0)
-        {
-            carou.next();
-            carou.next();
-        };
-
-        if(title === '群组'&& index === 2 )
-            carou.previous();
-
         if(title === '好友'&& index === 1)
             carou.previous();
+    },
 
-        if(title === '好友'&& index === 2)
+    ChatHelperOptions:function(view, index, target, record) {
+
+        var carou = this.getCarousel();
+        var index = carou.getActiveIndex();
+
+        if(Ext.getCmp('floatingPanel'))
         {
-            carou.previous();
-            carou.previous();
-        };
+            if(!Ext.getCmp('floatingPanel').isHidden())
+            {
+                Ext.getCmp('floatingPanel').hide();
+                return;
+            }
 
+            var carou = this.getCarousel();
+            var index = carou.getActiveIndex();
+            var button = Ext.getCmp('floatingPanel');
+            console.log(button.items[0]);
+
+            if(index === 0)
+            {
+                Ext.getCmp('b2').show();
+                Ext.getCmp('b3').hide();
+            }
+            if(index === 1)
+            {
+                Ext.getCmp('b2').hide();
+                Ext.getCmp('b3').show();
+            }
+            Ext.getCmp('floatingPanel').show();
+        }
+        else{
+            var tPanel = Ext.create('Ext.Panel', {
+                id:'floatingPanel',
+                left: 0,
+                padding: 10,
+                items:[
+                    {
+                        xtype: 'segmentedbutton',
+                        allowDepress: false,
+                        id:'floatingButton',
+                        items: [
+                            {
+                                text: '刷新',
+                                id:'b1'
+                            },
+                            {
+                                text: '约炮',
+                                id:'b2'
+                            },
+                            {
+                                text:'创建群组',
+                                id:'b3'
+                            }
+                        ]
+                    }]
+            }).showBy(Ext.getCmp('ChatHelper'));
+
+            if(index === 0)
+            {
+                Ext.getCmp('b2').show();
+                Ext.getCmp('b3').hide();
+            }
+            if(index === 1)
+            {
+                Ext.getCmp('b2').hide();
+                Ext.getCmp('b3').show();
+            }
+        }
+
+    },
+
+    HelperHander:function(a,b,c,d){
+
+        var title = b.getText();
+        var carou = this.getCarousel();
+        var index = carou.getActiveIndex();
+
+        if(title === '刷新'&& index === 0 )
+        {
+            //var object = Ext.getCmp('ChattingFriends');
+            //object.getStore().load();
+            alert("等待聊天好友接口");
+        }
+
+        if(title === '刷新'&& index === 1 )
+        {
+            alert("等待群组列表接口");
+        }
+
+        if(title === '约炮'&& index === 0)
+        {
+            Ext.getCmp('homeView').setActiveItem(3);
+        }
+
+        if(title === '创建群组')
+        {
+            if(!Ext.getCmp('creategroup')){
+                Ext.create('Chihiro.view.message.group.BasicGroupInfo',{
+                    id: 'creategroup'
+                });
+            }
+
+            Ext.Viewport.setActiveItem(Ext.getCmp('creategroup'));
+        }
+
+        if(!Ext.getCmp('floatingPanel').isHidden())
+        {
+            Ext.getCmp('floatingPanel').hide();
+        }
     }
+
 });
