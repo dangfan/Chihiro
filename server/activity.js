@@ -118,11 +118,11 @@ function getActivityById(activityid, callback) {
     });
 }
 
-function findActivityByCreator(uid, callback) {
+function findActivityByCreator(callback) {
     
 }
 
-function findActivityByParticipants(uid, callback) {
+function findActivityByParticipants(callback) {
 
 }
 
@@ -132,6 +132,29 @@ function findActivityByTitle(data, callback) {
 }
 
 // data includes: ordertype.
-function findActivityByLocation(data, callback) {
-    
+function findActivityByLocation(callback) {
+    var socket = this;
+    socket.get('uid', function (err, uid) {
+        if (!uid) return;
+        redis.get('location:' + uid, function (err, location) {
+            db.executeDbCommand({
+                geoNear:            'activities',
+                near:               eval(location),
+                spherical:          true,
+                maxDistance:        1 / 6371,       // 1km
+                distanceMultiplier: 6371000
+            }, function (err, obj) {
+                var data = new Array();
+                obj.documents[0].results.forEach(function (result) {
+                    if (result.obj._id == uid) return;
+                    var obj = result.obj;
+                    obj.dis = result.dis.toFixed(0)+'m';
+                    delete obj['null'];
+                    data.push(obj);
+                });
+                callback(data);
+                console.log('user ' + uid + ' found closest activities.');
+            });
+        });
+    });
 }

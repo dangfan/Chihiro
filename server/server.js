@@ -50,6 +50,7 @@ function listen(port) {
         socket.on('draw', message.draw);
         socket.on('add activity', activity.addActivity);
         socket.on('get activity', activity.getActivityById);
+        socket.on('find closest activities', activity.findActivityByLocation);
     });
 }
 
