@@ -338,52 +338,40 @@ function updatePortrait(data, callback){
 
 // Get basic information of a user by id
 function getInfoById(uid, callback) {
-    var socket = this;
-    socket.get('uid', function (err, t) {
-        if (!t) return;
-        // Get from redis first
-        redis.hgetall('users:' + uid, function (err, usr) {
-            if (!usr) {
-                db.users.find({_id: db.ObjectId(uid)},
-                    function (err, usr) { processUser(usr, callback); });
-            } else {
-                processUser(usr, callback);
-            }
-        });
+    // Get from redis first
+    redis.hgetall('users:' + uid, function (err, usr) {
+        if (!usr) {
+            db.users.find({_id: db.ObjectId(uid)},
+                function (err, usr) { processUser(usr, callback); });
+        } else {
+            processUser(usr, callback);
+        }
     });
 }
 
 // Get basic information of a user by email
 function getInfoByEmail(email, callback) {
-    var socket = this;
-    socket.get('uid', function (err, t) {
-        if (!t) return;
-        // Get from redis first
-        redis.get('emails:' + email, function (err, uid) {
-            if (!uid) {
-                db.users.findOne({email: email},
-                    function (err, usr) { processUser(usr, callback); });
-            } else {
-                getInfoById(uid, callback);
-            }
-        });
+    // Get from redis first
+    redis.get('emails:' + email, function (err, uid) {
+        if (!uid) {
+            db.users.findOne({email: email},
+                function (err, usr) { processUser(usr, callback); });
+        } else {
+            getInfoById(uid, callback);
+        }
     });
 }
 
 // Get basic information of a user by phone number
 function getInfoByPhone(phone, callback) {
-    var socket = this;
-    socket.get('uid', function  (err, t) {
-        if (!t) return;
-        // Get from redis first
-        redis.get('phones:' + phone, function (err, uid) {
-            if (!uid) {
-                db.users.findOne({phone: phone},
-                    function (err, usr) { processUser(usr, callback); });
-            } else {
-                getInfoById(uid, callback);
-            }
-        });
+    // Get from redis first
+    redis.get('phones:' + phone, function (err, uid) {
+        if (!uid) {
+            db.users.findOne({phone: phone},
+                function (err, usr) { processUser(usr, callback); });
+        } else {
+            getInfoById(uid, callback);
+        }
     });
 }
 
