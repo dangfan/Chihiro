@@ -100,7 +100,7 @@ Ext.define('Chihiro.controller.activity.Create',{
             Ext.Msg.alert('详细信息不能超过1000字');
             return;
         }
-        createActivity.DetailInfo = val;
+        createActivity.detail = val.detail;
         socket.on('add activity', createActivity, function(msg){
             console.log(msg);
         });

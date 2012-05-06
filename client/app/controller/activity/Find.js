@@ -58,13 +58,12 @@ Ext.define('Chihiro.controller.activity.Find',{
         Ext.Viewport.setActiveItem(Ext.getCmp('createactivity'));
     },
     onItemTap: function(list, user){
-        //console.log(new Date().getFullYear());
         if (!this.view) {
             this.view = Ext.create('Chihiro.view.activitylist.Detail');
         }
         var view = this.view;
         view.setUser(user);
-        //console.log(this);
+        console.log(this);
         if (this.getProfile() == "phone") {
             view.setWidth(null);
             view.setHeight('85%');
