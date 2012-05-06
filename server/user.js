@@ -238,7 +238,7 @@ function findClosest(callback) {
                 obj.documents[0].results.forEach(function (result) {
                     if (result.obj._id == uid) return;
                     var obj = result.obj;
-                    obj.dis = result.dis;
+                    obj.dis = result.dis.toFixed(0)+'m';
                     delete obj.password;
                     delete obj.email;
                     delete obj.phone;
