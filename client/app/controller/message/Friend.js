@@ -78,8 +78,14 @@ Ext.define('Chihiro.controller.message.Friend', {
         }
         socket.emit('add friend',uid, function(result) {
             if(result.err) aleart('添加好友失败了:(');
-            else friendList.push(uid);
-            //TODO: 等待乾坤的addfriend接口
+            else {
+                friendList.push(uid);
+                friendList.push(obj.uid);
+                Ext.getCmp('friendlist').setData([]);
+                var store = Ext.getCmp('friendlist').getStore();
+                store.load();
+                Ext.getCmp('friendlist').setData(friendList);
+            }
         });
         console.log({uid:uid,msg:msg});
 */

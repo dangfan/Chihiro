@@ -1,7 +1,7 @@
 Ext.define('Chihiro.view.setting.Info', {
     extend: 'Ext.form.Panel',
     xtype:'userInfo',
-
+    id: 'infoSetting',
     requires: [
         'Ext.field.Select',
         'Ext.field.DatePicker'
@@ -9,6 +9,7 @@ Ext.define('Chihiro.view.setting.Info', {
 
     config: {
         title: '个人名片',
+
         items: [{
             xtype: 'fieldset',
             defaults: {
@@ -16,9 +17,16 @@ Ext.define('Chihiro.view.setting.Info', {
             },
             items: [
                 {
-                    label: '昵称',
-                    name: 'nickname',
-                    placeHolder:'党主席'
+                    xtype:'textfield',
+                    name:'nickname',
+                    required:true,
+                    allowBlank:false,
+                    label:'昵称'
+                },
+                {
+                    label: '真实姓名',
+                    name: 'name',
+                    placeHolder:'未填写'
                 },
                 {
                     xtype: 'selectfield',
@@ -31,7 +39,7 @@ Ext.define('Chihiro.view.setting.Info', {
                         text: '女',
                         value: 1
                     }],
-                    placeHolder:'男'
+                    placeHolder:'未填写'
                 },
                 {
                     xtype: 'datepickerfield',
@@ -47,12 +55,12 @@ Ext.define('Chihiro.view.setting.Info', {
                 {
                     label: '学校',
                     name: 'school',
-                    placeHolder:'清华大学'
+                    placeHolder:'未填写'
                 },
                 {
                     label: '职业',
                     name: 'job',
-                    placeHolder:'学生'
+                    placeHolder:'未填写'
                 }
             ]
         },
@@ -69,7 +77,8 @@ Ext.define('Chihiro.view.setting.Info', {
                     {
                         text: '保存修改',
                         ui: 'confirm',
-                        width: '40%'
+                        width: '40%',
+                        action: 'updateInfo'
                         //action: 'optionalConfirm'
                     },
                     {

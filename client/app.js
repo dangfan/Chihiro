@@ -7,7 +7,8 @@ Ext.Loader.setPath({
 Ext.application({
     controllers: ['SignIn', 'SignUp', 'Setting', 'List', 'Home', 'find.Find','find.Email','find.Phone',
         'contact.Contact', 'activity.Find', 'activity.Create',
-        'message.Message','message.ChatList','message.Friend','message.Group','message.Other','setting.Main'],
+        'message.Message','message.ChatList','message.Friend','message.Group','message.Other',
+        'setting.Main','setting.Info','setting.Account'],
 
     models: ['User', 'Message','ChattingFriends','ChattingContent','Activity'],
 

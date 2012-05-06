@@ -1,6 +1,7 @@
 Ext.define('Chihiro.view.setting.Account', {
     extend:'Ext.form.Panel',
-
+    autoDestroy: true,
+    id: 'accountSetting',
     config:{
         title:'我的帐户',
         items:[
@@ -8,34 +9,41 @@ Ext.define('Chihiro.view.setting.Account', {
                 xtype:'fieldset',
                 defaults:{
                     required:true,
-                    allowBlank:false
+                    allowBlank:false,
+                    readOnly: true
                 },
                 items:[
-                    {
-                        xtype:'textfield',
-                        name:'name',
-                        label:'真实姓名',
-                        placeHolder:'党凡'
-                    },
                     {
                         xtype:'emailfield',
                         name:'email',
                         label:'邮箱',
-                        placeHolder:'hjy@gmail.com',
                         valueType:'email'
                     },
                     {
                         xtype:'numberfield',
                         name:'phone',
-                        label:'手机号',
-                        placeHolder:'123456789'
+                        label:'手机号'
+                    },
+                    {
+                        xtype: 'spacer',
+                        width: 5
                     },
                     {
                         xtype:'passwordfield',
-                        name:'password',
-                        label:'密码',
-                        placeHolder:'******',
-                        action:''
+                        name: 'oldpassword',
+                        label: '旧密码',
+                        readOnly:false
+                    },
+                    {
+                        xtype:'passwordfield',
+                        name: 'newpassword',
+                        label: '新密码',
+                        readOnly:false
+                    },
+                    {
+                        xtype:'passwordfield',
+                        label: '重复新密码',
+                        readOnly:false
                     }
                 ]
             },
@@ -50,10 +58,10 @@ Ext.define('Chihiro.view.setting.Account', {
                         xtype: 'spacer'
                     },
                     {
-                        text: '保存修改',
+                        text: '修改密码',
                         ui: 'confirm',
-                        width: '40%'
-                        //action:'requiredConfirm'
+                        width: '40%',
+                        action:'updateAccount'
                     },
                     {
                         xtype: 'spacer'
