@@ -47,7 +47,7 @@ Ext.define('Chihiro.view.activitylist.ListItem', {
             this.add(newSponsor);
         }
     }
-/*    applyStatus: function(config) {
+    /*applyStatus: function(config) {
         return Ext.factory(config, Ext.Component, this.getStatus());
     },
 

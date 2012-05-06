@@ -35,7 +35,7 @@ Ext.define('Chihiro.controller.activity.Create',{
             || (val.date.getMonth() == new Date().getMonth() && val.date.getDate() <= new Date().getDate()))){
             Ext.Msg.alert('请设置未来的日期');
             return;
-        }else if(!(val.starttime.match(/[0-9]{2}:[0-9]{2}/) && val.endtime.match(/[0-9]{2}:[0-9]{2}/))){
+        }else if(!(val.starttime.match(/[0-9]{1,2}:[0-9]{2}/) && val.endtime.match(/[0-9]{1,2}:[0-9]{2}/))){
             Ext.Msg.alert('请输入有效时间');
             return;
         }
@@ -71,8 +71,8 @@ Ext.define('Chihiro.controller.activity.Create',{
         geocoder.geocode( { 'address': val.location}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 Ext.getCmp('mylocation').setMapCenter(results[0].geometry.location);
-                mark.latitude = results[0].geometry.location.$a;
                 mark.longitude = results[0].geometry.location.ab;
+                mark.latitude = results[0].geometry.location.$a;
                 createActivity.mark = mark;
             } else {
                 alert("Geocode was not successful for the following reason: " + status);
@@ -105,14 +105,17 @@ Ext.define('Chihiro.controller.activity.Create',{
         createActivity.detail = val.detail;
         if(createOrEdit == 1){
             //TODO: 编辑活动
-            //console.log(Ext.getCmp('detailinfo'));
         }else{
             socket.emit('add activity', createActivity, function(msg){
-                console.log(msg);
+                if(msg.err == 0){
+                    Ext.Msg.alert('活动添加成功');
+                    Ext.getCmp('createactivity').pop(2);
+                    Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
+                }
+                else{
+                    Ext.Msg.alert('活动添加失败，请稍后再试');
+                }
             });
         }
-        Ext.getCmp('createactivity').pop(2);
-
-        Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
     }
 })

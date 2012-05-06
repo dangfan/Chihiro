@@ -77,13 +77,13 @@ Ext.define('Chihiro.controller.activity.Find',{
         items[0].removeCls('x-button-pressed');
         items[1].removeCls('x-button-pressed');
         items[2].removeCls('x-button-pressed');
-        if(currentTitle === '附近活动'){
+        if(currentTitle === '附近'){
             items[0].addCls('x-button-pressed');
         };
-        if(currentTitle === '我发起的活动'){
+        if(currentTitle === '已发起'){
             items[1].addCls('x-button-pressed');
         };
-        if(currentTitle === '我参加的活动'){
+        if(currentTitle === '已参加'){
             items[2].addCls('x-button-pressed');
         };
     },
@@ -92,25 +92,25 @@ Ext.define('Chihiro.controller.activity.Find',{
         var carou = Ext.getCmp('activitypanel');
         var index = carou.getActiveIndex();
 
-        if(title === '我发起的活动'&& index === 0)
+        if(title === '已发起'&& index === 0)
             carou.next();
 
-        if(title === '我参加的活动'&& index === 1)
+        if(title === '已参加'&& index === 1)
             carou.next();
 
-        if(title === '我参加的活动'&& index === 0)
+        if(title === '已参加'&& index === 0)
         {
             carou.next();
             carou.next();
         };
 
-        if(title === '我发起的活动'&& index === 2 )
+        if(title === '已发起'&& index === 2 )
             carou.previous();
 
-        if(title === '附近活动'&& index === 1)
+        if(title === '附近'&& index === 1)
             carou.previous();
 
-        if(title === '附近活动'&& index === 2)
+        if(title === '附近'&& index === 2)
         {
             carou.previous();
             carou.previous();
