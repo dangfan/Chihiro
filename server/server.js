@@ -47,6 +47,7 @@ function listen(port) {
         socket.on('get topic info', message.getTopicInfo);
         socket.on('subscribe topic', message.subscribeTopic);
         socket.on('send topic message', message.sendTopicMessage);
+        socket.on('draw', message.draw);
         socket.on('add activity', activity.addActivity);
         socket.on('get activity', activity.getActivityById);
     });
