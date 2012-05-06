@@ -36,6 +36,7 @@ function addActivity(activity, callback) {
                 var activity = objects[0];
                 for (key in activity)
                     redis.hset('activities:' + activity._id, key, activity[key]);
+                console.log('activity created:' + activity._id + '|' + activity.name);
                 callback({err: 0, msg: '添加活动成功'});
             }
         });
