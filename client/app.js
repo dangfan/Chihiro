@@ -6,8 +6,8 @@ Ext.Loader.setPath({
 
 Ext.application({
     controllers: ['SignIn', 'SignUp', 'Setting', 'List', 'Home', 'find.Find','find.Email','find.Phone',
-        'contact.Contact', 'activity.Find',
-        'message.Message','message.ChatList','message.Friend','setting.Main'],
+        'contact.Contact', 'activity.Find', 'activity.Create',
+        'message.Message','message.ChatList','message.Friend','message.Group','message.Other','setting.Main'],
 
     models: ['User', 'Message','ChattingFriends','ChattingContent','Activity'],
 
@@ -22,11 +22,14 @@ Ext.application({
         'Home',
         'message.List',
         'contact.List',
-        'activity.List',
+        'activity.List', 'activity.BasicActivityInfo','activity.Create','activity.DetailActivityInfo','activity.MapLocate',
+        'activitylist.BasicInformation','activitylist.Detail','activitylist.DetailInformation','activitylist.List','activitylist.ListItem','activitylist.Map',
         'find.Main', 'find.Email', 'find.Phone', 'find.Contact', 'find.Nearby',
         'setting.Main',
         'userlist.List', 'userlist.Detail', 'userlist.ListItem',
-        'message.List','message.GroupList','message.GroupListItem','message.ChatList','message.ChatListItem','message.Friends','message.Content','message.Sentence'
+        'message.List','message.GroupList','message.Groups','message.ChatList','message.ChatListItem','message.Friends','message.Content',
+        'message.Sentence','message.ChattingFriendData','message.ChattingGroupData','message.ChattingFriendPanel','message.GroupContent',
+        'message.other.Nickname','message.other.InviteToGroup'
     ],
 
     icon: {

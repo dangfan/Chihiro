@@ -6,6 +6,7 @@ Ext.define('Chihiro.view.signup.InterestInfo', {
         items: [{
             xtype: 'fieldset',
             id: 'interestField',
+            instructions: '请用空格将多个兴趣隔开',
             items: [{
                 xtype: 'textfield',
                 name: 'interest',

@@ -1,8 +1,7 @@
-Ext.define('Chihiro.view.message.GroupListItem', {
+Ext.define('Chihiro.view.activitylist.ListItem', {
     extend: 'Ext.dataview.component.DataItem',
-
-    xtype : 'grouplistitem',
-    requires: ['Ext.Img'],
+    xtype : 'activitylistitem',
+    //requires: ['Ext.Img'],
 
     config: {
         height:100,
@@ -10,17 +9,8 @@ Ext.define('Chihiro.view.message.GroupListItem', {
             getName: {
                 setHtml: 'name'
             },
-
-            getStatus: {
-                setHtml: 'announcement'
-            },
-
-            getAvatar: {
-                setSrc: 'image'
-            },
-
-            getUnread: {
-                setHtml: 'unread'
+            getSponsor: {
+                setHtml: 'sponsor'
             }
         },
 
@@ -30,17 +20,8 @@ Ext.define('Chihiro.view.message.GroupListItem', {
             cls: 'name'
         },
 
-        status: {
-            cls: 'use'
-        },
-
-        avatar: {
-            docked: 'left'
-        },
-
-        unread: {
+        sponsor: {
             docked: 'right'
-            // hidden: (Ext.os.deviceType === 'Phone') ? true : false
         },
 
         layout: {
@@ -58,8 +39,15 @@ Ext.define('Chihiro.view.message.GroupListItem', {
             this.add(newName);
         }
     },
-
-    applyStatus: function(config) {
+    applySponsor:function(config){
+        return Ext.factory(config, Ext.Component, this.getSponsor());
+    },
+    updateSponsor:function(newSponsor){
+        if(newSponsor){
+            this.add(newSponsor);
+        }
+    }
+/*    applyStatus: function(config) {
         return Ext.factory(config, Ext.Component, this.getStatus());
     },
 
@@ -78,15 +66,5 @@ Ext.define('Chihiro.view.message.GroupListItem', {
         if (newAvatar) {
             this.add(newAvatar);
         }
-    },
-
-    applyUnread: function(config) {
-        return Ext.factory(config, Ext.Component, this.getUnread());
-    },
-
-    updateUnread: function(newUnread) {
-        if (newUnread) {
-            this.add(newUnread);
-        }
-    }
+    },*/
 });

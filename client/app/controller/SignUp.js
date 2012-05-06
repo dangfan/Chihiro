@@ -59,6 +59,8 @@ Ext.define('Chihiro.controller.SignUp',{
 
     toOptionalInfoView: function() {
         var interest = Ext.getCmp('interestinfoView').getValues().interest;
+        interest = interest.split(' ');
+        console.log(interest);
         socket.emit('update profile', {
             interests: [interest]
         });

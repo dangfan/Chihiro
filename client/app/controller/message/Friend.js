@@ -5,7 +5,8 @@ Ext.define('Chihiro.controller.message.Friend', {
         refs: {
             deletebutton: '#deleteButton',
             msgbutton: '#msgSendButton',
-            msgtextfield:'#MessageTextField'
+            msgtextfield:'#MessageTextField',
+            friendimage:'#FriendImage'
         },
         control: {
             deletebutton: {
@@ -13,16 +14,33 @@ Ext.define('Chihiro.controller.message.Friend', {
             },
             msgbutton: {
                 tap: 'Send'
+            },
+            friendimage:{
+                tap:'ShowActions'
             }
         }
     },
 
+
     EndConversation: function(view, index, target, record) {
+        var me = Ext.getCmp('ChattingContent');
+        var store = me.getStore();
+        store.load();
+
         var button = this.getDeletebutton();
         var a = button.parent.parent;
-        //console.log(a);
         a.hide();
+
+        if(Ext.getCmp('ChattingFriends')){
+            Ext.getCmp('ChattingFriends').deselectAll();
+        }
+
+        if(Ext.getCmp('ChattingGroups')){
+            Ext.getCmp('ChattingGroups').deselectAll();
+        }
     },
+
+
     Send: function(view, index, target, record) {
         var msgtextfield = this.getMsgtextfield();
         var msg = msgtextfield.getValue();
@@ -39,15 +57,66 @@ Ext.define('Chihiro.controller.message.Friend', {
                     time:"4月12日 下午18:15"
                 }]);
 
-            //scrollable.getScroller().scrollToTop();
             var scroller = Ext.getCmp('ChattingContent').getScrollable();
             scroller.getScroller().scrollToEnd();
             this.fireEvent('Send',view, index, target, record);
         }
-//        if(msg == '')
-//        alert("fuck!");
+
         var scroller = Ext.getCmp('ChattingContent').getScrollable();
         scroller.getScroller().scrollToEnd();
-    }
 
+        var uid = Ext.getCmp('ChattingFriends').getSelection()[0].raw._id;
+        //var uid = '4f8122c25f193cab1c000033';
+        for(var i = 0; i < friendList.length;i++)
+        {
+            if(friendList[i] == uid) {
+                socket.emit('send message',{uid:uid,msg:msg});
+                return;
+            }
+        }
+        socket.emit('add friend',uid, function(result) {
+            if(result.err) aleart('添加好友失败了:(');
+            else friendList.push(uid);
+            //TODO: 等待乾坤的addfriend接口
+        });
+        console.log({uid:uid,msg:msg});
+    },
+
+    ShowActions:function(img,obj,other){
+        if (!this.view) {
+                this.view = Ext.create('Chihiro.view.message.ChattingFriendData');
+        }
+
+        var view = this.view;
+        //console.log(Ext.getCmp('friendData'));
+
+        store = Ext.getCmp('friendData').getStore();
+        store.load();
+
+        if(chatobject === 'friend')
+        {
+            Ext.getCmp('friendData').setData(
+                [
+                    { text: '修改备注名', sort:' ',func: 'Nickname'},
+                    { text: '邀请到群组', sort: '   ',func: 'InviteToGroup' }
+                ]
+            );
+        }
+        else
+        {
+            Ext.getCmp('friendData').setData(
+                [
+                    { text: '空的', sort:' ',func: 'Nickname'},
+                    { text: '满的', sort: '   ',func: 'InviteToGroup' }
+                ]
+            );
+        }
+
+
+        if (!view.getParent()) {
+            Ext.Viewport.add(view);
+        }
+
+        view.show();
+    }
 });

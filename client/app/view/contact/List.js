@@ -15,6 +15,10 @@ Ext.define('Chihiro.view.contact.List', {
                 xtype: 'titlebar',
                 docked: 'top',
                 title: '好友'
+            },
+            {
+                xtype:'userlist',
+                id:'friendlist'
             }
         ]
     }

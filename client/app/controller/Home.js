@@ -14,9 +14,47 @@ Ext.define('Chihiro.controller.Home', {
 
     listening: function() {
         this.locateGeo();
+
         socket.on('friend request', function(user) {
-            alert("somebody add me!!");
             console.log(user);
+
+            var chattinglists = Ext.getCmp('ChattingFriends');
+            var myChattingFriend = chattinglists.getData();
+            var newuser = [user];
+            for(i=0; i < myChattingFriend.length;i++){
+                newuser.push(myChattingFriend[i]);
+            }
+            //myChattingFriend.push(newuser);
+
+            chattinglists.setData([]);
+            var store = chattinglists.getStore();
+            store.load();
+            chattinglists.setData(newuser);
+            //console.log(myChattingFriend);
+        });
+
+        socket.on('messages', function(msg) {
+            console.log(msg);
+            Ext.getCmp('ChattingContent').setData([
+                {
+                    id: msg.from,
+                    image:'',
+                    nickname:msg.nickname,
+                    xindex:'1',
+                    message:msg.message,
+                    time:msg.time
+                }]);
+
+            var scroller = Ext.getCmp('ChattingContent').getScrollable();
+            scroller.getScroller().scrollToEnd();
+        });
+
+        socket.on('friend confirmed', function(obj) {
+            friendList.push(obj.uid);
+            Ext.getCmp('friendlist').setData([]);
+            var store = Ext.getCmp('friendlist').getStore();
+            store.load();
+            Ext.getCmp('friendlist').setData(friendList);
         });
     },
 
@@ -30,6 +68,7 @@ Ext.define('Chihiro.controller.Home', {
                         longitude: geo.getLongitude(),
                         latitude: geo.getLatitude()
                     });
+					myLocation=geo;
                 }
             }
         })

@@ -11,7 +11,7 @@ Ext.define('Chihiro.view.message.ChatListItem', {
             },
 
             getStatus: {
-                setHtml: 'signiture'
+                setHtml: 'lastmsg'
             },
 
             getAvatar: {
@@ -19,7 +19,7 @@ Ext.define('Chihiro.view.message.ChatListItem', {
             },
 
             getUnread: {
-                setHtml: 'unread'
+                setHtml: 'lasttime'
             }
         },
 
@@ -69,7 +69,6 @@ Ext.define('Chihiro.view.message.ChatListItem', {
     },
 
     applyAvatar: function(config) {
-        console.log(this.getAvatar());
         return Ext.factory(config, Ext.Img, this.getAvatar());
     },
 

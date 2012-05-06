@@ -41,6 +41,7 @@ function listen(port) {
         socket.on('send friend request', user.sendFriendRequest);
         socket.on('add friend', user.addFriend);
         socket.on('remove friend', user.removeFriend);
+        socket.on('update portrait', user.updatePortrait);
         socket.on('send message', message.sendMessage);
         socket.on('add activity', activity.addActivity);
     });
