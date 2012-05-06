@@ -59,7 +59,7 @@ function login(usr, callback) {
     // Save in redis
     redis.set('sid:' + sid, usr._id);
     // delete usr['null'];
-    console.log(usr.friends);
+    console.log(usr._id);
     if (!usr.friends) {
         redis.smembers('friends:' + usr._id, function (err, obj) {
             usr.friends = obj;
@@ -320,10 +320,12 @@ function updatePortrait(data, callback){
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         var decodedImage = new Buffer(data, 'base64');
-        fs.writeFile('../client/portraits/' + uid +'.jpg', decodedImage,
-            function (err) { callback(err); });
+        fs.writeFile('../client/portraits/' + uid +'.jpg', decodedImage);
         db.users.update({'_id': db.ObjectId(uid)}, {$set: {portrait: uid+'.jpg'}});
         redis.hset('users:' + usr._id, 'portrait', uid+'.jpg');
+        if (callback) {
+            callback({err: 0});
+        }
     });
 }
 
@@ -452,7 +454,7 @@ function emitFriendConfirmed(uid) {
 }
 
 // remove a friend
-function removeFriend(desUsrId, callback) {
+function removeFriend(desUsrId) {
     socket.get('uid', function (err, uid) {
         redis.srem('friends:' + uid, desUsrId);
         redis.srem('friends:' + desUsrId, uid);
@@ -461,7 +463,6 @@ function removeFriend(desUsrId, callback) {
         db.users.update({'_id': db.ObjectId(desUsrId)},
             {$pull: {friends: uid}});
     });
-    callback({err: 0, msg: '删除好友成功'});
 }
 
 function findByPhones(phones, callback) {

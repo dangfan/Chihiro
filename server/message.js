@@ -17,14 +17,18 @@ function sendMessage(data) {
         var date = new Date();
         redis.hget('users:' + uid, 'nickname', function (err, nickname) {
             if (!nickname) return;
-            clients[data.uid].emit('messages', {
-                from: uid,
-                nickname: nickname,
-                time: date,
-                message: data.msg
-            });
-            redis.sadd('messages:' + data.uid, uid + '|' + date + '|' + data.msg);
-            console.log('message to:' + data.uid, nickname + '|' + uid + '|' + date + '|' + data.msg);
+            if (data.uid in clients) {
+                clients[data.uid].emit('messages', {
+                    from: uid,
+                    nickname: nickname,
+                    time: date,
+                    message: data.msg
+                });
+                console.log('message to:' + data.uid, nickname + '|' + uid + '|' + date + '|' + data.msg);
+            } else {
+                redis.sadd('messages:' + data.uid, uid + '|' + date + '|' + data.msg);                
+                console.log('offline message to:' + data.uid, nickname + '|' + uid + '|' + date + '|' + data.msg);
+            }
         });
     });
 }
