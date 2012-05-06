@@ -50,6 +50,18 @@ Ext.define('Chihiro.view.activitylist.Detail', {
                 text: '我要参加',
                 id: 'ParticipateBtn',
                 action: 'participate'
+            },
+            {
+                xtype: 'button',
+                text: '编辑',
+                id: 'EditBtn',
+                action: 'edit'
+            },
+            {
+                xtype: 'button',
+                text: '我要退出',
+                id: 'QuitBtn',
+                action: 'quit'
             }
         ]
     },

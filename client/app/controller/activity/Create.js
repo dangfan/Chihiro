@@ -27,7 +27,7 @@ Ext.define('Chihiro.controller.activity.Create',{
     toMapLocate:function(){
         var val = Ext.getCmp('basicactivityinfo').getValues();
         //console.log(val);
-        /*if(val.cost.length == 0 || val.location.length == 0 || val.name.length == 0 || val.type.length == 0){
+        if(val.cost.length == 0 || val.location.length == 0 || val.name.length == 0 || val.type.length == 0){
             Ext.Msg.alert('请完整填写信息！');
             return;
         }else if(val.date.getFullYear() == new Date().getFullYear()
@@ -50,7 +50,7 @@ Ext.define('Chihiro.controller.activity.Create',{
                 Ext.Msg.alert('活动时间至少30分钟');
                 return;
             }
-        }*/
+        }
         if(!Ext.getCmp('maplocate')){
             Ext.create('Chihiro.view.activity.MapLocate',{
                 id: 'maplocate'
@@ -80,7 +80,7 @@ Ext.define('Chihiro.controller.activity.Create',{
         });
         Ext.getCmp('maplocate').down('detailMap');
         Ext.getCmp('createactivity').push(Ext.getCmp('maplocate'));
-        console.log(createActivity);
+        //console.log(createActivity);
     },
     toDetailActivity: function(){
         if(!Ext.getCmp('detailactivity')){
@@ -88,6 +88,7 @@ Ext.define('Chihiro.controller.activity.Create',{
                 id: 'detailactivity'
             });
         }
+        createActivity.zoom = Ext.getCmp('mylocation').getMapOptions().zoom;
         Ext.getCmp('createactivity').push(Ext.getCmp('detailactivity'));
     },
     createconfirm: function(){
@@ -100,10 +101,18 @@ Ext.define('Chihiro.controller.activity.Create',{
             Ext.Msg.alert('详细信息不能超过1000字');
             return;
         }
+        //console.log(createActivity);
         createActivity.detail = val.detail;
-        socket.emit('add activity', createActivity, function(msg){
-            console.log(msg);
-        });
+        if(createOrEdit == 1){
+            //TODO: 编辑活动
+            //console.log(Ext.getCmp('detailinfo'));
+        }else{
+            socket.emit('add activity', createActivity, function(msg){
+                console.log(msg);
+            });
+        }
+        Ext.getCmp('createactivity').pop(2);
+
         Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
     }
 })

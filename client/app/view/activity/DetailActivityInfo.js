@@ -9,6 +9,7 @@ Ext.define('Chihiro.view.activity.DetailActivityInfo',{
             {
                 xtype: 'textareafield',
                 name: 'detail',
+                id: 'detailinfo',
                 scrollable: false,
                 label: '不超过1000字'
             },

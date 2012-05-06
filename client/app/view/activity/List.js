@@ -16,7 +16,7 @@ Ext.define('Chihiro.view.activity.List', {
                 ui: 'dark',
                 docked: 'top',
                 scrollable: false,
-                title: '活动',
+                //title: '活动',
                 items:[
                     {
                         docked: 'left',
@@ -24,6 +24,24 @@ Ext.define('Chihiro.view.activity.List', {
                         iconMask: true,
                         ui: 'plain',
                         action: 'refreshList'
+                    },
+                    {
+                        xtype: 'segmentedbutton',
+                        id:'activitygroup',
+                        allowDepress: false,
+                        //docked:'mid',
+                        items: [
+                            {
+                                text: '附近活动',
+                                pressed: true
+                            },
+                            {
+                                text: '我发起的活动'
+                            },
+                            {
+                                text: '我参加的活动'
+                            }
+                        ]
                     },
                     {
                         docked: 'right',
@@ -36,7 +54,18 @@ Ext.define('Chihiro.view.activity.List', {
             },
             {
                 xtype: 'activitylist',
-                id: 'activitylist'
+                id: 'nearactivitylist',
+                title: '附近活动'
+            },
+            {
+                xtype: 'activitylist',
+                id: 'sponseactivitylist',
+                title: '我发起的活动'
+            },
+            {
+                xtype: 'activitylist',
+                id: 'participateactivitylist',
+                title: '我参加的活动'
             }
         ]
     }
