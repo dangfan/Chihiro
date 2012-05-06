@@ -27,7 +27,7 @@ Ext.define('Chihiro.controller.activity.Create',{
     toMapLocate:function(){
         var val = Ext.getCmp('basicactivityinfo').getValues();
         //console.log(val);
-        if(val.cost.length == 0 || val.location.length == 0 || val.name.length == 0 || val.type.length == 0){
+        /*if(val.cost.length == 0 || val.location.length == 0 || val.name.length == 0 || val.type.length == 0){
             Ext.Msg.alert('请完整填写信息！');
             return;
         }else if(val.date.getFullYear() == new Date().getFullYear()
@@ -50,7 +50,7 @@ Ext.define('Chihiro.controller.activity.Create',{
                 Ext.Msg.alert('活动时间至少30分钟');
                 return;
             }
-        }
+        }*/
         if(!Ext.getCmp('maplocate')){
             Ext.create('Chihiro.view.activity.MapLocate',{
                 id: 'maplocate'
@@ -66,10 +66,21 @@ Ext.define('Chihiro.controller.activity.Create',{
         createActivity.endtime = val.endtime;
         createActivity.sponsor = sname;
 
-        Ext.getCmp('mylocation').setMapCenter({latitude: myLocation.getLatitude(), longitude: myLocation.getLongitude()});
+        var mark=new Object();
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode( { 'address': val.location}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                Ext.getCmp('mylocation').setMapCenter(results[0].geometry.location);
+                mark.latitude = results[0].geometry.location.$a;
+                mark.longitude = results[0].geometry.location.ab;
+                createActivity.mark = mark;
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+        });
         Ext.getCmp('maplocate').down('detailMap');
         Ext.getCmp('createactivity').push(Ext.getCmp('maplocate'));
-        //console.log(createActivity);
+        console.log(createActivity);
     },
     toDetailActivity: function(){
         if(!Ext.getCmp('detailactivity')){
@@ -77,7 +88,6 @@ Ext.define('Chihiro.controller.activity.Create',{
                 id: 'detailactivity'
             });
         }
-        //TODO: 获取用户选择的坐标
         Ext.getCmp('createactivity').push(Ext.getCmp('detailactivity'));
     },
     createconfirm: function(){
@@ -91,7 +101,9 @@ Ext.define('Chihiro.controller.activity.Create',{
             return;
         }
         createActivity.DetailInfo = val;
+        socket.on('add activity', createActivity, function(msg){
+            console.log(msg);
+        });
         Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
-        //TODO: 向服务器发送添加活动的请求
     }
 })

@@ -55,7 +55,6 @@ Ext.define('Chihiro.controller.activity.Find',{
                 id: 'createactivity'
             });
         }
-        //console.log(Ext.getCmp('createactivity'));
         Ext.Viewport.setActiveItem(Ext.getCmp('createactivity'));
     },
     onItemTap: function(list, user){
@@ -66,12 +65,12 @@ Ext.define('Chihiro.controller.activity.Find',{
         var view = this.view;
         view.setUser(user);
         //console.log(this);
-        /*if (this.getProfile() == "phone") {
+        if (this.getProfile() == "phone") {
             view.setWidth(null);
             view.setHeight('85%');
             view.setTop(null);
             view.setLeft(0);
-        }*/
+        }
         if (!view.getParent()) {
             Ext.Viewport.add(view);
         }

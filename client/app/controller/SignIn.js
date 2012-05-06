@@ -65,8 +65,8 @@ Ext.define('Chihiro.controller.SignIn', {
             socket.emit('init', sid, function(msg) {
                 if (!msg.err) {
                     friendList=msg.obj.friends;
-                    console.log(friendList);
-                    console.log(msg.obj);
+                    //console.log(friendList);
+                    //console.log(msg.obj);
 					sname=msg.obj.nickname;
                     var nickname = msg.obj.nickname;
                     var signiture = msg.obj.signiture;
