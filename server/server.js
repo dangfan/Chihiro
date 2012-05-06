@@ -22,9 +22,9 @@ function listen(port) {
     // The server program
     sio.sockets.on('connection', function (socket) {
         // Interfaces related to users
-        var user = require('./user').init(db, redis, clients, socket);
-        var message = require('./message').init(redis, clients, socket);
-        var activity = require('./activity').init(db, redis, clients, socket);
+        var user = require('./user').init(db, redis, clients);
+        var message = require('./message').init(redis, clients);
+        var activity = require('./activity').init(db, redis, clients);
         socket.on('init',  user.init);
         socket.on('login', user.authenticate);
         socket.on('logout', user.logout);

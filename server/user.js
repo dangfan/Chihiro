@@ -5,14 +5,12 @@ var md5  = require('MD5'),
 var salt = 'Ch!hlr0:',
     db,
     redis,
-    clients,
-    socket;
+    clients;
 
-exports.init = function(_db, _redis, _clients, _socket) {
+exports.init = function(_db, _redis, _clients) {
     db       = _db;
     redis    = _redis;
     clients  = _clients;
-    socket   = _socket;
     return {
         init:               init,
         authenticate:       authenticate,
@@ -34,7 +32,7 @@ exports.init = function(_db, _redis, _clients, _socket) {
     };
 }
 
-function loadMessages(uid) {
+function loadMessages(uid, socket) {
     emitFriendRequests(uid);
     emitFriendConfirmed(uid);
     // Topics
@@ -50,7 +48,7 @@ function loadMessages(uid) {
 }
 
 // Login the specific user with the current socket connection
-function login(usr, callback) {
+function login(usr, callback, socket) {
     // Generate uuid as session id
     var sid = uuid.v4();
     // Bind user and socket
@@ -104,11 +102,12 @@ function login(usr, callback) {
 // After the app starting up,
 // init needs to be called first if the app has session id
 function init(sid, callback) {
+    var socket = this;
     redis.get('sid:' + sid, function (err, uid) {
         if (uid) {
             redis.hgetall('users:' + uid, function (err, usr) {
                 if (usr) {
-                    login(usr, callback);
+                    login(usr, callback, socket);
                 } else {
                     callback({err: 1, msg: 'Please login'});
                 }
@@ -122,6 +121,7 @@ function init(sid, callback) {
 // Authenticate a user by its username and password
 function authenticate(data, callback) {
     if (!data.username || !data.password) return;
+    var socket = this;
     var pass = md5(salt + data.password);
     if (data.username.indexOf('@') > 0) { // use email
         redis.get('emails:' + data.username, function (err, uid) {
@@ -130,7 +130,7 @@ function authenticate(data, callback) {
             } else {
                 redis.hgetall('users:' + uid, function (err, usr) {
                     if (usr.email == data.username && usr.password == pass) {
-                        login(usr, callback);
+                        login(usr, callback, socket);
                     } else {
                         callback({err: 1, msg: '请检查用户名或密码'});
                     }
@@ -144,7 +144,7 @@ function authenticate(data, callback) {
             } else {
                 redis.hgetall('users:' + uid, function (err, usr) {
                     if (usr.phone == data.username && usr.password == pass) {
-                        login(usr, callback);
+                        login(usr, callback, socket);
                     } else {
                         callback({err: 1, msg: '请检查用户名或密码'});
                     }
@@ -167,12 +167,12 @@ function cleanAfterDisconnect(uid) {
     delete clients[uid];
     db.users.update({_id: db.ObjectId(uid)}, 
         {$set: {location: [0, -90]}});
-
     console.log('user ' + uid + ' is now offline.');
 }
 
 // Log out manully
 function logout(sid) {
+    var socket = this;
     socket.get('uid', function (err, uid) {
         var key = 'sid:' + sid;
         cleanAfterDisconnect(uid);
@@ -182,6 +182,7 @@ function logout(sid) {
 
 // After disconnecting, remove the user from clients list
 function disconnect() {
+    var socket = this;
     socket.get('uid', function (err, uid) {
         cleanAfterDisconnect(uid);
     });
@@ -191,6 +192,7 @@ function disconnect() {
 // create a new account
 function signup(data, callback) {
     if (!data.email || !data.password || !data.phone || !data.nickname) return;
+    var socket = this;
     db.users.insert({
         email:    data.email,
         password: md5(salt + data.password),
@@ -221,6 +223,7 @@ function signup(data, callback) {
 
 // Find closest people around the user
 function findClosest(callback) {
+    var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.get('location:' + uid, function (err, location) {
@@ -254,6 +257,7 @@ function findClosest(callback) {
 
 // Find nearby users by interests
 function findByInterests(callback) {
+    var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.get('location:' + uid, function (err, location) {
@@ -289,6 +293,7 @@ function findByInterests(callback) {
 }
 
 function updateLocation(data) {
+    var socket = this;
     socket.get('uid', function (err, uid) {
     if (!uid) return;
         db.users.update({'_id': db.ObjectId(uid)},
@@ -301,6 +306,7 @@ function updateLocation(data) {
 }
 
 function updateProfile(data, callback) {
+    var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         // set in mongo
@@ -317,6 +323,7 @@ function updateProfile(data, callback) {
 }
 
 function updatePortrait(data, callback){
+    var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         var decodedImage = new Buffer(data, 'base64');
@@ -331,6 +338,7 @@ function updatePortrait(data, callback){
 
 // Get basic information of a user by id
 function getInfoById(uid, callback) {
+    var socket = this;
     socket.get('uid', function (err, t) {
         if (!t) return;
         // Get from redis first
@@ -347,6 +355,7 @@ function getInfoById(uid, callback) {
 
 // Get basic information of a user by email
 function getInfoByEmail(email, callback) {
+    var socket = this;
     socket.get('uid', function (err, t) {
         if (!t) return;
         // Get from redis first
@@ -363,6 +372,7 @@ function getInfoByEmail(email, callback) {
 
 // Get basic information of a user by phone number
 function getInfoByPhone(phone, callback) {
+    var socket = this;
     socket.get('uid', function  (err, t) {
         if (!t) return;
         // Get from redis first
@@ -405,6 +415,7 @@ function setUserData(usr) {
 
 // send a request to another user
 function sendFriendRequest(desUsrId) {
+    var socket = this;
     socket.get('uid', function (err, uid) {
         redis.sadd('friendRequests:' + desUsrId, uid);
         console.log('user ' + uid + ' added ' + desUsrId + ' as friend');
@@ -427,6 +438,7 @@ function emitFriendRequests(uid) {
 
 // accept a friend request
 function addFriend(desUsrId, callback) {
+    var socket = this;
     socket.get('uid', function (err, uid) {
         redis.sadd('friends:' + uid, desUsrId);
         redis.sadd('friends:' + desUsrId, uid);
@@ -455,6 +467,7 @@ function emitFriendConfirmed(uid) {
 
 // remove a friend
 function removeFriend(desUsrId) {
+    var socket = this;
     socket.get('uid', function (err, uid) {
         redis.srem('friends:' + uid, desUsrId);
         redis.srem('friends:' + desUsrId, uid);
@@ -466,6 +479,7 @@ function removeFriend(desUsrId) {
 }
 
 function findByPhones(phones, callback) {
+    var socket = this;
     socket.get('uid', function  (err, t) {
         if (!t) return;
         var list = new Array();
