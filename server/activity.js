@@ -14,6 +14,7 @@ exports.init = function(_db, _redis, _clients, _socket) {
         updateActivityDetails:      updateActivityDetails,
         participateActivity:        participateActivity,
         unparticipateActivity:      unparticipateActivity,
+        getActivityById:            getActivityById,
         findActivityByTitle:        findActivityByTitle,
         findActivityByLocation:     findActivityByLocation,
         findActivityByCreator:      findActivityByCreator,
@@ -22,6 +23,8 @@ exports.init = function(_db, _redis, _clients, _socket) {
 }
 
 function addActivity(activity, callback) {
+    var socket = this;
+    console.log('add activity');
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         activity.creator_id = uid;
@@ -36,24 +39,29 @@ function addActivity(activity, callback) {
                 var activity = objects[0];
                 for (key in activity)
                     redis.hset('activities:' + activity._id, key, activity[key]);
+                console.log('activity created:' + activity._id + '|' + activity.name + '|' + uid);
                 callback({err: 0, msg: '添加活动成功'});
+                redis.set('activity_location:' + activity._id,
+                    '[' + activity.mark.longitude + ',' + activity.mark.latitude + ']');
+                redis.sadd('activities_createdby:' + uid, activity._id);
             }
         });
     });
 }
 
-function removeActivity(activity_id, callback) {
+function removeActivity(activityid, callback) {
+    var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         // find in redis
-        redis.hgetall('activities:' + activity_id, function (err, activity) {
+        redis.hgetall('activities:' + activityid, function (err, activity) {
             if (!activity) {
                 // find in mongo
                 // delete in mongo
                 // callback
             } else {
                 // delete in redis
-                redis.del('activities:' + activity_id);
+                redis.del('activities:' + activityid);
                 // find in mongo
                 // delete in mongo
                 // callback
@@ -63,6 +71,7 @@ function removeActivity(activity_id, callback) {
 }
 
 function updateActivityDetails(activity) {
+    var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.hget('activities:' + activity._id, 'creator_id', function(err, cid) {
@@ -76,25 +85,44 @@ function updateActivityDetails(activity) {
     });
 }
 
-function participateActivity(activity) {
+function participateActivity(activityid) {
+    var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
-        redis.sadd('activity_participants:' + activity._id, uid);
+        redis.sadd('activity_participants:' + activityid, uid);
+        redis.sadd('activities_participate:' + uid, activityid)
+        console.log('activity participate:' + activityid + '|' + uid);
     });
 }
 
-function unparticipateActivity(activity) {
+function unparticipateActivity(activityid) {
+    var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
-        redis.srem('activity_participants:' + activity._id, uid);
+        redis.srem('activity_participants:' + activityid, uid);
+        redis.srem('activities_participate:' + uid, activityid)
+        console.log('activity unparticipate:' + activityid + '|' + activity.name + '|' + uid);
     });
 }
 
-function findActivityByCreator(uid, callback) {
+function getActivityById(activityid, callback) {
+    redis.hgetall('activities:' + activityid, function (err, activity) {
+        if (!activity) {
+            db.activities.find({_id: db.ObjectId(activityid)},
+                function (err, activity) {
+                    callback(activity);
+                });
+        } else {
+            callback(activity);
+        }
+    });
+}
+
+function findActivityByCreator(callback) {
     
 }
 
-function findActivityByParticipants(uid, callback) {
+function findActivityByParticipants(callback) {
 
 }
 
@@ -104,6 +132,29 @@ function findActivityByTitle(data, callback) {
 }
 
 // data includes: ordertype.
-function findActivityByLocation(data, callback) {
-    
+function findActivityByLocation(callback) {
+    var socket = this;
+    socket.get('uid', function (err, uid) {
+        if (!uid) return;
+        redis.get('location:' + uid, function (err, location) {
+            db.executeDbCommand({
+                geoNear:            'activities',
+                near:               eval(location),
+                spherical:          true,
+                maxDistance:        1 / 6371,       // 1km
+                distanceMultiplier: 6371000
+            }, function (err, obj) {
+                var data = new Array();
+                obj.documents[0].results.forEach(function (result) {
+                    if (result.obj._id == uid) return;
+                    var obj = result.obj;
+                    obj.dis = result.dis.toFixed(0)+'m';
+                    delete obj['null'];
+                    data.push(obj);
+                });
+                callback(data);
+                console.log('user ' + uid + ' found closest activities.');
+            });
+        });
+    });
 }

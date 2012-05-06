@@ -1,6 +1,6 @@
 function listen(port) {
     // Set up collections
-    var collections = ['users'];
+    var collections = ['users', 'activities'];
 
     // Basic requirements
     var sio   = require('socket.io').listen(port),
@@ -22,9 +22,9 @@ function listen(port) {
     // The server program
     sio.sockets.on('connection', function (socket) {
         // Interfaces related to users
-        var user = require('./user').init(db, redis, clients, socket);
-        var message = require('./message').init(redis, clients, socket);
-        var activity = require('./activity').init(db, redis, clients, socket);
+        var user = require('./user').init(db, redis, clients);
+        var message = require('./message').init(redis, clients);
+        var activity = require('./activity').init(db, redis, clients);
         socket.on('init',  user.init);
         socket.on('login', user.authenticate);
         socket.on('logout', user.logout);
@@ -43,7 +43,14 @@ function listen(port) {
         socket.on('remove friend', user.removeFriend);
         socket.on('update portrait', user.updatePortrait);
         socket.on('send message', message.sendMessage);
+        socket.on('create topic', message.createTopic);
+        socket.on('get topic info', message.getTopicInfo);
+        socket.on('subscribe topic', message.subscribeTopic);
+        socket.on('send topic message', message.sendTopicMessage);
+        socket.on('draw', message.draw);
         socket.on('add activity', activity.addActivity);
+        socket.on('get activity', activity.getActivityById);
+        socket.on('find closest activities', activity.findActivityByLocation);
     });
 }
 

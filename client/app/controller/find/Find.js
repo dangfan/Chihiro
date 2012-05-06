@@ -39,6 +39,24 @@ Ext.define('Chihiro.controller.find.Find', {
                 Ext.getCmp('userlist').setData(list);
             });
         }
+        else if (way == 'Interest') {
+            Ext.Viewport.setMasked({
+                xtype: 'loadmask',
+                message: '载入中...'
+            });
+            socket.emit('find by interests', function(list) {
+                Ext.Viewport.setMasked(false);
+                panel.push(Ext.create('Chihiro.view.find.Nearby', {
+                    title: '查找相同兴趣的人',
+                    items: [
+                        {
+                            xtype: 'userlist',
+                            id: 'userlist'
+                        }]
+                }));
+                Ext.getCmp('userlist').setData(list);
+            });
+        }
         else if (way == 'Contact') {
             Ext.Viewport.setMasked({
                 xtype: 'loadmask',

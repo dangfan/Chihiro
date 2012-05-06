@@ -3,8 +3,9 @@ Ext.define('Chihiro.view.activity.MapLocate',{
     xtype: 'maplocate',
     scrollable: false,
     config: {
-        title: '确认坐标',
+        title: '设置缩放系数',
         layout: 'vbox',
+        fullscreen: true,
         scrollable: false,
         items:[
             {
@@ -24,28 +25,8 @@ Ext.define('Chihiro.view.activity.MapLocate',{
             {
                 xtype: 'panel',
                 flex: 2,
+                layout: 'vbox',
                 items:[
-                    {
-                        xtype: 'fieldset',
-                        id: 'locationfield',
-                        title: '地图坐标',
-                        items:[
-                            {
-                                xtype: 'textfield',
-                                label: '纬度',
-                                name: 'latitude',
-                                id: 'latitudetext',
-                                disabled: true
-                            },
-                            {
-                                xtype: 'textfield',
-                                label: '经度',
-                                name: 'longitude',
-                                id: 'longitudetext',
-                                disabled: true
-                            }
-                        ]
-                    },
                     {
                         xtype:'panel',
                         defaults:{
@@ -58,6 +39,12 @@ Ext.define('Chihiro.view.activity.MapLocate',{
                                 enabled:false,
                                 action: 'toDetailActivity'
                             }
+                        ]
+                    },
+                    {
+                        xtype: 'panel',
+                        html: [
+                            '若图示不正确，请返回上一层重新设置地点</br>通过放大缩小地图设置合适的缩放比例'
                         ]
                     }
                 ]

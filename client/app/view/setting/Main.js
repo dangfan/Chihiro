@@ -30,7 +30,7 @@ Ext.define('Chihiro.view.setting.Main', {
 
                     data: [
                         { text: '个人名片', sort:' ',func: 'Info'},
-                        { text: '签名状态', sort:' ',func: 'Status'},
+                        { text: '兴趣签名', sort:' ',func: 'Status'},
                         { text: '我的帐户', sort:' ',func: 'Account'},
                         { text: '上传头像', sort:' ',func: 'Shortcut'},
                         { text: '推送', sort:'  ',func: 'Push' },
@@ -46,9 +46,11 @@ Ext.define('Chihiro.view.setting.Main', {
 
                 listeners: {
                     itemtap: function(view, index, target, record) {
-                        this.parent.push(Ext.create('Chihiro.view.setting.' + record.get('func'), {
+                        var panel = Ext.create('Chihiro.view.setting.' + record.get('func'), {
                             title: record.get('text')
-                        }));
+                        });
+                        if(panel.isXType('formpanel')) panel.setValues(profile);
+                        this.parent.push(panel);
                     }
                 }
             },

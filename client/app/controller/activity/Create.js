@@ -35,7 +35,7 @@ Ext.define('Chihiro.controller.activity.Create',{
             || (val.date.getMonth() == new Date().getMonth() && val.date.getDate() <= new Date().getDate()))){
             Ext.Msg.alert('请设置未来的日期');
             return;
-        }else if(!(val.starttime.match(/[0-9]{2}:[0-9]{2}/) && val.endtime.match(/[0-9]{2}:[0-9]{2}/))){
+        }else if(!(val.starttime.match(/[0-9]{1,2}:[0-9]{2}/) && val.endtime.match(/[0-9]{1,2}:[0-9]{2}/))){
             Ext.Msg.alert('请输入有效时间');
             return;
         }
@@ -66,7 +66,18 @@ Ext.define('Chihiro.controller.activity.Create',{
         createActivity.endtime = val.endtime;
         createActivity.sponsor = sname;
 
-        Ext.getCmp('mylocation').setMapCenter({latitude: myLocation.getLatitude(), longitude: myLocation.getLongitude()});
+        var mark=new Object();
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode( { 'address': val.location}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                Ext.getCmp('mylocation').setMapCenter(results[0].geometry.location);
+                mark.longitude = results[0].geometry.location.ab;
+                mark.latitude = results[0].geometry.location.$a;
+                createActivity.mark = mark;
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+        });
         Ext.getCmp('maplocate').down('detailMap');
         Ext.getCmp('createactivity').push(Ext.getCmp('maplocate'));
         //console.log(createActivity);
@@ -77,7 +88,7 @@ Ext.define('Chihiro.controller.activity.Create',{
                 id: 'detailactivity'
             });
         }
-        //TODO: 获取用户选择的坐标
+        createActivity.zoom = Ext.getCmp('mylocation').getMapOptions().zoom;
         Ext.getCmp('createactivity').push(Ext.getCmp('detailactivity'));
     },
     createconfirm: function(){
@@ -90,8 +101,21 @@ Ext.define('Chihiro.controller.activity.Create',{
             Ext.Msg.alert('详细信息不能超过1000字');
             return;
         }
-        createActivity.DetailInfo = val;
-        Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
-        //TODO: 向服务器发送添加活动的请求
+        //console.log(createActivity);
+        createActivity.detail = val.detail;
+        if(createOrEdit == 1){
+            //TODO: 编辑活动
+        }else{
+            socket.emit('add activity', createActivity, function(msg){
+                if(msg.err == 0){
+                    Ext.Msg.alert('活动添加成功');
+                    Ext.getCmp('createactivity').pop(2);
+                    Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
+                }
+                else{
+                    Ext.Msg.alert('活动添加失败，请稍后再试');
+                }
+            });
+        }
     }
 })

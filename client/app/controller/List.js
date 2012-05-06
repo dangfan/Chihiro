@@ -76,6 +76,7 @@ Ext.define('Chihiro.controller.List', {
             Ext.getCmp('talktofriendBtn').setHidden(true);
         }
 
+        console.log(this);
         var view = this.view;
         view.setUser(user);
 
