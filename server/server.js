@@ -1,6 +1,6 @@
 function listen(port) {
     // Set up collections
-    var collections = ['users'];
+    var collections = ['users', 'activities'];
 
     // Basic requirements
     var sio   = require('socket.io').listen(port),
@@ -44,6 +44,7 @@ function listen(port) {
         socket.on('update portrait', user.updatePortrait);
         socket.on('send message', message.sendMessage);
         socket.on('add activity', activity.addActivity);
+        socket.on('get activity', activity.getActivityById);
     });
 }
 

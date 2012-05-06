@@ -24,9 +24,10 @@ function sendMessage(data) {
                     time: date,
                     message: data.msg
                 });
+                redis.sadd('messages:' + data.uid, uid + '|' + date + '|' + data.msg);
                 console.log('message to:' + data.uid, nickname + '|' + uid + '|' + date + '|' + data.msg);
             } else {
-                redis.sadd('messages:' + data.uid, uid + '|' + date + '|' + data.msg);                
+                redis.sadd('old messages:' + data.uid, uid + '|' + date + '|' + data.msg);
                 console.log('offline message to:' + data.uid, nickname + '|' + uid + '|' + date + '|' + data.msg);
             }
         });
