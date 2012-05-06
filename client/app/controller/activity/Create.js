@@ -101,7 +101,7 @@ Ext.define('Chihiro.controller.activity.Create',{
             return;
         }
         createActivity.detail = val.detail;
-        socket.on('add activity', createActivity, function(msg){
+        socket.emit('add activity', createActivity, function(msg){
             console.log(msg);
         });
         Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));

@@ -36,6 +36,12 @@ function loadMessages(uid, socket) {
     emitFriendRequests(uid);
     emitFriendConfirmed(uid);
     // Topics
+    redis.smembers('user_topics:' + uid, function (err, topics) {
+        for (id in topics) {
+            redis.subscribe('topic:' + topics[id]);
+            redis.subscribe('draw:' + topics[id]);
+        }
+    });
     redis.on('message', function (channel, msg) {
         var info = channel.split(':'),
             data = eval(msg);
@@ -238,7 +244,7 @@ function findClosest(callback) {
                 obj.documents[0].results.forEach(function (result) {
                     if (result.obj._id == uid) return;
                     var obj = result.obj;
-                    obj.dis = result.dis;
+                    obj.dis = result.dis.toFixed(0)+'m';
                     delete obj.password;
                     delete obj.email;
                     delete obj.phone;
@@ -262,6 +268,10 @@ function findByInterests(callback) {
         if (!uid) return;
         redis.get('location:' + uid, function (err, location) {
             redis.get('users:' + uid, function (err, usr) {
+                if (!usr.interests) {
+                    callback([]);
+                    return;
+                }
                 interests = eval(usr.interests);
                 db.executeDbCommand({
                     geoNear:            'users',
