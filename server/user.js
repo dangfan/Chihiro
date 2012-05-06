@@ -320,10 +320,12 @@ function updatePortrait(data, callback){
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         var decodedImage = new Buffer(data, 'base64');
-        fs.writeFile('../client/portraits/' + uid +'.jpg', decodedImage,
-            function (err) { callback(err); });
+        fs.writeFile('../client/portraits/' + uid +'.jpg', decodedImage);
         db.users.update({'_id': db.ObjectId(uid)}, {$set: {portrait: uid+'.jpg'}});
         redis.hset('users:' + usr._id, 'portrait', uid+'.jpg');
+        if (callback) {
+            callback({err: 0});
+        }
     });
 }
 
