@@ -2,6 +2,8 @@ Ext.define('Chihiro.controller.activity.Find',{
     extend: 'Ext.app.Controller',
 
     config: {
+        profile: Ext.os.deviceType.toLowerCase(),
+
         refs: {
             homeView: '#homeView',
             activitylistref: '#activitylist',
