@@ -216,7 +216,7 @@ function signup(data, callback) {
 
             console.log('new user ' + usr.nickname + ' is signed up.');
 
-            login(usr, callback);
+            login(usr, callback, socket);
         }
     });
 }
