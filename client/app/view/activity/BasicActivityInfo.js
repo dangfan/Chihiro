@@ -32,27 +32,18 @@ Ext.define('Chihiro.view.activity.BasicActivityInfo',{
                         }
                     },
                     {
-                        xtype: 'panel',
-                        name: 'time',
-                        layout: 'vbox',
-                        items:[
-                            {
-                                xtype: 'textfield',
-                                name: 'starttime',
-                                id: 'activitystarttime',
-                                label: '起始时间',
-                                placeHolder: '00:00',
-                                flex: 1
-                            },
-                            {
-                                xtype: 'textfield',
-                                name: 'endtime',
-                                id: 'activityendtime',
-                                label: '结束时间',
-                                placeHolder: '00:00',
-                                flex: 1
-                            }
-                        ]
+                        xtype: 'textfield',
+                        name: 'starttime',
+                        id: 'activitystarttime',
+                        label: '起始时间',
+                        placeHolder: '00:00'
+                    },
+                    {
+                        xtype: 'textfield',
+                        name: 'endtime',
+                        id: 'activityendtime',
+                        label: '结束时间',
+                        placeHolder: '00:00'
                     },
                     {
                         xtype:'textfield',

@@ -9,7 +9,8 @@ Ext.define('Chihiro.controller.List', {
             searchField: 'searchfield',
             refreshButton: 'button[iconCls=refresh]',
             addFriendBtn: '#addFriendBtn',
-            deleteFriendBtn: '#deleteFriendBtn'
+            deleteFriendBtn: '#deleteFriendBtn',
+            simplelist:'#SimpleFriendList'
         },
 
         control: {
@@ -27,6 +28,11 @@ Ext.define('Chihiro.controller.List', {
             },
             'deleteFriendBtn': {
                 tap: 'deleteFriend'
+            },
+            'simplelist':{
+                select:'selectSomebody',
+                deselect:'remainCss',
+                itemdoubletap:'doubleTap'
             }
         }
     },
@@ -37,7 +43,6 @@ Ext.define('Chihiro.controller.List', {
 
     addFriend: function() {
         socket.emit('send friend request',Ext.getCmp('userlist').getSelection()[0].raw._id);
-
         console.log(Ext.getCmp('userlist').getSelection()[0].raw._id);
         alert("好友申请已经发送");
         //TODO: Will need callback msg indicating whether this person is already a friend
@@ -101,6 +106,38 @@ Ext.define('Chihiro.controller.List', {
         }
         if(Ext.getCmp('userlist')){
             Ext.getCmp('userlist').deselectAll();
+        }
+    },
+
+    selectSomebody:function(a,record){
+
+
+        invitationList.push(record.data);
+
+        console.log(invitationList);
+    },
+
+    remainCss: function(me, record) {
+        var ln = invitationList.length;
+
+        for(var i = 0; i < ln; i++)
+        {
+            if(invitationList[i] === record.data)
+            {
+                invitationList.pop(record.data);
+                console.log(invitationList);
+                return;
+            }
+        }
+    },
+
+    doubleTap: function(me, index, target, record,  e, eOpts){
+        var item = me.container.getViewItems()[me.getStore().indexOf(record)];
+        if (Ext.isElement(item)) {
+            item = Ext.get(item);
+        }
+        if (item) {
+            item.removeCls([me.getPressedCls(), me.getSelectedCls()]);
         }
     }
 });
