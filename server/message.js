@@ -4,14 +4,18 @@ exports.init = function(_redis, _clients) {
     redis    = _redis;
     clients  = _clients;
     return {
-        sendMessage:    sendMessage
+        sendMessage:      sendMessage,
+        createTopic:      createTopic,
+        getTopicInfo:     getTopicInfo,
+        subscribeTopic:   subscribeTopic,
+        sendTopicMessage: sendTopicMessage
     };
 }
 
 // send text message to a user
 // TODO: offline messages
 function sendMessage(data) {
-    socket = this;
+    var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         var date = new Date();
@@ -35,14 +39,16 @@ function sendMessage(data) {
 
 // Create a topic with members
 function createTopic(data, callback) {
-    socket = this;
+    var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
-        if (!data.title || !data.members) return;
+        if (!data.title || !data.members || !data.intro) return;
         redis.incr('topics_id', function (err, id){
-            redis.set('topics:' + id + ':title', topic.title);
-            redis.sadd('topics:' + id + ':members', topic.members);
-            for (iuid in topic.members) redis.sadd('user_topics:' + iuid, id);
+            redis.set('topics:' + id + ':title', data.title);
+            redis.set('topics:' + id + ':intro', data.intro);
+            redis.sadd('topics:' + id + ':members', data.members);
+            for (iuid in data.members)
+                redis.sadd('user_topics:' + data.members[iuid], id);
             callback({err: 0, id: id});
             console.log('new topic ' + topic.title + ' is created.');
         });
@@ -51,11 +57,15 @@ function createTopic(data, callback) {
 
 // Get a topic information
 function getTopicInfo(id, callback) {
-    socket = this;
+    var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.get('topics:' + id + ':title', function (err, title) {
-            if (title) callback({err:0, title: title});
+            if (title) {
+                redis.get('topics:' + id + ':intro', function (err, intro) {
+                    callback({err: 0, title: title, intro: intro});
+                });
+            }
             else callback({err:1, msg: '未找到该讨论组'});
         });
     });
@@ -63,24 +73,21 @@ function getTopicInfo(id, callback) {
 
 // Subscribe a topic
 function subscribeTopic(id) {
-    socket = this;
+    var socket = this;
     socket.get('uid', function (err, uid) {
         redis.sadd('topics:' + id + ':members', uid);
         redis.sadd('user_topics:' + uid, id);  
     });
 }
 
-function sendTopicMessage(data, callback) {
+function sendTopicMessage(data) {
+    var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.publish('topic:' + data.id, JSON.stringify({uid: uid, msg: data.message}));
     });
 }
 
-function setSubscription(uid) {
-    redis.smembers('user_topics:' + uid, function (err, topics) {
-        for (id in topics) {
-            redis.subscribe('topic:' + id);
-        }
-    });
+function draw(data) {
+    redis.publish('draw:' + data.id, JSON.stringify([data.px, data.py, data.x, data.y]));
 }
