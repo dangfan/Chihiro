@@ -22,6 +22,7 @@ exports.init = function(_db, _redis, _clients, _socket) {
 }
 
 function addActivity(activity, callback) {
+    socket = this;
     console.log('add activity');
     socket.get('uid', function (err, uid) {
         if (!uid) return;
@@ -39,12 +40,17 @@ function addActivity(activity, callback) {
                     redis.hset('activities:' + activity._id, key, activity[key]);
                 console.log('activity created:' + activity._id + '|' + activity.name);
                 callback({err: 0, msg: '添加活动成功'});
+                db.activities.update({'_id': db.ObjectId(uid)},
+                    {$set: {location: [activity.mark.longitude, activity.mark.latitude]}});
+                redis.set('location:' + uid,
+                    '[' + activity.mark.longitude + ',' + activity.mark.longitude + ']');
             }
         });
     });
 }
 
 function removeActivity(activity_id, callback) {
+    socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         // find in redis
@@ -65,6 +71,7 @@ function removeActivity(activity_id, callback) {
 }
 
 function updateActivityDetails(activity) {
+    socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.hget('activities:' + activity._id, 'creator_id', function(err, cid) {
@@ -79,6 +86,7 @@ function updateActivityDetails(activity) {
 }
 
 function participateActivity(activity) {
+    socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.sadd('activity_participants:' + activity._id, uid);
@@ -87,6 +95,7 @@ function participateActivity(activity) {
 }
 
 function unparticipateActivity(activity) {
+    socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.srem('activity_participants:' + activity._id, uid);

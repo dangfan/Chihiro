@@ -1,9 +1,8 @@
-var redis, clients, socket;
+var redis, clients;
 
-exports.init = function(_redis, _clients, _socket) {
+exports.init = function(_redis, _clients) {
     redis    = _redis;
     clients  = _clients;
-    socket   = _socket;
     return {
         sendMessage:    sendMessage
     };
@@ -12,6 +11,7 @@ exports.init = function(_redis, _clients, _socket) {
 // send text message to a user
 // TODO: offline messages
 function sendMessage(data) {
+    socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         var date = new Date();
@@ -35,6 +35,7 @@ function sendMessage(data) {
 
 // Create a topic with members
 function createTopic(data, callback) {
+    socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         if (!data.title || !data.members) return;
@@ -50,6 +51,7 @@ function createTopic(data, callback) {
 
 // Get a topic information
 function getTopicInfo(id, callback) {
+    socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.get('topics:' + id + ':title', function (err, title) {
@@ -61,6 +63,7 @@ function getTopicInfo(id, callback) {
 
 // Subscribe a topic
 function subscribeTopic(id) {
+    socket = this;
     socket.get('uid', function (err, uid) {
         redis.sadd('topics:' + id + ':members', uid);
         redis.sadd('user_topics:' + uid, id);  
