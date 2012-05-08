@@ -149,7 +149,7 @@ function findActivityByCreator(callback) {
             for (aid in data) {
                 redis.hget('activities:' + data[aid], 'name', function (err, name) {
                     if (!name) return;
-                    objs.push({uid: data[aid], name: name});
+                    objs.push({activityid: data[aid], name: name});
                     if (++counter == data.length) {
                         callback(objs);
                     }
@@ -169,7 +169,7 @@ function findActivityByParticipant(callback) {
             for (aid in data) {
                 redis.hget('activities:' + data[aid], 'name', function (err, name) {
                     if (!name) return;
-                    objs.push({uid: data[aid], name: name});
+                    objs.push({activityid: data[aid], name: name});
                     if (++counter == data.length) {
                         callback(objs);
                     }
@@ -189,7 +189,7 @@ function findActivityByLocation(callback) {
                 geoNear:            'activities',
                 near:               eval(location),
                 spherical:          true,
-                maxDistance:        1000 / 6371,       // 1km
+                maxDistance:        10 / 6371,
                 distanceMultiplier: 6371000
             }, function (err, obj) {
                 var data = new Array();
