@@ -75,6 +75,5 @@ function successLogin(obj){
     Ext.getCmp('MyImage').setSrc('http://hdn.xnimg.cn/photos/hdn121/20120331/1930/tiny_GRdJ_60512g019117.jpg');
     Ext.getCmp('MyInfoPanel').setHtml('<span class="nickname"><b>'+nickname+'</b></span><br />' +
         '<p style="font-size: 12px"><b>'+signiture+'</b></p>');
-
     Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
 };

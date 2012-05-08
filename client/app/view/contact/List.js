@@ -1,5 +1,5 @@
 Ext.define('Chihiro.view.contact.List', {
-    extend: 'Ext.Carousel',
+    extend: 'Ext.Panel',
 
     xtype: 'contactpanel',
     id: 'contactnavigationview',
@@ -7,18 +7,21 @@ Ext.define('Chihiro.view.contact.List', {
     layout: 'vbox',
     config: {
         fullscreen: true,
-        //autoDestroy: false,
         scrollable: true,
-        //defaultBackButtonText: '返回',
+        layout: Ext.os.deviceType == 'Phone' ? 'fit' : {
+            type: 'vbox',
+            align: 'center',
+            pack: 'center'
+        },
         items: [
             {
                 xtype: 'titlebar',
                 docked: 'top',
-                title: '好友'
+                title: '通讯录'
             },
             {
-                xtype:'userlist',
-                id:'friendlist'
+                xtype:'simplefriendlist',
+                id: 'SimpleFriendList'
             }
         ]
     }

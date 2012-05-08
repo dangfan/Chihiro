@@ -1,11 +1,10 @@
-Ext.define('Chihiro.view.userlist.Detail', {
+Ext.define('Chihiro.view.userlist.GroupDetail', {
     extend: 'Ext.Panel',
-    xtype: 'detail',
-    id:'DetailPanel',
+    xtype: 'groupdetail',
+    id:'GroupDetailPanel',
 
     requires: [
         'Ext.carousel.Carousel',
-        'Chihiro.view.userlist.Information',
         'Chihiro.view.userlist.GroupInformation'
     ],
 
@@ -33,45 +32,31 @@ Ext.define('Chihiro.view.userlist.Detail', {
         items: [
             {
                 xtype: 'carousel',
-                id:'MyCarousel',
+                id:'GroupCarousel',
                 flex: 1,
                 items: [
-                      { xtype: 'detailInformation' },
-                      { xtype: 'chattingfriendpanel' }
+                    { xtype: 'groupDetailInformation'},
+                    { xtype: 'chattinggrouppanel' }
                 ]
             },
             {
                 xtype: 'button',
-                text: '加为好友',
-                id: 'addFriendBtn'
-            },
-            {
-                xtype: 'button',
-                text: '聊天',
-                id: "talktofriendBtn"
-            },
-            {
-                xtype: 'button',
-                text: '删除好友',
-                id: 'deleteFriendBtn'
+                text: '退出该群',
+                id:'quitGroupBtn'
             }
         ]
     },
 
     hide: function(animation) {
         var me = this;
-
-        //we fire this event so the controller can deselect all items immediately.
         me.fireEvent('hideanimationstart', me);
-
-        //show the mask again
         me.callParent();
     },
 
     updateUser: function(newUser) {
         var carousel = this.down('carousel');
-        information = this.down('detailInformation');
-        information.setData(newUser.data);
+        information2 = this.down('groupDetailInformation');
+        information2.setData(newUser.data);
     }
 
 });
