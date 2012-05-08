@@ -481,7 +481,7 @@ function findByPhones(phones, callback) {
     socket.get('uid', function  (err, t) {
         if (!t) return;
         var list = new Array();
-        var counter = 1
+        var counter = 0;
         for (i in phones) {
             getInfoByPhone(phones[i], function (obj) {
                 if (obj.obj) {
