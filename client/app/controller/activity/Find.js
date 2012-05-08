@@ -54,11 +54,11 @@ Ext.define('Chihiro.controller.activity.Find',{
         }
     },
     showNearActivity: function(){
-        if(Ext.getCmp('homeView').getActiveItem().title=='活动'){
+        /*if(Ext.getCmp('homeView').getActiveItem().title=='活动'){
             socket.emit('participate activity', function(msg){
                 console.log(msg);
             });
-            /*if(!Ext.getCmp('activitylist')){
+            if(!Ext.getCmp('activitylist')){
                 Ext.Viewport.setMasked({
                     xtype: 'loadmask',
                     message: '载入中...'
@@ -68,8 +68,8 @@ Ext.define('Chihiro.controller.activity.Find',{
 
                 Ext.create('Chihiro.view.activitylist.List');
                 Ext.getCmp('activitypanel').add(Ext.getCmp('activitylist'));
-            }*/
-        }
+            }
+        }*/
         //TODO: 向服务器发查找活动的消息
     },
     activeitemChange: function(a,value, oldValue, eOpts){
