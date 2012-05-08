@@ -341,7 +341,7 @@ function updatePortrait(data, callback){
         db.users.update({'_id': db.ObjectId(uid)}, {$set: {portrait: uid+'.jpg'}});
         redis.hset('users:' + usr._id, 'portrait', uid+'.jpg');
         if (callback) {
-            callback({err: 0});
+            callback({err: 0, src: '/portraits/' + uid + '.jpg'});
         }
     });
 }
