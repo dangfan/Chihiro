@@ -1,8 +1,8 @@
-Ext.define('Chihiro.view.message.ChattingFriendPanel', {
+Ext.define('Chihiro.view.message.ChattingGroupPanel', {
     extend: 'Ext.navigation.View',
 
-    xtype: 'chattingfriendpanel',
-    id:'chattingfriendpanel',
+    xtype: 'chattinggrouppanel',
+    id:'chattinggrouppanel',
 
     requires: [
         'Ext.data.Store',
@@ -19,7 +19,6 @@ Ext.define('Chihiro.view.message.ChattingFriendPanel', {
                 disableSelection: true,
                 grouped:true,
                 pinHeaders:false,
-                id:'friendData',
 
                 store: {
                     fields: ['text', 'sort','func'],
@@ -32,8 +31,8 @@ Ext.define('Chihiro.view.message.ChattingFriendPanel', {
                     },
 
                     data: [
-                        { text: '修改备注名', sort:' ',func: 'Nickname'},
-                        { text: '邀请到群组', sort: '   ',func: 'InviteToGroup' }
+                        { text: '修改群公告', sort:' ',func: 'Nickname'},
+                        { text: '邀请好友', sort: '   ',func: 'InviteToGroup' }
                     ]
                 },
                 itemTpl: '<div class="contact"><strong>{text}</strong></div>',

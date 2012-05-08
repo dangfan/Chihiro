@@ -16,9 +16,6 @@ Ext.define('Chihiro.controller.message.ChatList', {
             'chatlist': {
                 select: 'onChatListTap'
             },
-            'grouplist':{
-                select: 'onGroupListTap'
-            },
             'friends': {
                 hideanimationstart: 'onFriendsHideAnimationStart'
             },
@@ -78,14 +75,14 @@ Ext.define('Chihiro.controller.message.ChatList', {
 
     onGroupListTap: function(list, user) {
         if (!this.view) {
-            this.view = Ext.create('Chihiro.view.message.Friends');
+            this.view = Ext.create('Chihiro.view.message.Groups');
         }
 
-        var me = Ext.getCmp('ChattingContent');
+        var me = Ext.getCmp('GroupChattingContent');
         var store = me.getStore();
         store.load();
 
-        Ext.getCmp('ChattingContent').setData([
+        Ext.getCmp('GroupChattingContent').setData([
             {
                 id: "407788",
                 nickname:"程序猿",
@@ -96,10 +93,10 @@ Ext.define('Chihiro.controller.message.ChatList', {
 
         var view = this.view;
         view.setUser(user);
-        Ext.getCmp('FriendImage').setSrc(user.data.portrait);
+        Ext.getCmp('GroupImage').setSrc(user.data.portrait);
         var a = user.data.nickname;
         var b = user.data.announcement;
-        Ext.getCmp('friendInfoPanel').setHtml('<span class="nickname"><b>'+a+'</b></span><br />' +
+        Ext.getCmp('groupInfoPanel').setHtml('<span class="nickname"><b>'+a+'</b></span><br />' +
             '<p style="font-size: 12px"><b>'+b+'</b></p>');
 
         if (this.getProfile() == "phone") {

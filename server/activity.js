@@ -14,11 +14,11 @@ exports.init = function(_db, _redis, _clients, _socket) {
         updateActivityDetails:      updateActivityDetails,
         participateActivity:        participateActivity,
         unparticipateActivity:      unparticipateActivity,
+        getParticipants:            getParticipants,
         getActivityById:            getActivityById,
-        findActivityByTitle:        findActivityByTitle,
-        findActivityByLocation:     findActivityByLocation,
         findActivityByCreator:      findActivityByCreator,
-        findActivityByParticipants: findActivityByParticipants
+        findActivityByParticipant:  findActivityByParticipant,
+        findActivityByLocation:     findActivityByLocation
     };
 }
 
@@ -40,10 +40,12 @@ function addActivity(activity, callback) {
                 for (key in activity)
                     redis.hset('activities:' + activity._id, key, activity[key]);
                 console.log('activity created:' + activity._id + '|' + activity.name + '|' + uid);
-                callback({err: 0, msg: '添加活动成功'});
                 redis.set('activity_location:' + activity._id,
                     '[' + activity.mark.longitude + ',' + activity.mark.latitude + ']');
                 redis.sadd('activities_createdby:' + uid, activity._id);
+                redis.sadd('activity_participants:' + activityid, uid);
+                redis.sadd('activities_participate:' + uid, activityid);
+                callback({err: 0, msg: '添加活动成功'});
             }
         });
     });
@@ -85,23 +87,42 @@ function updateActivityDetails(activity) {
     });
 }
 
-function participateActivity(activityid) {
+function participateActivity(activityid, callback) {
     var socket = this;
     socket.get('uid', function (err, uid) {
-        if (!uid) return;
+        if (!uid) callback({err: 1, msg: ''});
         redis.sadd('activity_participants:' + activityid, uid);
-        redis.sadd('activities_participate:' + uid, activityid)
+        redis.sadd('activities_participate:' + uid, activityid);
         console.log('activity participate:' + activityid + '|' + uid);
+        callback({err: 0, msg: ''});
     });
 }
 
-function unparticipateActivity(activityid) {
+function unparticipateActivity(activityid, callback) {
     var socket = this;
     socket.get('uid', function (err, uid) {
-        if (!uid) return;
+        if (!uid) callback({err: 1, msg: ''});
         redis.srem('activity_participants:' + activityid, uid);
-        redis.srem('activities_participate:' + uid, activityid)
-        console.log('activity unparticipate:' + activityid + '|' + activity.name + '|' + uid);
+        redis.srem('activities_participate:' + uid, activityid);
+        console.log('activity unparticipate:' + activityid + '|' + uid);
+        callback({err: 0, msg: ''});
+    });
+}
+
+function getParticipants(activityid, callback) {
+    redis.smembers('activity_participants:' + activityid, function (err, data) {
+        if (err) callback({});
+        var objs = new Array();
+        var counter = 0;
+        for (uid in data) {
+            redis.hget('users:' + data[uid], 'nickname', function (err, nickname) {
+                if (!nickname) return;
+                objs.push({uid: data[uid], nickname: nickname});
+                if (++counter == data.length) {
+                    callback(objs);
+                }
+            });
+        }
     });
 }
 
@@ -119,29 +140,56 @@ function getActivityById(activityid, callback) {
 }
 
 function findActivityByCreator(callback) {
-    
+    var socket = this;
+    socket.get('uid', function (err, uid) {
+        if (!uid) callback({});
+        redis.smembers('activities_createdby:' + uid, function (err, data) {
+            var objs = new Array();
+            var counter = 0;
+            for (aid in data) {
+                redis.hget('activities:' + data[aid], 'name', function (err, name) {
+                    if (!name) return;
+                    objs.push({activityid: data[aid], name: name});
+                    if (++counter == data.length) {
+                        callback(objs);
+                    }
+                });
+            }
+        });
+    });    
 }
 
-function findActivityByParticipants(callback) {
-
-}
-
-// data includes: title, ordertype.
-function findActivityByTitle(data, callback) {
-    
+function findActivityByParticipant(callback) {
+    var socket = this;
+    socket.get('uid', function (err, uid) {
+        if (!uid) callback({});
+        redis.smembers('activities_participate:' + uid, function (err, data) {
+            var objs = new Array();
+            var counter = 0;
+            for (aid in data) {
+                redis.hget('activities:' + data[aid], 'name', function (err, name) {
+                    if (!name) return;
+                    objs.push({activityid: data[aid], name: name});
+                    if (++counter == data.length) {
+                        callback(objs);
+                    }
+                });
+            }
+        });
+    });
 }
 
 // data includes: ordertype.
 function findActivityByLocation(callback) {
     var socket = this;
     socket.get('uid', function (err, uid) {
-        if (!uid) return;
+        if (!uid) callback({});
         redis.get('location:' + uid, function (err, location) {
             db.executeDbCommand({
                 geoNear:            'activities',
                 near:               eval(location),
                 spherical:          true,
-                maxDistance:        1000 / 6371,       // 1km
+                maxDistance:        10 / 6371,
                 distanceMultiplier: 6371000
             }, function (err, obj) {
                 var data = new Array();

@@ -50,6 +50,12 @@ function listen(port) {
         socket.on('draw', message.draw);
         socket.on('add activity', activity.addActivity);
         socket.on('get activity', activity.getActivityById);
+        socket.on('update activity', activity.updateActivityDetails);
+        socket.on('participate activity', activity.participateActivity);
+        socket.on('unparticipate activity', activity.unparticipateActivity);
+        socket.on('find participants', activity.getParticipants);
+        socket.on('find activity by creator', activity.findActivityByCreator);
+        socket.on('find activity by participant', activity.findActivityByParticipant);
         socket.on('find closest activities', activity.findActivityByLocation);
     });
 }

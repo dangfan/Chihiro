@@ -1,53 +1,32 @@
 Ext.define('Chihiro.view.message.other.InviteToGroup', {
-    extend: 'Ext.form.Panel',
-    xtype:'invitetogroup',
-
-    requires: [
-        'Ext.field.Select',
-        'Ext.field.Spinner'
-    ],
+    extend: 'Ext.Panel',
+    xtype:'simplegrouplist',
 
     config: {
-        title: '邀请到群组',
         items: [{
-            xtype: 'fieldset',
-            id:'groupset',
-            defaults: {
-                labelWidth: '40%'
-            },
-            items: [
-                {
-                    xtype: 'checkboxfield',
-                    name: 'onlinereminder',
-                    label:'党主席基友团'
+            width: 400,
+            height: 500,
+            xtype: 'list',
+            allowDeselect:false,
+            mode:'MULTI',
+            id: 'SimpleGroupList',
+            store:{
+                fields: ['name','id'],
+                sorters: 'name',
+                grouper: function(record) {
+                    return record.get('name')[0];
                 },
-                {
-                    xtype: 'checkboxfield',
-                    name: 'acceptable',
-                    label:'我们是党主席护卫军'
-                }
-            ]
-        },
-            {
-                xtype: 'panel',
-                layout: 'hbox',
-                defaults: {
-                    xtype: 'button'
+                proxy: {
+                    type: 'localstorage'
                 },
-                items: [
-                    {
-                        xtype: 'spacer'
-                    },
-                    {
-                        text: '发送邀请',
-                        ui: 'confirm',
-                        width: '40%',
-                        id:'InviteToGroupBtn'
-                    },
-                    {
-                        xtype: 'spacer'
-                    }
+                data: [
+                    {name: '党主席基友团',id:'1'},
+                    {name: '约炮专群',id:'2'}
                 ]
-            }]
+            },
+            itemTpl: '<div class="contact"><strong>{name}</strong> </div>',
+            grouped: true
+        }
+        ]
     }
 });
