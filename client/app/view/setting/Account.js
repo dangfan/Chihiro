@@ -30,18 +30,13 @@ Ext.define('Chihiro.view.setting.Account', {
                     },
                     {
                         xtype:'passwordfield',
-                        name: 'oldpassword',
-                        label: '旧密码',
-                        readOnly:false
-                    },
-                    {
-                        xtype:'passwordfield',
                         name: 'newpassword',
                         label: '新密码',
                         readOnly:false
                     },
                     {
                         xtype:'passwordfield',
+                        name:'repeatpassword',
                         label: '重复新密码',
                         readOnly:false
                     }
