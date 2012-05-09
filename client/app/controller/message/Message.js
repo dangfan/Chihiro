@@ -73,7 +73,6 @@ Ext.define('Chihiro.controller.message.Message', {
             var carou = this.getCarousel();
             var index = carou.getActiveIndex();
             var button = Ext.getCmp('floatingPanel');
-            console.log(button.items[0]);
 
             if(index === 0)
             {
@@ -143,7 +142,13 @@ Ext.define('Chihiro.controller.message.Message', {
 
         if(title === '刷新'&& index === 1 )
         {
-            alert("等待群组列表接口");
+            socket.emit('get topic list',function(obj) {
+                console.log(obj);
+                Ext.getCmp('ChattingGroups').setData([]);
+                var store = Ext.getCmp('ChattingGroups').getStore();
+                store.load();
+                Ext.getCmp('ChattingGroups').setData(obj);
+            });
         }
 
         if(title === '约炮'&& index === 0)
