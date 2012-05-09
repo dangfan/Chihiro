@@ -10,7 +10,8 @@ exports.init = function(_redis, _clients, _redisp) {
         getTopicInfo:     getTopicInfo,
         subscribeTopic:   subscribeTopic,
         sendTopicMessage: sendTopicMessage,
-        draw:             draw
+        draw:             draw,
+        getTopics:        getTopics
     };
 }
 
