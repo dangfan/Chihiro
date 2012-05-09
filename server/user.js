@@ -401,6 +401,7 @@ function processUser(usr, callback) {
 }
 
 function setUserData(usr) {
+    console.log(usr);
     for (key in usr) {
         if (key == 'interests') {
             redis.hset('users:' + usr._id, key, JSON.stringify(usr[key]));
