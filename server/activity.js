@@ -129,7 +129,7 @@ function getActivityById(activityid, callback) {
     redis.hgetall('activities:' + activityid, function (err, activity) {
         console.log('Get activity by id:' + activityid);
         if (!activity) {
-            db.activities.find({_id: db.ObjectId(activityid)},
+            db.activities.findOne({_id: db.ObjectId(activityid)},
                 function (err, activity) {
                     callback(activity);
                 });
@@ -148,7 +148,7 @@ function findActivityByCreator(callback) {
             var objs = new Array();
             var counter = 0;
             for (aid in data) {
-                db.activities.find({_id: db.ObjectId(data[aid])}, function (err, activity) {
+                db.activities.findOne({_id: db.ObjectId(data[aid])}, function (err, activity) {
                     if (!activity) return;
                     delete activity['null'];
                     objs.push(activity);
@@ -170,7 +170,7 @@ function findActivityByParticipant(callback) {
             var objs = new Array();
             var counter = 0;
             for (aid in data) {
-                db.activities.find({_id: db.ObjectId(data[aid])}, function (err, activity) {
+                db.activities.findOne({_id: db.ObjectId(data[aid])}, function (err, activity) {
                     if (!activity) return;
                     delete activity['null'];
                     objs.push(activity);
