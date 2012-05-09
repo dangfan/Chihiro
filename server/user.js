@@ -102,7 +102,7 @@ function login(usr, callback, socket) {
         function finish() {
             callback({err: 0, sid: sid, obj: usr});
             // Load offline messages
-            loadMessages(usr._id);
+            loadMessages(usr._id, socket);
             console.log('user ' + usr._id + ' is now online.');
         }
     }
