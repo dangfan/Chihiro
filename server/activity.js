@@ -24,7 +24,6 @@ exports.init = function(_db, _redis, _clients, _socket) {
 
 function addActivity(activity, callback) {
     var socket = this;
-    console.log('add activity');
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         activity.creator_id = uid;
@@ -128,13 +127,14 @@ function getParticipants(activityid, callback) {
 
 function getActivityById(activityid, callback) {
     redis.hgetall('activities:' + activityid, function (err, activity) {
+        console.log('Get activity by id:' + activityid);
         if (!activity) {
-            db.activities.find({_id: db.ObjectId(activityid)},
+            db.activities.findOne({_id: db.ObjectId(activityid)},
                 function (err, activity) {
                     callback(activity);
                 });
         } else {
-            callback(activity);
+            callback({});
         }
     });
 }
@@ -143,13 +143,15 @@ function findActivityByCreator(callback) {
     var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) callback({});
+        console.log('find activity by creator:' + uid);
         redis.smembers('activities_createdby:' + uid, function (err, data) {
             var objs = new Array();
             var counter = 0;
             for (aid in data) {
-                redis.hget('activities:' + data[aid], 'name', function (err, name) {
-                    if (!name) return;
-                    objs.push({activityid: data[aid], name: name});
+                db.activities.findOne({_id: db.ObjectId(data[aid])}, function (err, activity) {
+                    if (!activity) return;
+                    delete activity['null'];
+                    objs.push(activity);
                     if (++counter == data.length) {
                         callback(objs);
                     }
@@ -163,13 +165,15 @@ function findActivityByParticipant(callback) {
     var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) callback({});
+        console.log('find activity by participants:' + uid);
         redis.smembers('activities_participate:' + uid, function (err, data) {
             var objs = new Array();
             var counter = 0;
             for (aid in data) {
-                redis.hget('activities:' + data[aid], 'name', function (err, name) {
-                    if (!name) return;
-                    objs.push({activityid: data[aid], name: name});
+                db.activities.findOne({_id: db.ObjectId(data[aid])}, function (err, activity) {
+                    if (!activity) return;
+                    delete activity['null'];
+                    objs.push(activity);
                     if (++counter == data.length) {
                         callback(objs);
                     }
@@ -204,5 +208,12 @@ function findActivityByLocation(callback) {
                 console.log('user ' + uid + ' found closest activities.');
             });
         });
+    });
+}
+
+function sendActivityInvatation(callback) {
+    var socket = this;
+    socket.get('uid', function (err, uid) {
+        if (!uid) callback({err: 1, msg: ''});
     });
 }

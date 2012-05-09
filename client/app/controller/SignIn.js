@@ -75,5 +75,32 @@ function successLogin(obj){
     Ext.getCmp('MyImage').setSrc('http://hdn.xnimg.cn/photos/hdn121/20120331/1930/tiny_GRdJ_60512g019117.jpg');
     Ext.getCmp('MyInfoPanel').setHtml('<span class="nickname"><b>'+nickname+'</b></span><br />' +
         '<p style="font-size: 12px"><b>'+signiture+'</b></p>');
+
+    console.log(friendList);
+    if(friendList){
+        for(var i = 0; i < friendList.length;i++)
+        {
+            friendList[i].lastmsg = '呵呵';
+            friendList[i].lasttime ='很久以前';
+        }
+        Ext.getCmp('ChattingFriends').setData(friendList);
+
+        socket.emit('get topic list',function(obj) {
+            var grouplist = obj;
+            for(var i = 0; i < grouplist.length;i++)
+            {
+                grouplist[i].lastmsg = '求基友！';
+                grouplist[i].lasttime ='刚刚';
+                grouplist[i].portrait = 'http://hdn.xnimg.cn/photos/hdn221/20120331/0950/tiny_twM9_56111n019117.jpg';
+            }
+
+            Ext.getCmp('ChattingGroups').setData([]);
+            var store = Ext.getCmp('ChattingGroups').getStore();
+            store.load();
+            Ext.getCmp('ChattingGroups').setData(obj);
+            console.log(obj);
+        });
+    }
+
     Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
 };

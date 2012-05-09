@@ -1,7 +1,7 @@
 Ext.define('Chihiro.model.Contact', {
     extend: 'Ext.data.Model',
     config: {
-        fields: [ 'id', 'name', 'nickname', 'signiture', 'gender', 'birthday', 'school', 'job', 'portrait', 'interests', 'dis'],
+        fields: [ '_id', 'name', 'nickname', 'signiture', 'gender', 'birthday', 'school', 'job', 'portrait', 'interests', 'dis'],
         data: [
             {nickname: '党凡',id:'1'},
             {nickname: '钱堃',id:'2'},

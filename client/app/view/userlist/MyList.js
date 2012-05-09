@@ -8,16 +8,18 @@ Ext.define('Chihiro.view.userlist.MyList', {
             allowDeselect:true,
             cls: 'demo-list',
             store:{
-                fields: [ 'id', 'name', 'nickname', 'signiture', 'gender', 'birthday', 'school', 'job', 'portrait', 'interests', 'dis','type'],
+                fields: [ 'id','_id', 'name', 'title','nickname', 'signiture',
+                    'gender', 'birthday', 'school', 'job', 'portrait', 'interests',
+                    'intro','dis','members'],
                 sorters: 'nickname',
                 grouper: function(record) {
-                    return record.get('nickname')[0];
+                        return record.get('nickname')[0];
                 },
                 proxy: {
                     type: 'localstorage'
                 }
             },
-            itemTpl: '<div class="contact"><strong>{nickname}</strong> </div>',
+            itemTpl: '<div class="contact"><strong>{nickname}{title}</strong> </div>',
             grouped: true,
             indexBar: true
     }

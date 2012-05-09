@@ -1,9 +1,8 @@
-var redis, clients, redisp;
+var redis, clients;
 
-exports.init = function(_redis, _clients, _redisp) {
+exports.init = function(_redis, _clients) {
     redis    = _redis;
     clients  = _clients;
-    redisp   = _redisp;
     return {
         sendMessage:      sendMessage,
         createTopic:      createTopic,
@@ -45,18 +44,24 @@ function createTopic(data, callback) {
     var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
-        if (!data.title || !data.members || !data.intro) return;
+        if (!data.nickname || !data.members || !data.intro) return;
         redis.incr('topics_id', function (err, id){
-            redis.set('topics:' + id + ':title', data.title);
+            redis.set('topics:' + id + ':nickname', data.nickname);
             redis.set('topics:' + id + ':intro', data.intro);
             data.members.push(uid);
             redis.sadd('topics:' + id + ':members', data.members);
-            for (iuid in data.members)
-                redis.sadd('user_topics:' + data.members[iuid], id);
-            redisp.subscribe('topic:' + id);
-            redisp.subscribe('draw:' + id);
+            for (iuid in data.members) {
+                var userid = data.members[iuid];
+                redis.sadd('user_topics:' + userid, id);
+                if (userid in clients) {
+                    clients[userid].get('redis', function (err, redisp) {
+                        redisp.subscribe('topic:' + id);
+                        redisp.subscribe('draw:' + id);
+                    });
+                }
+            }
             callback({err: 0, id: id});
-            console.log('new topic ' + data.title + ' is created.');
+            console.log('new topic ' + data.nickname + ' is created.');
         });
     });
 }
@@ -66,10 +71,24 @@ function getTopicInfo(id, callback, socket) {
     if (!socket) socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
-        redis.get('topics:' + id + ':title', function (err, title) {
-            if (title) {
+        redis.get('topics:' + id + ':nickname', function (err, nickname) {
+            if (nickname) {
                 redis.get('topics:' + id + ':intro', function (err, intro) {
-                    callback({err: 0, title: title, intro: intro, id: id});
+                    redis.smembers('topics:' + id + ':members', function (err, members) {
+                        if (!members) {
+                            callback({err: 0, nickname: nickname, intro: intro, id: id, members: []});
+                        }
+                        var names = new Array();
+                        var length = members.length;
+                        for (var i in members) {
+                            redis.hget('users:' + members[i], 'nickname', function (err, nname) {
+                                names.push(nname);
+                                if (!--length) {
+                                    callback({err: 0, nickname: nickname, intro: intro, id: id, members: names});
+                                }
+                            });
+                        }
+                    });
                 });
             }
             else callback({err:1, msg: '未找到该讨论组'});
@@ -110,14 +129,14 @@ function sendTopicMessage(data) {
     var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
-        redisp.publish('topic:' + data.id, JSON.stringify({uid: uid, msg: data.message}));
+        redis.publish('topic:' + data.id, JSON.stringify({"uid": uid, "msg": data.msg}));
     });
 }
 
 function draw(data) {
-    redisp.publish('draw:' + data.id, JSON.stringify([data.px, data.py, data.x, data.y]));
+    redis.publish('draw:' + data.id, JSON.stringify([data.px, data.py, data.x, data.y]));
 }
 
 function clear(id) {
-    redisp.publish('draw:' + id, '\'clear\'');
+    redis.publish('draw:' + id, '\'clear\'');
 }

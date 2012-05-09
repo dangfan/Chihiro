@@ -18,23 +18,22 @@ Ext.define('Chihiro.controller.contact.Contact',{
             Ext.getCmp('SimpleFriendList').setData([]);
             var store = Ext.getCmp('SimpleFriendList').getStore();
             store.load();
-//            socket.emit('find closest', function(list) {
-//                Ext.getCmp('SimpleFriendList').setData(list);
-//                console.log(list);
-//            });
-            Ext.getCmp('SimpleFriendList').setData(
-                [
-                    {nickname: '党凡',type:'1'},
-                    {nickname: '钱堃',type:'1'},
-                    {nickname:'丁鹏',type:'1'},
-                    {nickname:'丁鹏2',type:'1'},
-                    {nickname:'党主席基友团',type:'2'},
-                    {nickname:'党主席护卫军',type:'2'}
-                ]
-            );
 
+            var grouplist;
+            socket.emit('get topic list',function(obj) {
+                Ext.getCmp('SimpleFriendList').setData(obj);
+            });
 
-            //Ext.getCmp('SimpleFriendList').setData(friendList);
+//            var mycontact = [];
+//
+//            if(friendList){
+//                for(i=0; i < friendList.length;i++){
+//                    mycontact.push(friendList[i]);
+//                }
+//            }
+
+            Ext.getCmp('SimpleFriendList').setData(friendList);
+
         }
 
         if(Ext.getCmp('floatingPanel'))
