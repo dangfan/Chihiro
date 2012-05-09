@@ -51,7 +51,7 @@ function createTopic(data, callback) {
             for (iuid in data.members)
                 redis.sadd('user_topics:' + data.members[iuid], id);
             callback({err: 0, id: id});
-            console.log('new topic ' + topic.title + ' is created.');
+            console.log('new topic ' + data.title + ' is created.');
         });
     });
 }
