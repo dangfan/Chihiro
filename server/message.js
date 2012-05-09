@@ -69,7 +69,7 @@ function getTopicInfo(id, callback, socket) {
         redis.get('topics:' + id + ':title', function (err, title) {
             if (title) {
                 redis.get('topics:' + id + ':intro', function (err, intro) {
-                    callback({err: 0, title: title, intro: intro});
+                    callback({err: 0, title: title, intro: intro, id: id});
                 });
             }
             else callback({err:1, msg: '未找到该讨论组'});
@@ -87,7 +87,6 @@ function getTopics(callback) {
             for (i in ids) {                
                 getTopicInfo(ids[i], function (t) {
                     delete t.err;
-                    t.id = ids[i];
                     topics.push(t);
                     if (!--length) {
                         callback(topics);
