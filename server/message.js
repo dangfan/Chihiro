@@ -77,7 +77,7 @@ function getTopicInfo(id, callback, socket) {
                             if (!--length) {
                                 callback({err: 0, title: title, intro: intro, id: id, members: names});
                             }
-                        }
+                        });
                     }
                 });
             });
