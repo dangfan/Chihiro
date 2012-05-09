@@ -93,3 +93,7 @@ function sendTopicMessage(data) {
 function draw(data) {
     redis.publish('draw:' + data.id, JSON.stringify([data.px, data.py, data.x, data.y]));
 }
+
+function clear(id) {
+    redis.publish('draw:' + id, '\'clear\'');
+}
