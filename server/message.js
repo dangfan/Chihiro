@@ -70,6 +70,10 @@ function getTopicInfo(id, callback, socket) {
             if (title) {
                 redis.get('topics:' + id + ':intro', function (err, intro) {
                     redis.smembers('topics:' + id + ':members', function (err, members) {
+                        console.log(members);
+                        if (!members) {
+                            callback({err: 0, title: title, intro: intro, id: id, members: []});
+                        }
                         var names = new Array();
                         var length = members.length;
                         for (var i in members) {
