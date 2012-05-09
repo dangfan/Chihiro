@@ -165,7 +165,15 @@ Ext.define('Chihiro.controller.List', {
 
     onMyListTap: function(list, user) {
 
-        if(user.data.type === '1')
+        var flag = 'group';
+        if(friendList){
+            for(i=0; i < friendList.length;i++){
+                if(friendList[i]._id === user.data._id)
+                    flag = 'friend';
+            }
+        }
+
+        if(flag === 'friend')
         {
             if(Ext.getCmp('MyCarousel'))
             {

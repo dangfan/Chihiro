@@ -76,6 +76,7 @@ function successLogin(obj){
     Ext.getCmp('MyInfoPanel').setHtml('<span class="nickname"><b>'+nickname+'</b></span><br />' +
         '<p style="font-size: 12px"><b>'+signiture+'</b></p>');
 
+    console.log(friendList);
     if(friendList){
         for(var i = 0; i < friendList.length;i++)
         {
@@ -83,6 +84,14 @@ function successLogin(obj){
             friendList[i].lasttime ='很久以前';
         }
         Ext.getCmp('ChattingFriends').setData(friendList);
+
+        socket.emit('get topic list',function(obj) {
+            Ext.getCmp('ChattingGroups').setData([]);
+            var store = Ext.getCmp('ChattingGroups').getStore();
+            store.load();
+            Ext.getCmp('ChattingGroups').setData(obj);
+            console.log(obj);
+        });
     }
 
     Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));

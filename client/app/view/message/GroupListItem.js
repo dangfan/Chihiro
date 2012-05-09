@@ -7,7 +7,7 @@ Ext.define('Chihiro.view.message.GroupListItem', {
         height:100,
         dataMap: {
             getName: {
-                setHtml: 'title'
+                setHtml: 'nickname'
             },
 
             getStatus: {

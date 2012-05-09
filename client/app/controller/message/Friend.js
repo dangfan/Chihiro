@@ -52,7 +52,9 @@ Ext.define('Chihiro.controller.message.Friend', {
         if(msg != '')
         {
             msgtextfield.reset();
-            Ext.getCmp('ChattingContent').setData([
+            //console.log(ChattingRecord);
+            var ChattingRecord = Ext.getCmp('ChattingContent').getData();
+            ChattingRecord.push(
                 {
                     id: '',
                     image:'',
@@ -60,7 +62,11 @@ Ext.define('Chihiro.controller.message.Friend', {
                     xindex:'0',
                     message:msg,
                     time:time
-                }]);
+                });
+            Ext.getCmp('ChattingContent').setData([]);
+            var store = Ext.getCmp('ChattingContent').getStore();
+            store.load();
+            Ext.getCmp('ChattingContent').setData(ChattingRecord);
 
             var scroller = Ext.getCmp('ChattingContent').getScrollable();
             scroller.getScroller().scrollToEnd();
@@ -70,14 +76,13 @@ Ext.define('Chihiro.controller.message.Friend', {
         scroller.getScroller().scrollToEnd();
 
         var uid = Ext.getCmp('ChattingFriends').getSelection()[0].raw._id;
-        console.log({uid:uid,msg:msg,time:time});
 
-        console.log(friendList);
         //检查好友列表，若有该人，则发送送消息；否则发送接收好友请求
         for(var i = 0; i < friendList.length;i++)
         {
             if(friendList[i]._id === uid) {
                 socket.emit('send message',{uid:uid,msg:msg,time:time});
+                console.log({uid:uid,msg:msg,time:time});
                 return;
             }
         }

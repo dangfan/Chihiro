@@ -21,13 +21,7 @@ Ext.define('Chihiro.controller.message.GroupList', {
     },
 
     launch: function(){
-        socket.emit('get topic list',function(obj) {
-            Ext.getCmp('ChattingGroups').setData([]);
-            var store = Ext.getCmp('ChattingGroups').getStore();
-            store.load();
-            Ext.getCmp('ChattingGroups').setData(obj);
-            console.log(obj);
-        });
+
     },
 
     onGroupListTap: function(list, user) {
@@ -42,19 +36,19 @@ Ext.define('Chihiro.controller.message.GroupList', {
         store.load();
 
         var time = getCurrentTime();
-        Ext.getCmp('GroupChattingContent').setData([
-            {
-                id: "407788",
-                nickname:"程序猿",
-                xindex:'1',
-                message:'Hello!这是群组聊天的测试消息!',
-                time:time
-            }]);
+//        Ext.getCmp('GroupChattingContent').setData([
+//            {
+//                id: "407788",
+//                nickname:"程序猿",
+//                xindex:'1',
+//                message:'Hello!这是群组聊天的测试消息!',
+//                time:time
+//            }]);
 
         var view = this.view;
         view.setUser(user);
         Ext.getCmp('GroupImage').setSrc(user.data.portrait);
-        var a = user.data.name;
+        var a = user.data.nickname;
         var b = user.data.intro;
         Ext.getCmp('groupInfoPanel').setHtml('<span class="nickname"><b>'+a+'</b></span><br />' +
             '<p style="font-size: 12px"><b>'+b+'</b></p>');
@@ -71,7 +65,6 @@ Ext.define('Chihiro.controller.message.GroupList', {
         }
 
         chatobject = 'group';
-
         view.show();
     },
 

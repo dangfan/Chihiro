@@ -108,7 +108,7 @@ Ext.define('Chihiro.controller.message.Group',{
 
         var uid = Ext.getCmp('ChattingGroups').getSelection()[0].raw.id;
         socket.emit('send topic message',{id:uid,msg:msg});
-
+        console.log({id:uid,msg:msg});
 //        var grouplist;
 //        socket.emit('get topic list',function(obj) {
 //            grouplist = obj;
@@ -159,7 +159,7 @@ Ext.define('Chihiro.controller.message.Group',{
         var val = Ext.getCmp('creategroup').getValues();
         console.log(val);
         console.log(invitationList);
-        socket.emit('create topic',{title:val.name,intro:val.intro,members:invitationList},function(obj) {
+        socket.emit('create topic',{nickname:val.name,intro:val.intro,members:invitationList},function(obj) {
             if(obj.err === 0)
                 socket.emit('get topic list',function(obj) {
                     console.log(obj);
@@ -170,6 +170,6 @@ Ext.define('Chihiro.controller.message.Group',{
                 });
          });
         Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
-
+        Ext.getCmp('creategroup').reset();
     }
 })
