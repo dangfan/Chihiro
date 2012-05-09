@@ -269,11 +269,11 @@ function findByInterests(callback) {
         if (!uid) return;
         redis.get('location:' + uid, function (err, location) {
             redis.get('users:' + uid, function (err, usr) {
-                if (interests in usr) {
+                if ('interests' in usr) {
                     callback([]);
                     return;
                 }
-                interests = eval(usr.interests);
+                var interests = eval(usr.interests);
                 db.executeDbCommand({
                     geoNear:            'users',
                     near:               eval(location),
