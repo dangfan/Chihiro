@@ -62,8 +62,8 @@ function createTopic(data, callback) {
 }
 
 // Get a topic information
-function getTopicInfo(id, callback) {
-    var socket = this;
+function getTopicInfo(id, callback, socket) {
+    if (!socket) socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.get('topics:' + id + ':title', function (err, title) {
@@ -92,7 +92,7 @@ function getTopics(callback) {
                     if (!--length) {
                         callback(topics);
                     }
-                });
+                }, socket);
             }
         });
     });
