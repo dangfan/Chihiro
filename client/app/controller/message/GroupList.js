@@ -21,10 +21,18 @@ Ext.define('Chihiro.controller.message.GroupList', {
     },
 
     launch: function(){
-
+        socket.emit('get topic list',function(obj) {
+            Ext.getCmp('ChattingGroups').setData([]);
+            var store = Ext.getCmp('ChattingGroups').getStore();
+            store.load();
+            Ext.getCmp('ChattingGroups').setData(obj);
+            console.log(obj);
+        });
     },
 
     onGroupListTap: function(list, user) {
+        chattingID = user.data.id;
+
         if (!this.view) {
             this.view = Ext.create('Chihiro.view.message.Groups');
         }
@@ -33,13 +41,14 @@ Ext.define('Chihiro.controller.message.GroupList', {
         var store = me.getStore();
         store.load();
 
+        var time = getCurrentTime();
         Ext.getCmp('GroupChattingContent').setData([
             {
                 id: "407788",
                 nickname:"程序猿",
                 xindex:'1',
                 message:'Hello!这是群组聊天的测试消息!',
-                time:"4月12日 下午17:55"
+                time:time
             }]);
 
         var view = this.view;
@@ -68,5 +77,6 @@ Ext.define('Chihiro.controller.message.GroupList', {
 
     onFriendsHideAnimationStart: function() {
         this.getGroupList().deselectAll();
+        chattingID = '0';
     }
 });

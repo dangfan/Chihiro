@@ -135,7 +135,8 @@ Ext.define('Chihiro.controller.List', {
     },
 
     selectSomebody:function(a,record){
-        invitationList.push(record.data);
+//        console.log(invitationList);
+        invitationList.push(record.data._id);
     },
 
     remainCss: function(me, record) {

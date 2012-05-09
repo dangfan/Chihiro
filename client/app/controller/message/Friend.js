@@ -24,6 +24,8 @@ Ext.define('Chihiro.controller.message.Friend', {
 
 
     EndConversation: function(view, index, target, record) {
+        chattingID = '0';
+
         var me = Ext.getCmp('ChattingContent');
         var store = me.getStore();
         store.load();
@@ -45,6 +47,8 @@ Ext.define('Chihiro.controller.message.Friend', {
     Send: function(view, index, target, record) {
         var msgtextfield = this.getMsgtextfield();
         var msg = msgtextfield.getValue();
+        var time = getCurrentTime();
+
         if(msg != '')
         {
             msgtextfield.reset();
@@ -55,7 +59,7 @@ Ext.define('Chihiro.controller.message.Friend', {
                     nickname:sname,
                     xindex:'0',
                     message:msg,
-                    time:"4月12日 下午18:15"
+                    time:time
                 }]);
 
             var scroller = Ext.getCmp('ChattingContent').getScrollable();
@@ -66,23 +70,28 @@ Ext.define('Chihiro.controller.message.Friend', {
         scroller.getScroller().scrollToEnd();
 
         var uid = Ext.getCmp('ChattingFriends').getSelection()[0].raw._id;
-        console.log({uid:uid,msg:msg});
-        socket.emit('send message',{uid:uid,msg:msg});
+        console.log({uid:uid,msg:msg,time:time});
 
-//        //var uid = '4f8122c25f193cab1c000033';
-//        for(var i = 0; i < friendList.length;i++)
-//        {
-//            if(friendList[i] == uid) {
-//                socket.emit('send message',{uid:uid,msg:msg});
-//                return;
-//            }
-//        }
-//        socket.emit('add friend',uid, function(result) {
-//            if(result.err) aleart('添加好友失败了:(');
-//            else friendList.push(uid);
-//            //TODO: 等待乾坤的addfriend接口
-//        });
+        console.log(friendList);
+        //检查好友列表，若有该人，则发送送消息；否则发送接收好友请求
+        for(var i = 0; i < friendList.length;i++)
+        {
+            if(friendList[i]._id === uid) {
+                socket.emit('send message',{uid:uid,msg:msg,time:time});
+                return;
+            }
+        }
+        socket.emit('add friend',uid, function(result) {
+            if(result.err) aleart('添加好友失败了:(');
+            else {
+                alert('但愿添加好友成功');
+                newfriend = Ext.getCmp('ChattingFriends').getSelection()[0].raw;
+                friendList.push(newfriend);
+            }
+            //TODO: 等待乾坤的addfriend接口
+        });
 
+//        console.log(friendList);
     },
 
     ShowActions:function(img,obj,other){

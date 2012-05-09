@@ -30,10 +30,7 @@ Ext.define('Chihiro.controller.message.ChatList', {
     },
 
     launch: function(){
-
-        socket.emit('find closest', function(list) {
-            Ext.getCmp('ChattingFriends').setData(list);
-        });
+        //聊天好友的列表将在signin的加载
     },
 
     onChatListTap: function(list, user) {
@@ -41,13 +38,18 @@ Ext.define('Chihiro.controller.message.ChatList', {
             this.view = Ext.create('Chihiro.view.message.Friends');
         }
 
+        chattingID = user.data._id;
+//        console.log(user.data);
+//        console.log("正在聊天的好友是："+chattingID);
+
+        var time = getCurrentTime();
         Ext.getCmp('ChattingContent').setData([
             {
                 id: "407788",
                 nickname:"程序猿",
                 xindex:'1',
                 message:'Hello!这是好友聊天的测试消息!',
-                time:"4月12日 下午17:55"
+                time:time
             }]);
 
         var view = this.view;
@@ -117,6 +119,7 @@ Ext.define('Chihiro.controller.message.ChatList', {
 
     onFriendsHideAnimationStart: function() {
         this.getChatList().deselectAll();
+        chattingID = '0';
     },
 
     GotoSetting:function(img,obj,other){
