@@ -269,7 +269,7 @@ function findByInterests(callback) {
         if (!uid) return;
         redis.get('location:' + uid, function (err, location) {
             redis.get('users:' + uid, function (err, usr) {
-                if (!usr.interests) {
+                if (usr.interests === undefined) {
                     callback([]);
                     return;
                 }
