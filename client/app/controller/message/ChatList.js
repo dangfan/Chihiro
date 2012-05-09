@@ -43,14 +43,14 @@ Ext.define('Chihiro.controller.message.ChatList', {
 //        console.log("正在聊天的好友是："+chattingID);
 
         var time = getCurrentTime();
-//        Ext.getCmp('ChattingContent').setData([
-//            {
-//                id: "407788",
-//                nickname:"程序猿",
-//                xindex:'1',
-//                message:'Hello!这是好友聊天的测试消息!',
-//                time:time
-//            }]);
+        Ext.getCmp('ChattingContent').setData([
+            {
+                id: "407788",
+                nickname:"程序猿",
+                xindex:'1',
+                message:'欢迎使用好友聊天!',
+                time:time
+            }]);
 
         var view = this.view;
         Ext.getCmp('FriendImage').setSrc(user.data.portrait);

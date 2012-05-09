@@ -86,6 +86,14 @@ function successLogin(obj){
         Ext.getCmp('ChattingFriends').setData(friendList);
 
         socket.emit('get topic list',function(obj) {
+            var grouplist = obj;
+            for(var i = 0; i < grouplist.length;i++)
+            {
+                grouplist[i].lastmsg = '求基友！';
+                grouplist[i].lasttime ='刚刚';
+                grouplist[i].portrait = 'http://hdn.xnimg.cn/photos/hdn221/20120331/0950/tiny_twM9_56111n019117.jpg';
+            }
+
             Ext.getCmp('ChattingGroups').setData([]);
             var store = Ext.getCmp('ChattingGroups').getStore();
             store.load();

@@ -47,7 +47,7 @@ Ext.define('Chihiro.controller.message.GroupList', {
 
         var view = this.view;
         view.setUser(user);
-        Ext.getCmp('GroupImage').setSrc(user.data.portrait);
+        Ext.getCmp('GroupImage').setSrc('http://hdn.xnimg.cn/photos/hdn221/20120331/0950/tiny_twM9_56111n019117.jpg');
         var a = user.data.nickname;
         var b = user.data.intro;
         Ext.getCmp('groupInfoPanel').setHtml('<span class="nickname"><b>'+a+'</b></span><br />' +
