@@ -1,8 +1,9 @@
-var redis, clients;
+var redis, clients, redisp;
 
-exports.init = function(_redis, _clients) {
+exports.init = function(_redis, _clients, _redisp) {
     redis    = _redis;
     clients  = _clients;
+    redisp   = _redisp;
     return {
         sendMessage:      sendMessage,
         createTopic:      createTopic,
@@ -57,8 +58,10 @@ function createTopic(data, callback) {
             redis.sadd('topics:' + id + ':members', data.members);
             for (iuid in data.members)
                 redis.sadd('user_topics:' + data.members[iuid], id);
+            redisp.subscribe('topic:' + id);
+            redisp.subscribe('draw:' + id);
             callback({err: 0, id: id});
-            console.log('new topic ' + topic.title + ' is created.');
+            console.log('new topic ' + data.title + ' is created.');
         });
     });
 }
@@ -79,6 +82,27 @@ function getTopicInfo(id, callback) {
     });
 }
 
+function getTopics(callback) {
+    var socket = this;
+    socket.get('uid', function (err, uid) {
+        if (!uid) return;
+        redis.smembers('user_topics:' + uid, function (err, ids) {
+            var topics = new Array();
+            var length = ids.length;
+            for (i in ids) {                
+                getTopicInfo(ids[i], function (t) {
+                    delete t.err;
+                    t.id = ids[i];
+                    topics.push(t);
+                    if (!--length) {
+                        callback(topics);
+                    }
+                });
+            }
+        });
+    });
+}
+
 // Subscribe a topic
 function subscribeTopic(id) {
     var socket = this;
@@ -92,14 +116,14 @@ function sendTopicMessage(data) {
     var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
-        redis.publish('topic:' + data.id, JSON.stringify({uid: uid, msg: data.message}));
+        redisp.publish('topic:' + data.id, JSON.stringify({uid: uid, msg: data.message}));
     });
 }
 
 function draw(data) {
-    redis.publish('draw:' + data.id, JSON.stringify([data.px, data.py, data.x, data.y]));
+    redisp.publish('draw:' + data.id, JSON.stringify([data.px, data.py, data.x, data.y]));
 }
 
 function clear(id) {
-    redis.publish('draw:' + id, '\'clear\'');
+    redisp.publish('draw:' + id, '\'clear\'');
 }
