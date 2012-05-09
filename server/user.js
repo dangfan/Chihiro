@@ -163,7 +163,7 @@ function authenticate(data, callback) {
             if (!usr) {
                 callback({err: 1, msg: '请检查用户名或密码'});
             } else {
-                login(usr, callback);
+                login(usr, callback, socket);
             }
         });
     }
