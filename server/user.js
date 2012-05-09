@@ -405,7 +405,7 @@ function setUserData(usr) {
     for (key in usr) {
         if (key == 'interests') {
             redis.hset('users:' + usr._id, key, JSON.stringify(usr[key]));
-        } else if (key == 'friends') { 
+        } else if (key == 'friends' || key == 'location') { 
         } else {
             redis.hset('users:' + usr._id, key, usr[key]);
         }
