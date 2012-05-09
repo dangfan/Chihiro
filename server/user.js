@@ -268,7 +268,7 @@ function findByInterests(callback) {
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.get('location:' + uid, function (err, location) {
-            redis.get('users:' + uid, function (err, usr) {
+            redis.hgetall('users:' + uid, function (err, usr) {
                 if (!usr.hasOwnProperty('interests')) {
                     callback([]);
                     return;
