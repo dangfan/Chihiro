@@ -10,7 +10,8 @@ exports.init = function(_redis, _clients, _redisp) {
         getTopicInfo:     getTopicInfo,
         subscribeTopic:   subscribeTopic,
         sendTopicMessage: sendTopicMessage,
-        draw:             draw
+        draw:             draw,
+        getTopics:        getTopics
     };
 }
 
@@ -48,6 +49,7 @@ function createTopic(data, callback) {
         redis.incr('topics_id', function (err, id){
             redis.set('topics:' + id + ':title', data.title);
             redis.set('topics:' + id + ':intro', data.intro);
+            data.members.push(uid);
             redis.sadd('topics:' + id + ':members', data.members);
             for (iuid in data.members)
                 redis.sadd('user_topics:' + data.members[iuid], id);
