@@ -75,15 +75,14 @@ function getTopicInfo(id, callback, socket) {
             if (nickname) {
                 redis.get('topics:' + id + ':intro', function (err, intro) {
                     redis.smembers('topics:' + id + ':members', function (err, members) {
-                        console.log(members);
                         if (!members) {
                             callback({err: 0, nickname: nickname, intro: intro, id: id, members: []});
                         }
                         var names = new Array();
                         var length = members.length;
                         for (var i in members) {
-                            redis.hget('users:' + members[i], 'nickname', function (err, nickname) {
-                                names.push(nickname);
+                            redis.hget('users:' + members[i], 'nickname', function (err, nname) {
+                                names.push(nname);
                                 if (!--length) {
                                     callback({err: 0, nickname: nickname, intro: intro, id: id, members: names});
                                 }
