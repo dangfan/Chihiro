@@ -8,6 +8,7 @@ Ext.define('Chihiro.model.Activity',{
             'starttime',
             'endtime',
             'date',
+            'dis',
             'location',
             'mark',
             'cost',

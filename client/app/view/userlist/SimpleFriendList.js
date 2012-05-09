@@ -12,7 +12,7 @@ Ext.define('Chihiro.view.userlist.SimpleFriendList', {
             }
         },
         items: [{
-            title: '邀请好友加入群',
+            title: '邀请好友',
             layout: Ext.os.deviceType == 'Phone' ? 'fit' : {
                 type: 'vbox',
                 align: 'center',

@@ -13,7 +13,7 @@ Ext.define('Chihiro.view.activitylist.BasicInformation', {
 
         tpl: Ext.create('Ext.XTemplate',
             '<h1>{name}</h1>',
-            '<img src="http://hdn.xnimg.cn/photos/hdn421/20100403/2025/large_fdEG_41708n019118.jpg" width="120" height="160">',
+            '<img src="resources/icons/activity.jpg" width="120" height="120">',
             '<p class="overview">',
             '<strong>位置:</strong>{location}<br />',
             '<strong>日期:</strong>{date}<br />',

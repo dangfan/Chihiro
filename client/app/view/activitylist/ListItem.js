@@ -9,8 +9,8 @@ Ext.define('Chihiro.view.activitylist.ListItem', {
             getName: {
                 setHtml: 'name'
             },
-            getSponsor: {
-                setHtml: 'sponsor'
+            getDis: {
+                setHtml: 'dis'
             }
         },
 
@@ -20,7 +20,7 @@ Ext.define('Chihiro.view.activitylist.ListItem', {
             cls: 'name'
         },
 
-        sponsor: {
+        dis: {
             docked: 'right'
         },
 
@@ -39,32 +39,12 @@ Ext.define('Chihiro.view.activitylist.ListItem', {
             this.add(newName);
         }
     },
-    applySponsor:function(config){
-        return Ext.factory(config, Ext.Component, this.getSponsor());
+    applyDis:function(config){
+        return Ext.factory(config, Ext.Component, this.getDis());
     },
-    updateSponsor:function(newSponsor){
-        if(newSponsor){
-            this.add(newSponsor);
+    updateDis:function(newDis){
+        if(newDis){
+            this.add(newDis);
         }
     }
-    /*applyStatus: function(config) {
-        return Ext.factory(config, Ext.Component, this.getStatus());
-    },
-
-    updateStatus: function(newStatus) {
-        if (newStatus) {
-            this.add(newStatus);
-        }
-    },
-
-    applyAvatar: function(config) {
-        console.log(this.getAvatar());
-        return Ext.factory(config, Ext.Img, this.getAvatar());
-    },
-
-    updateAvatar: function(newAvatar) {
-        if (newAvatar) {
-            this.add(newAvatar);
-        }
-    },*/
 });

@@ -146,7 +146,9 @@ Ext.define('Chihiro.controller.message.Group',{
     },
 
     inviteFriends:function(){
-        console.log(invitationList);
+        if(Ext.getCmp('homeView').getActiveItem().title == '聊天'){
+            console.log(invitationList);
+        }
         Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
     }
 })
