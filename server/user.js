@@ -38,11 +38,11 @@ function loadMessages(uid, socket) {
     // Topics
     redis.smembers('user_topics:' + uid, function (err, topics) {
         for (id in topics) {
-            redis.subscribe('topic:' + topics[id]);
-            redis.subscribe('draw:' + topics[id]);
+            redisp.subscribe('topic:' + topics[id]);
+            redisp.subscribe('draw:' + topics[id]);
         }
     });
-    redis.on('message', function (channel, msg) {
+    redisp.on('message', function (channel, msg) {
         var info = channel.split(':'),
             data = eval(msg);
         redis.hget('users:' + data.uid, 'nickname', function (err, nickname) {
