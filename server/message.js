@@ -10,7 +10,8 @@ exports.init = function(_redis, _clients, _redisp) {
         getTopicInfo:     getTopicInfo,
         subscribeTopic:   subscribeTopic,
         sendTopicMessage: sendTopicMessage,
-        draw:             draw
+        draw:             draw,
+        getTopics:        getTopics
     };
 }
 
@@ -32,7 +33,7 @@ function sendMessage(data) {
                 redis.sadd('messages:' + data.uid, uid + '|' + data.time + '|' + data.msg);
                 console.log('message to:' + data.uid, nickname + '|' + uid + '|' + data.time + '|' + data.msg);
             } else {
-                redis.sadd('old messages:' + data.uid, uid + '|' + data.time + '|' + data.msg);
+                redis.sadd('offline_messages:' + data.uid, uid + '|' + data.time + '|' + data.msg);
                 console.log('offline message to:' + data.uid, nickname + '|' + uid + '|' + data.time + '|' + data.msg);
             }
         });
@@ -48,6 +49,7 @@ function createTopic(data, callback) {
         redis.incr('topics_id', function (err, id){
             redis.set('topics:' + id + ':title', data.title);
             redis.set('topics:' + id + ':intro', data.intro);
+            data.members.push(uid);
             redis.sadd('topics:' + id + ':members', data.members);
             for (iuid in data.members)
                 redis.sadd('user_topics:' + data.members[iuid], id);
@@ -60,14 +62,14 @@ function createTopic(data, callback) {
 }
 
 // Get a topic information
-function getTopicInfo(id, callback) {
-    var socket = this;
+function getTopicInfo(id, callback, socket) {
+    if (!socket) socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.get('topics:' + id + ':title', function (err, title) {
             if (title) {
                 redis.get('topics:' + id + ':intro', function (err, intro) {
-                    callback({err: 0, title: title, intro: intro});
+                    callback({err: 0, title: title, intro: intro, id: id});
                 });
             }
             else callback({err:1, msg: '未找到该讨论组'});
@@ -85,12 +87,11 @@ function getTopics(callback) {
             for (i in ids) {                
                 getTopicInfo(ids[i], function (t) {
                     delete t.err;
-                    t.id = ids[i];
                     topics.push(t);
                     if (!--length) {
                         callback(topics);
                     }
-                });
+                }, socket);
             }
         });
     });

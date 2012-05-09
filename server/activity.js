@@ -43,8 +43,8 @@ function addActivity(activity, callback) {
                 redis.set('activity_location:' + activity._id,
                     '[' + activity.mark.longitude + ',' + activity.mark.latitude + ']');
                 redis.sadd('activities_createdby:' + uid, activity._id);
-                redis.sadd('activity_participants:' + activityid, uid);
-                redis.sadd('activities_participate:' + uid, activityid);
+                redis.sadd('activity_participants:' + activity._id, uid);
+                redis.sadd('activities_participate:' + uid, activity._id);
                 callback({err: 0, msg: '添加活动成功'});
             }
         });
@@ -189,7 +189,7 @@ function findActivityByLocation(callback) {
                 geoNear:            'activities',
                 near:               eval(location),
                 spherical:          true,
-                maxDistance:        10 / 6371,
+                maxDistance:        1000 / 6371,
                 distanceMultiplier: 6371000
             }, function (err, obj) {
                 var data = new Array();
