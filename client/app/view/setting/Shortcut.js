@@ -10,10 +10,10 @@ Ext.define('Chihiro.view.setting.Shortcut', {
                 items: [
                     {
                         xtype: 'image',
-                        id: 'setPortrait',
+                        id: 'uploadPortrait',
                         height:100,
                         width:100,
-                        src: 'http://kiva.org/img/w80h80/1053361.jpg'
+                        src: (profile.portrait) ? profile.portrait : '/portraits/default.png'
                     },
                     {
                         xtype: 'spacer'
@@ -21,9 +21,7 @@ Ext.define('Chihiro.view.setting.Shortcut', {
                     {
                         xtype: 'button',
                         height:40,
-                        width:150,
                         docked:'right',
-                        margin:'50 20 20 40',
                         text:'上传头像',
                         action: 'getportrait'
                     },
@@ -45,7 +43,7 @@ Ext.define('Chihiro.view.setting.Shortcut', {
                     {
                         text: '确定修改',
                         ui: 'confirm',
-                        width: '40%',
+                        width: '100%',
                         action:'uploadportrait'
                     },
                     {

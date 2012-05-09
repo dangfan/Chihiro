@@ -21,27 +21,37 @@ Ext.define('Chihiro.controller.setting.Shortcut', {
         }
     },
     getPortrait: function() {
-        Ext.Viewport.add({
-           xtype: 'actionsheet',
-            items:[
-                {
-                    text: '从相册中选取',
-                    scope: this,
-                    handler: function(){
-                        this.actions.hide();
-                        getPicture(0,react );
+        if(!this.actions) {
+            this.actions = Ext.Viewport.add({
+                xtype: 'actionsheet',
+                items:[
+                    {
+                        text: '从相册中选取',
+                        scope: this,
+                        handler: function(){
+                            this.actions.hide();
+                            getPicture(0,react );
+                        }
+                    },
+                    {
+                        text:'拍照上传',
+                        scope: this,
+                        handler: function(){
+                            this.actions.hide();
+                            getPicture(1,react);
+                        }
+                    },
+                    {
+                        text:'取消',
+                        scope: this,
+                        ui: 'decline',
+                        handler: function(){
+                            this.actions.hide()
+                        }
                     }
-                },
-                {
-                    text:'拍照上传',
-                    scope: this,
-                    handler: function(){
-                        this.actions.hide();
-                        getPicture(1,react);
-                    }
-                }
-            ]
-        });
+                ]
+            });
+        }
         this.actions.show();
     },
     uploadPortrait: function() {

@@ -2,6 +2,7 @@ Ext.define('Chihiro.view.setting.Info', {
     extend: 'Ext.form.Panel',
     xtype:'userInfo',
     id: 'infoSetting',
+    autoDestroy: true,
     requires: [
         'Ext.field.Select',
         'Ext.field.DatePicker'

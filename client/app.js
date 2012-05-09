@@ -8,7 +8,7 @@ Ext.application({
     controllers: ['SignIn', 'SignUp', 'Setting', 'List', 'Home', 'find.Find','find.Email','find.Phone',
         'contact.Contact', 'activity.Find', 'activity.Create',
         'message.Message','message.ChatList','message.GroupList','message.Friend','message.Group','message.Other',
-        'setting.Main','setting.Info','setting.Account','setting.Shortcut'],
+        'setting.Main','setting.Info','setting.Account','setting.Shortcut','setting.Status'],
 
     models: ['User', 'Message','ChattingFriends','ChattingContent','Activity','Contact'],
 
