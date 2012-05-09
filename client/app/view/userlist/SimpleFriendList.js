@@ -1,6 +1,6 @@
 Ext.define('Chihiro.view.userlist.SimpleFriendList', {
     extend: 'Ext.tab.Panel',
-    xtype:'simplefriendlist',
+    xtype:'simplefriendlist2',
 
     config: {
         activeItem: 2,
@@ -22,29 +22,32 @@ Ext.define('Chihiro.view.userlist.SimpleFriendList', {
             selectedCls: 'x-item-selected',
 
             items: [{
-                width: 400,
+                width: '100%',
                 height: 500,
                 xtype: 'list',
                 allowDeselect:false,
                 mode:'MULTI',
-                id: 'SimpleFriendList',
+                id: 'SimpleFriendList2',
                 store:{
-                    fields: ['Name','id'],
-                    sorters: 'Name',
+                    fields: ['nickname','id'],
+                    sorters: 'nickname',
                     grouper: function(record) {
-                        return record.get('Name')[0];
+                        return record.get('nickname')[0];
+                    },
+                    proxy: {
+                        type: 'localstorage'
                     },
                     data: [
-                        {Name: '党凡',id:'1'},
-                        {Name: '钱堃',id:'2'},
-                        {Name: '蔡梦琳',id:'3'},
-                        {Name:'丁鹏',id:'4'},
-                        {Name:'丁鹏2',id:'5'},
-                        {Name:'丁鹏3',id:'6'},
-                        {Name:'徐涵',id:'7'}
+                        {nickname: '党凡',id:'1'},
+                        {nickname: '钱堃',id:'2'},
+                        {nickname: '蔡梦琳',id:'3'},
+                        {nickname:'丁鹏',id:'4'},
+                        {nickname:'丁鹏2',id:'5'},
+                        {nickname:'丁鹏3',id:'6'},
+                        {nickname:'徐涵',id:'7'}
                     ]
                 },
-                itemTpl: '<div class="contact"><strong>{Name}</strong> </div>',
+                itemTpl: '<div class="contact"><strong>{nickname}</strong> </div>',
                 grouped: true,
                 indexBar: true
             },

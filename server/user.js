@@ -38,11 +38,11 @@ function loadMessages(uid, socket) {
     // Topics
     redis.smembers('user_topics:' + uid, function (err, topics) {
         for (id in topics) {
-            redis.subscribe('topic:' + topics[id]);
-            redis.subscribe('draw:' + topics[id]);
+            redisp.subscribe('topic:' + topics[id]);
+            redisp.subscribe('draw:' + topics[id]);
         }
     });
-    redis.on('message', function (channel, msg) {
+    redisp.on('message', function (channel, msg) {
         var info = channel.split(':'),
             data = eval(msg);
         redis.hget('users:' + data.uid, 'nickname', function (err, nickname) {
@@ -163,7 +163,8 @@ function authenticate(data, callback) {
             if (!usr) {
                 callback({err: 1, msg: '请检查用户名或密码'});
             } else {
-                login(usr, callback);
+                setUserData(usr);
+                login(usr, callback, socket);
             }
         });
     }
@@ -268,7 +269,7 @@ function findByInterests(callback) {
         if (!uid) return;
         redis.get('location:' + uid, function (err, location) {
             redis.get('users:' + uid, function (err, usr) {
-                if (!usr.interests) {
+                if (interests in usr) {
                     callback([]);
                     return;
                 }
@@ -341,7 +342,7 @@ function updatePortrait(data, callback){
         db.users.update({'_id': db.ObjectId(uid)}, {$set: {portrait: uid+'.jpg'}});
         redis.hset('users:' + usr._id, 'portrait', uid+'.jpg');
         if (callback) {
-            callback({err: 0});
+            callback({err: 0, src: '/portraits/' + uid + '.jpg'});
         }
     });
 }
@@ -400,10 +401,11 @@ function processUser(usr, callback) {
 }
 
 function setUserData(usr) {
+    console.log(usr);
     for (key in usr) {
         if (key == 'interests') {
             redis.hset('users:' + usr._id, key, JSON.stringify(usr[key]));
-        } else if (key == 'friends') { 
+        } else if (key == 'friends' || key == 'location') { 
         } else {
             redis.hset('users:' + usr._id, key, usr[key]);
         }
@@ -481,7 +483,7 @@ function findByPhones(phones, callback) {
     socket.get('uid', function  (err, t) {
         if (!t) return;
         var list = new Array();
-        var counter = 1
+        var counter = 0;
         for (i in phones) {
             getInfoByPhone(phones[i], function (obj) {
                 if (obj.obj) {

@@ -1,5 +1,6 @@
 Ext.define('Chihiro.controller.message.Friend', {
     extend: 'Ext.app.Controller',
+    profile: Ext.os.deviceType.toLowerCase(),
 
     config: {
         refs: {
@@ -51,7 +52,7 @@ Ext.define('Chihiro.controller.message.Friend', {
                 {
                     id: '',
                     image:'',
-                    nickname:"党熊",
+                    nickname:sname,
                     xindex:'0',
                     message:msg,
                     time:"4月12日 下午18:15"
@@ -85,40 +86,50 @@ Ext.define('Chihiro.controller.message.Friend', {
     },
 
     ShowActions:function(img,obj,other){
-        if (!this.view) {
-                this.view = Ext.create('Chihiro.view.message.ChattingFriendData');
-        }
-
-        var view = this.view;
-        //console.log(Ext.getCmp('friendData'));
-
-        store = Ext.getCmp('friendData').getStore();
-        store.load();
 
         if(chatobject === 'friend')
         {
-            Ext.getCmp('friendData').setData(
-                [
-                    { text: '修改备注名', sort:' ',func: 'Nickname'},
-                    { text: '邀请到群组', sort: '   ',func: 'InviteToGroup' }
-                ]
-            );
-        }
-        else
-        {
-            Ext.getCmp('friendData').setData(
-                [
-                    { text: '空的', sort:' ',func: 'Nickname'},
-                    { text: '满的', sort: '   ',func: 'InviteToGroup' }
-                ]
-            );
-        }
+            if(Ext.getCmp('MyCarousel'))
+            {
+                var carou = Ext.getCmp('MyCarousel');
+                carou.setActiveItem(0);
 
+                Ext.getCmp('addFriendBtn').setHidden(true);
+                Ext.getCmp('deleteFriendBtn').setHidden(true);
+                Ext.getCmp('talktofriendBtn').setHidden(true);
 
-        if (!view.getParent()) {
-            Ext.Viewport.add(view);
+                var user = Ext.getCmp('ChattingFriends').getSelection()[0];
+                information = Ext.getCmp('DetailPanel').down('detailInformation');
+                information.setData(user.data);
+
+                var button = this.getDeletebutton();
+                var a = button.parent.parent;
+                a.hide();
+
+                Ext.getCmp('DetailPanel').show();
+                return;
+            }
+
+            if (!this.view) {
+                this.view = Ext.create('Chihiro.view.userlist.Detail');
+            }
+            Ext.getCmp('addFriendBtn').setHidden(true);
+            Ext.getCmp('deleteFriendBtn').setHidden(true);
+            Ext.getCmp('talktofriendBtn').setHidden(true);
+
+            var view = this.view;
+            var user = Ext.getCmp('ChattingFriends').getSelection()[0];
+            view.setUser(user);
+
+            if (!view.getParent()) {
+                Ext.Viewport.add(view);
+            }
+
+            var button = this.getDeletebutton();
+            var a = button.parent.parent;
+            a.hide();
+
+            view.show();
         }
-
-        view.show();
     }
 });

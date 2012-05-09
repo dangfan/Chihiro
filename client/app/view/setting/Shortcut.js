@@ -2,7 +2,7 @@ Ext.define('Chihiro.view.setting.Shortcut', {
     extend:'Ext.form.Panel',
 
     config:{
-        title:'头像与签名',
+        title:'上传头像',
         items:[
             {
                 xtype:'panel',
@@ -10,6 +10,7 @@ Ext.define('Chihiro.view.setting.Shortcut', {
                 items: [
                     {
                         xtype: 'image',
+                        id: 'setPortrait',
                         height:100,
                         width:100,
                         src: 'http://kiva.org/img/w80h80/1053361.jpg'
@@ -23,7 +24,8 @@ Ext.define('Chihiro.view.setting.Shortcut', {
                         width:150,
                         docked:'right',
                         margin:'50 20 20 40',
-                        text:'上传头像'
+                        text:'上传头像',
+                        action: 'getportrait'
                     },
                     {
                         xtype: 'spacer'
@@ -41,10 +43,10 @@ Ext.define('Chihiro.view.setting.Shortcut', {
                         xtype: 'spacer'
                     },
                     {
-                        text: '保存修改',
+                        text: '确定修改',
                         ui: 'confirm',
-                        width: '40%'
-                        //action:'requiredConfirm'
+                        width: '40%',
+                        action:'uploadportrait'
                     },
                     {
                         xtype: 'spacer'

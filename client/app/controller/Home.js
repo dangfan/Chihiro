@@ -16,6 +16,27 @@ Ext.define('Chihiro.controller.Home', {
         this.locateGeo();
 
         socket.on('friend request', function(user) {
+
+            //获取当前时间，应该写成一个函数
+            var now = new Date();
+            var month = now.getMonth() + 1;     //月
+            var day = now.getDate();            //日
+            var hh = now.getHours();            //时
+            var mm = now.getMinutes();          //分
+            var clock = '';
+            if(month < 10)
+                clock += "0";
+            clock += month + "-";
+            if(day < 10)
+                clock += "0";
+            clock += day + " ";
+            if(hh < 10)
+                clock += "0";
+            clock += hh + ":";
+            if (mm < 10) clock += '0';
+            clock += mm;
+            user.lastmsg = user.nickname + "想加您为好友！";
+            user.lasttime = clock;
             console.log(user);
 
             var chattinglists = Ext.getCmp('ChattingFriends');
@@ -73,4 +94,5 @@ Ext.define('Chihiro.controller.Home', {
             }
         })
     }
+
 });

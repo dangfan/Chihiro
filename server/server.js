@@ -3,9 +3,10 @@ function listen(port) {
     var collections = ['users', 'activities'];
 
     // Basic requirements
-    var sio   = require('socket.io').listen(port),
-    	db    = require('mongojs').connect('Chihiro', collections),
-    	redis = require('redis').createClient();
+    var sio    = require('socket.io').listen(port),
+    	db     = require('mongojs').connect('Chihiro', collections),
+    	redis  = require('redis').createClient();
+        redisp = require('redis').createClient();
 
     // Save clients by user id
     var clients = {};
@@ -23,7 +24,7 @@ function listen(port) {
     sio.sockets.on('connection', function (socket) {
         // Interfaces related to users
         var user = require('./user').init(db, redis, clients);
-        var message = require('./message').init(redis, clients);
+        var message = require('./message').init(redis, clients, redisp);
         var activity = require('./activity').init(db, redis, clients);
         socket.on('init',  user.init);
         socket.on('login', user.authenticate);
@@ -50,6 +51,12 @@ function listen(port) {
         socket.on('draw', message.draw);
         socket.on('add activity', activity.addActivity);
         socket.on('get activity', activity.getActivityById);
+        socket.on('update activity', activity.updateActivityDetails);
+        socket.on('participate activity', activity.participateActivity);
+        socket.on('unparticipate activity', activity.unparticipateActivity);
+        socket.on('find participants', activity.getParticipants);
+        socket.on('find activity by creator', activity.findActivityByCreator);
+        socket.on('find activity by participant', activity.findActivityByParticipant);
         socket.on('find closest activities', activity.findActivityByLocation);
     });
 }

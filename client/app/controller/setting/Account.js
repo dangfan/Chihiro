@@ -22,12 +22,20 @@ Ext.define('Chihiro.controller.setting.Account', {
     updateAccount: function() {
         var panel = this.getFieldpanel();
         var data = panel.getValues();
-        socket.emit('update profile', data, function(msg) {
-            alert(msg.msg);
-            if(!msg.err) {
-                for(t in data) profile[t] = data[t];
-            }
-            console.log(profile);
-        })
+        if(data.newpassword == '') {
+            alert('密码不得为空！');
+            return;
+        }
+        else if(data.newpassword != data.repeatpassword) {
+            alert('两次密码输入不一致！');
+            return;
+        }
+        else {
+            var newdata = {};
+            newdata.password = data.newpassword;
+            socket.emit('update profile', newdata, function(msg) {
+                if(msg.err == 0) alert('密码修改成功！');
+            });
+        }
     }
 });

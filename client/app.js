@@ -7,10 +7,10 @@ Ext.Loader.setPath({
 Ext.application({
     controllers: ['SignIn', 'SignUp', 'Setting', 'List', 'Home', 'find.Find','find.Email','find.Phone',
         'contact.Contact', 'activity.Find', 'activity.Create',
-        'message.Message','message.ChatList','message.Friend','message.Group','message.Other',
-        'setting.Main','setting.Info','setting.Account'],
+        'message.Message','message.ChatList','message.GroupList','message.Friend','message.Group','message.Other',
+        'setting.Main','setting.Info','setting.Account','setting.Shortcut'],
 
-    models: ['User', 'Message','ChattingFriends','ChattingContent','Activity'],
+    models: ['User', 'Message','ChattingFriends','ChattingContent','Activity','Contact'],
 
     name: 'Chihiro',
 
@@ -27,10 +27,10 @@ Ext.application({
         'activitylist.BasicInformation','activitylist.Detail','activitylist.DetailInformation','activitylist.List','activitylist.ListItem','activitylist.Map',
         'find.Main', 'find.Email', 'find.Phone', 'find.Contact', 'find.Nearby',
         'setting.Main',
-        'userlist.List', 'userlist.Detail', 'userlist.ListItem','userlist.SimpleFriendList',
+        'userlist.List', 'userlist.MyList','userlist.Detail','userlist.GroupDetail', 'userlist.ListItem','userlist.SimpleFriendList',
         'message.List','message.GroupList','message.Groups','message.ChatList','message.ChatListItem','message.Friends','message.Content',
-        'message.Sentence','message.ChattingFriendData','message.ChattingGroupData','message.ChattingFriendPanel','message.GroupContent',
-        'message.other.Nickname','message.other.InviteToGroup'
+        'message.Sentence','message.ChattingFriendData','message.ChattingGroupData','message.ChattingGroupPanel','message.ChattingFriendPanel','message.GroupContent',
+        'message.other.Nickname','message.other.InviteToGroup','message.GroupListItem'
     ],
 
     icon: {

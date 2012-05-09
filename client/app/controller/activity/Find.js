@@ -55,17 +55,24 @@ Ext.define('Chihiro.controller.activity.Find',{
     },
     showNearActivity: function(){
         if(Ext.getCmp('homeView').getActiveItem().title=='活动'){
-            console.log(Ext.getCmp('nearactivitylist'));
             Ext.Viewport.setMasked({
                 xtype: 'loadmask',
                 message: '载入中...'
             });
-            /*socket.emit('find closest activities',function(list){
-                console.log(list);
-            });*/
+            socket.emit('find closest activities',function(msg){
+                Ext.getCmp('nearactivitylist').getStore().load();
+                Ext.getCmp('nearactivitylist').setData(msg);
+            });
+            socket.emit('find activity by creator',function(msg){
+                Ext.getCmp('sponseactivitylist').getStore().load();
+                Ext.getCmp('sponseactivitylist').setData(msg);
+            });
+            socket.emit('find activity by participant',function(msg){
+                Ext.getCmp('participateactivitylist').getStore().load();
+                Ext.getCmp('participateactivitylist').setData(msg);
+            });
             Ext.Viewport.setMasked(false);
         }
-        //TODO: 向服务器发查找活动的消息
     },
     activeitemChange: function(a,value, oldValue, eOpts){
         var currentTitle = value.title;
@@ -116,7 +123,7 @@ Ext.define('Chihiro.controller.activity.Find',{
 
     },
     refreshActivity: function(){
-        //TODO: 重新获取
+        this.showNearActivity();
     },
     createActivity: function(){
         if(!Ext.getCmp('createactivity')){
@@ -234,4 +241,4 @@ Ext.define('Chihiro.controller.activity.Find',{
     quitActivity: function(){
 
     }
-})
+});

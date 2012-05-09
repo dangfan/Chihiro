@@ -1,10 +1,5 @@
 Ext.define('Chihiro.view.setting.Status', {
     extend:'Ext.form.Panel',
-
-    requires: [
-        'Ext.field.Select'
-    ],
-
     config:{
         title:'兴趣与签名',
         items:[
@@ -19,7 +14,7 @@ Ext.define('Chihiro.view.setting.Status', {
                     },
                     {
                         xtype:'textareafield',
-                        name:'signature',
+                        name:'signiture',
                         label:'个性签名'
                     }
 
