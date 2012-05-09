@@ -16,7 +16,8 @@ Ext.define('Chihiro.view.userlist.SimpleFriendList', {
             layout: Ext.os.deviceType == 'Phone' ? 'fit' : {
                 type: 'vbox',
                 align: 'center',
-                pack: 'center'
+                pack: 'center',
+                docked:'top'
             },
             cls: 'demo-list',
             selectedCls: 'x-item-selected',

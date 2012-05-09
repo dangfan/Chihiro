@@ -42,7 +42,8 @@ Ext.define('Chihiro.controller.message.Group',{
     createGroup: function(){
         var val = Ext.getCmp('creategroup').getValues();
 
-        if(val.name.length == 0){
+        console.log(val);
+        if(val.title.length === 0){
             Ext.Msg.alert('群组名不能为空');
             return;
         }
@@ -160,7 +161,7 @@ Ext.define('Chihiro.controller.message.Group',{
             var val = Ext.getCmp('creategroup').getValues();
             console.log(val);
             console.log(invitationList);
-            socket.emit('create topic',{nickname:val.name,intro:val.intro,members:invitationList},function(obj) {
+            socket.emit('create topic',{nickname:val.title,intro:val.intro,members:invitationList},function(obj) {
                 if(obj.err === 0)
                     socket.emit('get topic list',function(obj) {
                         console.log(obj);

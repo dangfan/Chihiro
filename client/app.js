@@ -30,7 +30,7 @@ Ext.application({
         'userlist.List', 'userlist.MyList','userlist.Detail','userlist.GroupDetail', 'userlist.ListItem','userlist.SimpleFriendList',
         'message.List','message.GroupList','message.Groups','message.ChatList','message.ChatListItem','message.Friends','message.Content',
         'message.Sentence','message.ChattingFriendData','message.ChattingGroupData','message.ChattingGroupPanel','message.ChattingFriendPanel','message.GroupContent',
-        'message.other.Nickname','message.other.InviteToGroup','message.GroupListItem'
+        'message.other.Nickname','message.other.Canvas','message.other.InviteToGroup','message.GroupListItem'
     ],
 
     icon: {

@@ -62,6 +62,7 @@ Ext.define('Chihiro.view.message.Friends', {
                     {
                         iconMask: true,
                         ui: 'plain',
+                        id:'FriendCanvas',
                         iconCls: 'add',
                         width:'8%'
                     },

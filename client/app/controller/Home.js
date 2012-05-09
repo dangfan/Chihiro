@@ -88,6 +88,7 @@ Ext.define('Chihiro.controller.Home', {
 
                 if(!friendList)
                     return;
+                console.log(friendList);
                 for(var i = 0; i < friendList.length;i++)
                 {
                     if(friendList[i]._id === msg.from) {
