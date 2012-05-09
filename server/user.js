@@ -45,7 +45,7 @@ function loadMessages(uid, socket) {
         });
         redisp.on('message', function (channel, msg) {
             var info = channel.split(':'),
-                data = eval(msg);
+                data = JSON.parse(msg);
             redis.hget('users:' + data.uid, 'nickname', function (err, nickname) {
                 data.nickname = nickname;
                 data.tid = info[1];
