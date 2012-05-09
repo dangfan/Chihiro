@@ -143,7 +143,7 @@ function findActivityByCreator(callback) {
     var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) callback({});
-        console.log('Activity Created Found by' + uid);
+        console.log('found activity by creator:' + uid);
         redis.smembers('activities_createdby:' + uid, function (err, data) {
             var objs = new Array();
             var counter = 0;
@@ -164,7 +164,7 @@ function findActivityByParticipant(callback) {
     var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) callback({});
-        console.log('Activity Participated Found by' + uid);
+        console.log('found activity by participants:' + uid);
         redis.smembers('activities_participate:' + uid, function (err, data) {
             var objs = new Array();
             var counter = 0;
