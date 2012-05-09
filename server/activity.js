@@ -189,7 +189,7 @@ function findActivityByLocation(callback) {
                 geoNear:            'activities',
                 near:               eval(location),
                 spherical:          true,
-                maxDistance:        10 / 6371,
+                maxDistance:        1000 / 6371,
                 distanceMultiplier: 6371000
             }, function (err, obj) {
                 var data = new Array();
