@@ -50,6 +50,7 @@ Ext.define('Chihiro.view.setting.Main', {
                             title: record.get('text')
                         });
                         if(panel.isXType('formpanel')) panel.setValues(profile);
+                        panel.fireEvent('show',panel);
                         this.parent.push(panel);
                     }
                 }

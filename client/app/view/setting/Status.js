@@ -1,5 +1,7 @@
 Ext.define('Chihiro.view.setting.Status', {
     extend:'Ext.form.Panel',
+    id: 'statusSetting',
+    instructions: '多项兴趣请用空格隔开',
     config:{
         title:'兴趣与签名',
         items:[
@@ -33,8 +35,8 @@ Ext.define('Chihiro.view.setting.Status', {
                     {
                         text: '保存修改',
                         ui: 'confirm',
-                        width: '40%'
-                        //action:'requiredConfirm'
+                        width: '40%',
+                        action:'updateStatus'
                     },
                     {
                         xtype: 'spacer'

@@ -1,20 +1,20 @@
 /**
  * Created by JetBrains WebStorm.
  * User: jacklyne
- * Date: 12-5-6
- * Time: 下午2:30
+ * Date: 12-5-9
+ * Time: 下午3:10
  * To change this template use File | Settings | File Templates.
  */
-Ext.define('Chihiro.controller.setting.Info', {
+Ext.define('Chihiro.controller.setting.Status', {
     extend: 'Ext.app.Controller',
 
     config: {
         refs: {
-            fieldpanel: '#infoSetting'
+            fieldpanel: '#statusSetting'
         },
         control: {
-            'button[action=updateInfo]': {
-                tap: 'updateInfo'
+            'button[action=updateStatus]': {
+                tap: 'updateStatus'
             },
             fieldpanel: {
                 show: 'initpanel'
@@ -22,20 +22,19 @@ Ext.define('Chihiro.controller.setting.Info', {
         }
     },
     initpanel: function(panel) {
+
     },
-    //TODO: birthday is not displaying
-    updateInfo: function() {
+    updateStatus: function() {
         var panel = this.getFieldpanel();
         var data = panel.getValues();
-        console.log(data.birthday);
-        if(data.nickname == '') {
-            alert("昵称不得为空！");
-            return;
-        }
+        var interests = data.interests.split(' ');
+        data.interests = interests;
+        console.log(data);
         socket.emit('update profile', data, function(msg) {
             alert(msg.msg);
             if(!msg.err) {
                 for(t in data) profile[t] = data[t];
+                updateProfile();
             }
             console.log(profile);
         })

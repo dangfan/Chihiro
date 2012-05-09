@@ -46,7 +46,7 @@ Ext.define('Chihiro.view.setting.Privacy', {
                     },
                     {
                         xtype: 'selectfield',
-                        label: '手机号麻可见性',
+                        label: '手机号码可见性',
                         name: 'locationVisibility',
                         options: [{
                             text: '对所有人可见',
