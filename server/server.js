@@ -6,7 +6,6 @@ function listen(port) {
     var sio    = require('socket.io').listen(port),
     	db     = require('mongojs').connect('Chihiro', collections),
     	redis  = require('redis').createClient();
-        redisp = require('redis').createClient();
 
     // Save clients by user id
     var clients = {};
@@ -24,7 +23,7 @@ function listen(port) {
     sio.sockets.on('connection', function (socket) {
         // Interfaces related to users
         var user = require('./user').init(db, redis, clients);
-        var message = require('./message').init(redis, clients, redisp);
+        var message = require('./message').init(redis, clients);
         var activity = require('./activity').init(db, redis, clients);
         socket.on('init',  user.init);
         socket.on('login', user.authenticate);
