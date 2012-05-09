@@ -19,14 +19,13 @@ function sendMessage(data) {
     var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
-        var date = new Date();
         redis.hget('users:' + uid, 'nickname', function (err, nickname) {
             if (!nickname) return;
             if (data.uid in clients) {
                 clients[data.uid].emit('messages', {
                     from: uid,
                     nickname: nickname,
-                    time: date,
+                    time: data.time,
                     message: data.msg
                 });
                 redis.sadd('messages:' + data.uid, uid + '|' + date + '|' + data.msg);
