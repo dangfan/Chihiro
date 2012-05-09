@@ -26,10 +26,10 @@ Ext.define('Chihiro.view.signup.OptionalInfo', {
                 name: 'gender',
                 options: [{
                     text: '男',
-                    value: 0
+                    value: '男'
                 }, {
                     text: '女',
-                    value: 1
+                    value: '女'
                 }]
             },
             {

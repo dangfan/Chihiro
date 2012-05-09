@@ -69,6 +69,9 @@ Ext.define('Chihiro.controller.SignIn', {
 function successLogin(obj){
     profile = obj;
     if(profile.birthday && profile.birthday != 'null') profile.birthday = new Date(profile.birthday);
+    if(profile.gender) {
+        profile.gender = (profile.gender) ? '女' : '男';
+    }
     if(profile.interests && profile.interests != 'null') {
         var interest = profile.interests;
         var interestStr = '';
