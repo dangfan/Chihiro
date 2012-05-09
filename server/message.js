@@ -67,20 +67,22 @@ function getTopicInfo(id, callback, socket) {
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.get('topics:' + id + ':title', function (err, title) {
-            redis.get('topics:' + id + ':intro', function (err, intro) {
-                redis.get('topics:' + id + ':members', function (err, members) {
-                    var names = new Array();
-                    var length = members.length;
-                    for (var i in members) {
-                        redis.hget('users:' + members[i], 'nickname', function (err, nickname) {
-                            names.push(nickname);
-                            if (!--length) {
-                                callback({err: 0, title: title, intro: intro, id: id, members: names});
-                            }
-                        });
-                    }
+            if (title) {
+                redis.get('topics:' + id + ':intro', function (err, intro) {
+                    redis.get('topics:' + id + ':members', function (err, members) {
+                        var names = new Array();
+                        var length = members.length;
+                        for (var i in members) {
+                            redis.hget('users:' + members[i], 'nickname', function (err, nickname) {
+                                names.push(nickname);
+                                if (!--length) {
+                                    callback({err: 0, title: title, intro: intro, id: id, members: names});
+                                }
+                            });
+                        }
+                    });
                 });
-            });
+            }
             else callback({err:1, msg: '未找到该讨论组'});
         });
     });
