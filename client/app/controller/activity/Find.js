@@ -54,23 +54,25 @@ Ext.define('Chihiro.controller.activity.Find',{
         }
     },
     showNearActivity: function(){
-        /*if(Ext.getCmp('homeView').getActiveItem().title=='活动'){
-            socket.emit('participate activity', function(msg){
-                console.log(msg);
+        if(Ext.getCmp('homeView').getActiveItem().title=='活动'){
+            Ext.Viewport.setMasked({
+                xtype: 'loadmask',
+                message: '载入中...'
             });
-            if(!Ext.getCmp('activitylist')){
-                Ext.Viewport.setMasked({
-                    xtype: 'loadmask',
-                    message: '载入中...'
-                });
-                //接收活动信息
-                Ext.Viewport.setMasked(false);
-
-                Ext.create('Chihiro.view.activitylist.List');
-                Ext.getCmp('activitypanel').add(Ext.getCmp('activitylist'));
-            }
-        }*/
-        //TODO: 向服务器发查找活动的消息
+            socket.emit('find closest activities',function(msg){
+                Ext.getCmp('nearactivitylist').getStore().load();
+                Ext.getCmp('nearactivitylist').setData(msg);
+            });
+            socket.emit('find activity by creator',function(msg){
+                Ext.getCmp('sponseactivitylist').getStore().load();
+                Ext.getCmp('sponseactivitylist').setData(msg);
+            });
+            socket.emit('find activity by participant',function(msg){
+                Ext.getCmp('participateactivitylist').getStore().load();
+                Ext.getCmp('participateactivitylist').setData(msg);
+            });
+            Ext.Viewport.setMasked(false);
+        }
     },
     activeitemChange: function(a,value, oldValue, eOpts){
         var currentTitle = value.title;
@@ -121,7 +123,7 @@ Ext.define('Chihiro.controller.activity.Find',{
 
     },
     refreshActivity: function(){
-        //TODO: 重新获取
+        this.showNearActivity();
     },
     createActivity: function(){
         if(!Ext.getCmp('createactivity')){
@@ -239,4 +241,4 @@ Ext.define('Chihiro.controller.activity.Find',{
     quitActivity: function(){
 
     }
-})
+});
