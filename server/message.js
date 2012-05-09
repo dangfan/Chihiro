@@ -90,9 +90,9 @@ function getTopics(callback) {
                     t.id = ids[i];
                     topics.push(t);
                     if (!--length) {
-                        callback(topics, socket);
+                        callback(topics);
                     }
-                });
+                }, socket);
             }
         });
     });
