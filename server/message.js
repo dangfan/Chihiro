@@ -129,7 +129,7 @@ function sendTopicMessage(data) {
     var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
-        redis.publish('topic:' + data.id, JSON.stringify({uid: uid, msg: data.message}));
+        redis.publish('topic:' + data.id, JSON.stringify({uid: uid, msg: data.msg}));
     });
 }
 
