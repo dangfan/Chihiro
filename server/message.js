@@ -34,14 +34,7 @@ function sendMessage(data) {
                 console.log('message to:' + data.uid, nickname + '|' + uid + '|' + data.time + '|' + data.msg);
             } else {
                 redis.sadd('offline_messages:' + data.uid, uid + '|' + data.time + '|' + data.msg);
-                // redis.sadd('offline_messages_numbers:' + data.uid, uid + '|' + )
                 console.log('offline message to:' + data.uid, nickname + '|' + uid + '|' + data.time + '|' + data.msg);
-                /*redis.smembers('offline_messages_numbers:' + data.uid, function (err, usrnum) {
-                    if (!usrnum) {
-                        redis.sadd('offline_messages_numbers:' + data.uid, uid + '|' + 1);
-                    } else {
-                    }
-                });*/
             }
         });
     });
