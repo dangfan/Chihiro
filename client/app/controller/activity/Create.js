@@ -61,7 +61,7 @@ Ext.define('Chihiro.controller.activity.Create',{
         createActivity.location = val.location;
         createActivity.cost = val.cost;
         createActivity.type = val.type;
-        createActivity.date = val.date;
+        createActivity.date = val.date.toString().substr(0, 14);
         createActivity.starttime = val.starttime;
         createActivity.endtime = val.endtime;
         createActivity.sponsor = sname;
@@ -74,12 +74,12 @@ Ext.define('Chihiro.controller.activity.Create',{
                 mark.longitude = results[0].geometry.location.ab;
                 mark.latitude = results[0].geometry.location.$a;
                 createActivity.mark = mark;
+                Ext.getCmp('maplocate').down('detailMap');
+                Ext.getCmp('createactivity').push(Ext.getCmp('maplocate'));
             } else {
-                alert("Geocode was not successful for the following reason: " + status);
+                alert("地图中未标注此地点");
             }
         });
-        Ext.getCmp('maplocate').down('detailMap');
-        Ext.getCmp('createactivity').push(Ext.getCmp('maplocate'));
         //console.log(createActivity);
     },
     toDetailActivity: function(){
@@ -101,10 +101,19 @@ Ext.define('Chihiro.controller.activity.Create',{
             Ext.Msg.alert('详细信息不能超过1000字');
             return;
         }
-        //console.log(createActivity);
+        console.log(createActivity);
         createActivity.detail = val.detail;
         if(createOrEdit == 1){
-            //TODO: 编辑活动
+            socket.emit('update activity', createActivity, function(msg){
+                if(msg.err == 0){
+                    Ext.Msg.alert('活动修改成功');
+                    Ext.getCmp('createactivity').pop(2);
+                    Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
+                }
+                else{
+                    Ext.Msg.alert('活动修改失败，请稍后再试');
+                }
+            });
         }else{
             socket.emit('add activity', createActivity, function(msg){
                 if(msg.err == 0){

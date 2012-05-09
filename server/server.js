@@ -3,9 +3,9 @@ function listen(port) {
     var collections = ['users', 'activities'];
 
     // Basic requirements
-    var sio   = require('socket.io').listen(port),
-    	db    = require('mongojs').connect('Chihiro', collections),
-    	redis = require('redis').createClient();
+    var sio    = require('socket.io').listen(port),
+    	db     = require('mongojs').connect('Chihiro', collections),
+    	redis  = require('redis').createClient();
 
     // Save clients by user id
     var clients = {};
@@ -45,6 +45,7 @@ function listen(port) {
         socket.on('send message', message.sendMessage);
         socket.on('create topic', message.createTopic);
         socket.on('get topic info', message.getTopicInfo);
+        socket.on('get topic list', message.getTopics);
         socket.on('subscribe topic', message.subscribeTopic);
         socket.on('send topic message', message.sendTopicMessage);
         socket.on('draw', message.draw);

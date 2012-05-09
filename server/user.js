@@ -36,19 +36,21 @@ function loadMessages(uid, socket) {
     emitFriendRequests(uid);
     emitFriendConfirmed(uid);
     // Topics
-    redis.smembers('user_topics:' + uid, function (err, topics) {
-        for (id in topics) {
-            redis.subscribe('topic:' + topics[id]);
-            redis.subscribe('draw:' + topics[id]);
-        }
-    });
-    redis.on('message', function (channel, msg) {
-        var info = channel.split(':'),
-            data = eval(msg);
-        redis.hget('users:' + data.uid, 'nickname', function (err, nickname) {
-            data.nickname = nickname;
-            data.tid = info[1];
-            socket.emit(info[0], data);
+    socket.get('redis', function (err, redisp) {
+        redis.smembers('user_topics:' + uid, function (err, topics) {
+            for (id in topics) {
+                redisp.subscribe('topic:' + topics[id]);
+                redisp.subscribe('draw:' + topics[id]);
+            }
+        });
+        redisp.on('message', function (channel, msg) {
+            var info = channel.split(':'),
+                data = JSON.parse(msg);
+            redis.hget('users:' + data.uid, 'nickname', function (err, nickname) {
+                data.nickname = nickname;
+                data.tid = info[1];
+                socket.emit(info[0], data);
+            });
         });
     });
 }
@@ -59,6 +61,7 @@ function login(usr, callback, socket) {
     var sid = uuid.v4();
     // Bind user and socket
     socket.set('uid', usr._id.toString());
+    socket.set('redis', require('redis').createClient());
     clients[usr._id] = socket;
     // Save in redis
     redis.set('sid:' + sid, usr._id);
@@ -99,7 +102,7 @@ function login(usr, callback, socket) {
         function finish() {
             callback({err: 0, sid: sid, obj: usr});
             // Load offline messages
-            loadMessages(usr._id);
+            loadMessages(usr._id, socket);
             console.log('user ' + usr._id + ' is now online.');
         }
     }
@@ -268,12 +271,12 @@ function findByInterests(callback) {
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.get('location:' + uid, function (err, location) {
-            redis.get('users:' + uid, function (err, usr) {
-                if (interests in usr) {
+            redis.hgetall('users:' + uid, function (err, usr) {
+                if (!usr.hasOwnProperty('interests')) {
                     callback([]);
                     return;
                 }
-                interests = eval(usr.interests);
+                var interests = eval(usr.interests);
                 db.executeDbCommand({
                     geoNear:            'users',
                     near:               eval(location),

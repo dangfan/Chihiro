@@ -10,7 +10,7 @@ Ext.application({
         'message.Message','message.ChatList','message.GroupList','message.Friend','message.Group','message.Other',
         'setting.Main','setting.Info','setting.Account','setting.Shortcut','setting.Status'],
 
-    models: ['User', 'Message','ChattingFriends','ChattingContent','Activity','Contact'],
+    models: ['User', 'Message','ChattingFriends','ChattingGroups','ChattingContent','Activity','Contact'],
 
     name: 'Chihiro',
 

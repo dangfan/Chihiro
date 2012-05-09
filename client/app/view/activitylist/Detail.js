@@ -53,6 +53,12 @@ Ext.define('Chihiro.view.activitylist.Detail', {
             },
             {
                 xtype: 'button',
+                text: '邀请好友',
+                id: 'InviteBtn',
+                action: 'invite'
+            },
+            {
+                xtype: 'button',
                 text: '编辑',
                 id: 'EditBtn',
                 action: 'edit'
@@ -81,10 +87,17 @@ Ext.define('Chihiro.view.activitylist.Detail', {
             basicInformation = this.down('basicinformation'),
             detailInformation = this.down('detailinformation'),
             map = this.down('detailMap');
+        carousel.setActiveItem(0);
         basicInformation.setData(newUser.data);
         detailInformation.setData(newUser.data);
-        map.setMapCenter(newUser.data.mark);
-        map.setMapOptions({zoom: newUser.data.zoom});
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode( { 'address': newUser.data.location}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                map.setMapCenter(results[0].geometry.location);
+                map.setMapOptions({zoom: newUser.data.zoom});
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+        });
     }
-
 });

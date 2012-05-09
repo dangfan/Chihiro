@@ -135,7 +135,8 @@ Ext.define('Chihiro.controller.List', {
     },
 
     selectSomebody:function(a,record){
-        invitationList.push(record.data);
+//        console.log(invitationList);
+        invitationList.push(record.data._id);
     },
 
     remainCss: function(me, record) {
@@ -164,7 +165,15 @@ Ext.define('Chihiro.controller.List', {
 
     onMyListTap: function(list, user) {
 
-        if(user.data.type === '1')
+        var flag = 'group';
+        if(friendList){
+            for(i=0; i < friendList.length;i++){
+                if(friendList[i]._id === user.data._id)
+                    flag = 'friend';
+            }
+        }
+
+        if(flag === 'friend')
         {
             if(Ext.getCmp('MyCarousel'))
             {

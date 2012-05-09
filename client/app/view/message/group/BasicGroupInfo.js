@@ -15,7 +15,7 @@ Ext.define('Chihiro.view.message.group.BasicGroupInfo',{
                     {
                         xtype:'textfield',
                         id:'groupname',
-                        name:'name',
+                        name:'title',
                         label:'群名',
                         placeHolder:'请输入群组名称'
                     },

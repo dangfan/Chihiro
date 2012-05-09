@@ -41,7 +41,6 @@ Ext.define('Chihiro.controller.message.Group',{
 
     createGroup: function(){
         var val = Ext.getCmp('creategroup').getValues();
-        console.log(val);
 
         if(val.name.length == 0){
             Ext.Msg.alert('群组名不能为空');
@@ -54,14 +53,20 @@ Ext.define('Chihiro.controller.message.Group',{
                     });
              }
             invitationList = [];
+            Ext.getCmp('SimpleFriendList2').setData([]);
+            var store = Ext.getCmp('SimpleFriendList2').getStore();
+            store.load();
+            Ext.getCmp('SimpleFriendList2').setData(friendList);
+
             Ext.Viewport.setActiveItem(Ext.getCmp('SimpleFriendListPanel'));
-            var temp = Ext.getCmp('ChattingGroups').data;
-            Ext.getCmp('ChattingGroups').setData([val]);
+
         }
 
     },
 
     EndConversation: function(view, index, target, record) {
+        chattingID = '0';
+
         var me = Ext.getCmp('GroupChattingContent');
         var store = me.getStore();
         store.load();
@@ -79,6 +84,8 @@ Ext.define('Chihiro.controller.message.Group',{
     Send: function(view, index, target, record) {
         var msgtextfield = this.getMsgtextfield();
         var msg = msgtextfield.getValue();
+        var time = getCurrentTime();
+
         if(msg != '')
         {
             msgtextfield.reset();
@@ -89,7 +96,7 @@ Ext.define('Chihiro.controller.message.Group',{
                     nickname:"党熊",
                     xindex:'0',
                     message:msg,
-                    time:"4月12日 下午18:15"
+                    time:time
                 }]);
 
             var scroller = Ext.getCmp('GroupChattingContent').getScrollable();
@@ -99,10 +106,13 @@ Ext.define('Chihiro.controller.message.Group',{
         var scroller = Ext.getCmp('GroupChattingContent').getScrollable();
         scroller.getScroller().scrollToEnd();
 
-        var uid = Ext.getCmp('ChattingGroups').getSelection()[0].raw._id;
-        console.log({uid:uid,msg:msg});
-        socket.emit('send message',{uid:uid,msg:msg});
-
+        var uid = Ext.getCmp('ChattingGroups').getSelection()[0].raw.id;
+        socket.emit('send topic message',{id:uid,msg:msg});
+        console.log({id:uid,msg:msg});
+//        var grouplist;
+//        socket.emit('get topic list',function(obj) {
+//            grouplist = obj;
+//        });
     },
 
     ShowActions:function(img,obj,other){
@@ -146,7 +156,23 @@ Ext.define('Chihiro.controller.message.Group',{
     },
 
     inviteFriends:function(){
-        console.log(invitationList);
-        Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
+        if(Ext.getCmp('homeView').getActiveItem().title == '聊天'){
+            var val = Ext.getCmp('creategroup').getValues();
+            console.log(val);
+            console.log(invitationList);
+            socket.emit('create topic',{nickname:val.name,intro:val.intro,members:invitationList},function(obj) {
+                if(obj.err === 0)
+                    socket.emit('get topic list',function(obj) {
+                        console.log(obj);
+                        Ext.getCmp('ChattingGroups').setData([]);
+                        var store = Ext.getCmp('ChattingGroups').getStore();
+                        store.load();
+                        Ext.getCmp('ChattingGroups').setData(obj);
+                    });
+            });
+
+            Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
+            Ext.getCmp('creategroup').reset();
+        }
     }
 })
