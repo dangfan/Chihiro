@@ -73,9 +73,6 @@ function successLogin(obj){
     profile.portrait = imagesrc;
     console.log(imagesrc);
     if(profile.birthday && profile.birthday != 'null') profile.birthday = new Date(profile.birthday);
-    if(profile.gender) {
-        profile.gender = (profile.gender == "1") ? '女' : '男';
-    }
     console.log(profile);
     if(profile.interests && profile.interests != 'null') {
         var interest = profile.interests;

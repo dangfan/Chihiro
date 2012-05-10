@@ -145,9 +145,12 @@ function findActivityByCreator(callback) {
         if (!uid) callback({});
         console.log('find activity by creator:' + uid);
         redis.smembers('activities_createdby:' + uid, function (err, data) {
+            if (!data) callback({});
+            console.log('activities_createdby data: ' + data);
             var objs = new Array();
             var counter = 0;
             for (aid in data) {
+                console.log('activities_createdby data: ' + data[aid]);
                 db.activities.findOne({_id: db.ObjectId(data[aid])}, function (err, activity) {
                     if (!activity) return;
                     delete activity['null'];
@@ -167,6 +170,8 @@ function findActivityByParticipant(callback) {
         if (!uid) callback({});
         console.log('find activity by participants:' + uid);
         redis.smembers('activities_participate:' + uid, function (err, data) {
+            if (!data) callback({});
+            console.log('activities_participate data: ' + data[aid]);
             var objs = new Array();
             var counter = 0;
             for (aid in data) {

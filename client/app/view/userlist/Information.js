@@ -20,6 +20,7 @@ Ext.define('Chihiro.view.userlist.Information', {
             '<p class="overview">',
             '<strong>性别:</strong> {gender}<br />',
             '<strong>生日:</strong> {birthday}<br />',
+           // '<strong>生日:</strong> {[Ext.Date.format(new Date(values.birthday),\'Y-m-d\')]}<br />',
             '<strong>签名:</strong>{signiture}<br />',
             '<strong>学校:</strong> {school}<br />',
             '</p>',

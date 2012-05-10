@@ -7,7 +7,7 @@ Ext.define('Chihiro.view.contact.List', {
     layout: 'vbox',
     config: {
         fullscreen: true,
-        scrollable: true,
+        scrollable: false,
         layout: Ext.os.deviceType == 'Phone' ? 'fit' : {
             type: 'vbox',
             align: 'center',
