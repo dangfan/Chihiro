@@ -66,7 +66,7 @@ function login(usr, callback, socket) {
     // Save in redis
     redis.set('sid:' + sid, usr._id);
     // delete usr['null'];
-    console.log(usr._id);
+    console.log(usr);
     if (!usr.friends) {
         redis.smembers('friends:' + usr._id, function (err, obj) {
             usr.friends = obj;
