@@ -68,10 +68,15 @@ Ext.define('Chihiro.controller.SignIn', {
 });
 function successLogin(obj){
     profile = obj;
+    var imagesrc = (profile.portrait) ? profile.portrait : '/portraits/default.png';
+    //var imagesrc = urlprefix + '/portraits/default.png';
+    profile.portrait = imagesrc;
+    console.log(imagesrc);
     if(profile.birthday && profile.birthday != 'null') profile.birthday = new Date(profile.birthday);
     if(profile.gender) {
-        profile.gender = (profile.gender) ? '女' : '男';
+        profile.gender = (profile.gender == "1") ? '女' : '男';
     }
+    console.log(profile);
     if(profile.interests && profile.interests != 'null') {
         var interest = profile.interests;
         var interestStr = '';
@@ -115,10 +120,7 @@ function successLogin(obj){
 };
 
 function updateProfile () {
-    var imagesrc = (profile.portrait) ? profile.portrait : '/portraits/default.png';
-    //var imagesrc = urlprefix + '/portraits/default.png';
-    imagesrc = urlprefix + imagesrc;
-    Ext.getCmp('MyImage').setSrc(imagesrc);
+    Ext.getCmp('MyImage').setSrc(profile.portrait);
     Ext.getCmp('MyImage').setWidth(50);
     Ext.getCmp('MyImage').setHeight(50);
     Ext.getCmp('MyInfoPanel').setHtml('<span class="nickname"><b>'+profile.nickname+'</b></span><br />' +

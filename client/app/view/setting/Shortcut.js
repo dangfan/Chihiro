@@ -44,6 +44,7 @@ Ext.define('Chihiro.view.setting.Shortcut', {
                         text: '确定修改',
                         ui: 'confirm',
                         width: '100%',
+                        margin: '50 20 20 20',
                         action:'uploadportrait'
                     },
                     {

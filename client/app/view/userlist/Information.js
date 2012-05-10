@@ -13,6 +13,7 @@ Ext.define('Chihiro.view.userlist.Information', {
 
         tpl: Ext.create('Ext.XTemplate',
             '<h1>{name}</h1>',
+            //'<img src={portrait} width="120" height="160">',
             '<img src="http://hdn.xnimg.cn/photos/hdn421/20100403/2025/large_fdEG_41708n019118.jpg" width="120" height="160">',
             //'<h2><tpl if="location.town">{location.town}, </tpl>{location.country}</h2>',
             //'<h2><tpl if="location.town">清华大学, </tpl>北京</h2>',
