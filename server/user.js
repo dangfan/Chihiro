@@ -66,7 +66,6 @@ function login(usr, callback, socket) {
     // Save in redis
     redis.set('sid:' + sid, usr._id);
     // delete usr['null'];
-    console.log(usr);
     if (!usr.friends) {
         redis.smembers('friends:' + usr._id, function (err, obj) {
             usr.friends = obj;
@@ -77,12 +76,13 @@ function login(usr, callback, socket) {
     }
     function next() {
         var tmp = usr.friends;
-        console.log(tmp);
         var length = tmp.length;
         usr.friends = new Array();
-        for (var uid in tmp) {
-            uid = tmp[uid];
+        for (var i in tmp) {
+            var uid = tmp[i];
             redis.hgetall('users:' + uid, function (err, u) {
+                console.log(uid);
+                console.log(u);
                 if (!('_id' in u)) {
                     db.users.findOne({_id: db.ObjectId(uid)},
                         function (err, u) {
