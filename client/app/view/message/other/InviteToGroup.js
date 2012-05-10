@@ -11,20 +11,17 @@ Ext.define('Chihiro.view.message.other.InviteToGroup', {
             mode:'MULTI',
             id: 'SimpleGroupList',
             store:{
-                fields: ['name','id'],
-                sorters: 'name',
+                fields: ['nickname','id'],
+                sorters: 'nickname',
                 grouper: function(record) {
-                    return record.get('name')[0];
+                    return record.get('nickname')[0];
                 },
                 proxy: {
                     type: 'localstorage'
-                },
-                data: [
-                    {name: '党主席基友团',id:'1'},
-                    {name: '约炮专群',id:'2'}
-                ]
+                }
+                //TODO: still have hard code in group
             },
-            itemTpl: '<div class="contact"><strong>{name}</strong> </div>',
+            itemTpl: '<div class="contact"><strong>{nickname}</strong> </div>',
             grouped: true
         }
         ]
