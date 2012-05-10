@@ -60,8 +60,6 @@ Ext.define('Chihiro.controller.Home', {
         });
 
         socket.on('messages', function(msg) {
-            console.log(msg);
-
             var chattinglists = Ext.getCmp('ChattingFriends');
             var myChattingFriend = chattinglists.getData();
             if(msg.from === chattingID){
@@ -76,6 +74,8 @@ Ext.define('Chihiro.controller.Home', {
                         time:msg.time
                     });
                 Ext.getCmp('ChattingContent').setData([]);
+                if(Ext.getCmp('homeView').getActiveItem().title != '聊天') Ext.getCmp('messagetab').tab.setBadgeText(++unreadMsg);
+
                 var store = Ext.getCmp('ChattingContent').getStore();
                 store.load();
                 Ext.getCmp('ChattingContent').setData(ChattingRecord);
@@ -85,7 +85,7 @@ Ext.define('Chihiro.controller.Home', {
             }
             else{
                 console.log(msg.from + '!='+ chattingID);
-
+                if(Ext.getCmp('homeView').getActiveItem().title != '聊天') Ext.getCmp('messagetab').tab.setBadgeText(++unreadMsg);
                 if(!friendList)
                     return;
                 console.log(friendList);
