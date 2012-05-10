@@ -145,9 +145,11 @@ function findActivityByCreator(callback) {
         if (!uid) callback({});
         console.log('find activity by creator:' + uid);
         redis.smembers('activities_createdby:' + uid, function (err, data) {
+            console.log('data: ' + data);
             var objs = new Array();
             var counter = 0;
             for (aid in data) {
+                console.log('data: ' + aid);
                 db.activities.findOne({_id: db.ObjectId(data[aid])}, function (err, activity) {
                     if (!activity) return;
                     delete activity['null'];
