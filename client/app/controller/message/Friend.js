@@ -185,10 +185,7 @@ Draw.prototype = {
             return;
         }
         this.context = this.canvas.getContext('2d');
-        this.canvas.onselectstart = function () {
-            return false;  //修复chrome下光标样式的问题
-        };
-        this.canvas.onmousedown = function(event) {
+        this.canvas.ontouchstart = function(event) {
             that.drawBegin(event);
         };
     },
@@ -201,10 +198,10 @@ Draw.prototype = {
             e.clientX - stage_info.left,
             e.clientY - stage_info.top
         );
-        document.onmousemove = function(event) {
+        document.ontouchmove = function(event) {
             that.drawing(event);
         };
-        document.onmouseup = this.drawEnd;
+        document.ontouchend = this.drawEnd;
     },
     drawing: function(e) {
         var stage_info = this.canvas.getBoundingClientRect();
@@ -215,6 +212,6 @@ Draw.prototype = {
         this.context.stroke();
     },
     drawEnd: function() {
-        document.onmousemove = document.onmouseup = null;
+        document.ontouchmove = document.ontouchend = null;
     }
 };
