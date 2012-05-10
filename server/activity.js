@@ -150,7 +150,7 @@ function findActivityByCreator(callback) {
             var objs = new Array();
             var counter = 0;
             for (aid in data) {
-                console.log('activities_createdby data: ' + data[aid]);
+                console.log('activities_createdby obj: ' + data[aid]);
                 db.activities.findOne({_id: db.ObjectId(data[aid])}, function (err, activity) {
                     if (!activity) return;
                     delete activity['null'];
@@ -175,7 +175,7 @@ function findActivityByParticipant(callback) {
             var objs = new Array();
             var counter = 0;
             for (aid in data) {
-                console.log('activities_participate data: ' + data[aid]);
+                console.log('activities_participate obj: ' + data[aid]);
                 db.activities.findOne({_id: db.ObjectId(data[aid])}, function (err, activity) {
                     if (!activity) return;
                     delete activity['null'];
