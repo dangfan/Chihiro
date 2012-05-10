@@ -80,13 +80,11 @@ function login(usr, callback, socket) {
         usr.friends = new Array();
         for (var i in tmp) {
             var uid = tmp[i];
-            console.log(uid);
             redis.hgetall('users:' + uid, function (err, u) {
-                console.log(uid);
-                console.log(u);
                 if (!('_id' in u)) {
                     db.users.findOne({_id: db.ObjectId(uid)},
                         function (err, u) {
+                            console.log(u);
                             processUser(u, function(t) {
                                 usr.friends.push(t.obj);
                                 if (!--length) finish();
