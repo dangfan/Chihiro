@@ -83,9 +83,9 @@ function login(usr, callback, socket) {
             redis.hgetall('users:' + uid, function (err, u) {
                 if (!('_id' in u)) {
                     db.users.findOne({_id: db.ObjectId(uid)},
-                        function (err, u) {
-                            console.log(u);
-                            processUser(u, function(t) {
+                        function (err, ua) {
+                            console.log(ua);
+                            processUser(ua, function(t) {
                                 usr.friends.push(t.obj);
                                 if (!--length) finish();
                             });
