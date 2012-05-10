@@ -167,6 +167,8 @@ function authenticate(data, callback) {
                 callback({err: 1, msg: '请检查用户名或密码'});
             } else {
                 setUserData(usr);
+                if (usr.friends)
+                    redis.sadd('friends:' + usr._id, usr.friends);
                 login(usr, callback, socket);
             }
         });
