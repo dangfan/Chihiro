@@ -77,6 +77,7 @@ function login(usr, callback, socket) {
     }
     function next() {
         var tmp = usr.friends;
+        console.log(tmp);
         var length = tmp.length;
         usr.friends = new Array();
         for (var uid in tmp) {
