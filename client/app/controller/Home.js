@@ -36,7 +36,7 @@ Ext.define('Chihiro.controller.Home', {
     },
 
     listening: function() {
-        this.locateGeo();
+        locateGeo();
 
         socket.on('friend request', function(user) {
 
@@ -113,22 +113,20 @@ Ext.define('Chihiro.controller.Home', {
             store.load();
             Ext.getCmp('friendlist').setData(friendList);
         });
-    },
-
-    locateGeo: function() {
-        Ext.create('Ext.util.Geolocation', {
-            autoUpdate: true,
-            frequency: 300000,
-            listeners: {
-                locationupdate: function(geo) {
-                    socket.emit('update location', {
-                        longitude: geo.getLongitude(),
-                        latitude: geo.getLatitude()
-                    });
-					myLocation=geo;
-                }
-            }
-        })
     }
-
 });
+function locateGeo() {
+    Ext.create('Ext.util.Geolocation', {
+        autoUpdate: true,
+        frequency: 300000,
+        listeners: {
+            locationupdate: function(geo) {
+                socket.emit('update location', {
+                    longitude: geo.getLongitude(),
+                    latitude: geo.getLatitude()
+                });
+                myLocation=geo;
+            }
+        }
+    })
+}
