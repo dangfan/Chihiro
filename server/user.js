@@ -76,11 +76,11 @@ function login(usr, callback, socket) {
     }
     function next() {
         var tmp = usr.friends;
-        console.log(tmp);
         var length = tmp.length;
         usr.friends = new Array();
         for (var i in tmp) {
             var uid = tmp[i];
+            console.log(uid);
             redis.hgetall('users:' + uid, function (err, u) {
                 console.log(uid);
                 console.log(u);
