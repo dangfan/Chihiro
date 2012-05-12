@@ -36,7 +36,7 @@ Ext.define('Chihiro.controller.Home', {
     },
 
     listening: function() {
-        this.locateGeo();
+        locateGeo();
 
         socket.on('friend request', function(user) {
 
@@ -60,8 +60,6 @@ Ext.define('Chihiro.controller.Home', {
         });
 
         socket.on('messages', function(msg) {
-            console.log(msg);
-
             var chattinglists = Ext.getCmp('ChattingFriends');
             var myChattingFriend = chattinglists.getData();
             if(msg.from === chattingID){
@@ -76,6 +74,8 @@ Ext.define('Chihiro.controller.Home', {
                         time:msg.time
                     });
                 Ext.getCmp('ChattingContent').setData([]);
+                if(Ext.getCmp('homeView').getActiveItem().title != '聊天') Ext.getCmp('messagetab').tab.setBadgeText(++unreadMsg);
+
                 var store = Ext.getCmp('ChattingContent').getStore();
                 store.load();
                 Ext.getCmp('ChattingContent').setData(ChattingRecord);
@@ -85,7 +85,7 @@ Ext.define('Chihiro.controller.Home', {
             }
             else{
                 console.log(msg.from + '!='+ chattingID);
-
+                if(Ext.getCmp('homeView').getActiveItem().title != '聊天') Ext.getCmp('messagetab').tab.setBadgeText(++unreadMsg);
                 if(!friendList)
                     return;
                 console.log(friendList);
@@ -113,22 +113,20 @@ Ext.define('Chihiro.controller.Home', {
             store.load();
             Ext.getCmp('friendlist').setData(friendList);
         });
-    },
-
-    locateGeo: function() {
-        Ext.create('Ext.util.Geolocation', {
-            autoUpdate: true,
-            frequency: 300000,
-            listeners: {
-                locationupdate: function(geo) {
-                    socket.emit('update location', {
-                        longitude: geo.getLongitude(),
-                        latitude: geo.getLatitude()
-                    });
-					myLocation=geo;
-                }
-            }
-        })
     }
-
 });
+function locateGeo() {
+    Ext.create('Ext.util.Geolocation', {
+        autoUpdate: true,
+        frequency: 300000,
+        listeners: {
+            locationupdate: function(geo) {
+                socket.emit('update location', {
+                    longitude: geo.getLongitude(),
+                    latitude: geo.getLatitude()
+                });
+                myLocation=geo;
+            }
+        }
+    })
+}

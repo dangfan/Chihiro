@@ -71,9 +71,7 @@ function successLogin(obj){
     var imagesrc = (profile.portrait) ? profile.portrait : '/portraits/default.png';
     //var imagesrc = urlprefix + '/portraits/default.png';
     profile.portrait = imagesrc;
-    console.log(imagesrc);
     if(profile.birthday && profile.birthday != 'null') profile.birthday = new Date(profile.birthday);
-    console.log(profile);
     if(profile.interests && profile.interests != 'null') {
         var interest = profile.interests;
         var interestStr = '';
@@ -82,13 +80,11 @@ function successLogin(obj){
             else if(interest[i] == ',') interestStr += ' ';
             else interestStr += interest[i];
         }
-        console.log(interestStr);
         profile.interests = interestStr;
     }
     sname = obj.nickname;
     friendList = obj.friends;
     updateProfile();
-    console.log(friendList);
     if(friendList){
         for(var i = 0; i < friendList.length;i++)
         {
@@ -110,7 +106,6 @@ function successLogin(obj){
             var store = Ext.getCmp('ChattingGroups').getStore();
             store.load();
             Ext.getCmp('ChattingGroups').setData(obj);
-            console.log(obj);
         });
     }
     Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
