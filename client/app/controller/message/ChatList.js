@@ -9,10 +9,14 @@ Ext.define('Chihiro.controller.message.ChatList', {
             groupList:'grouplist',
             panel:'friends',
             groupinfopanle:'#groupInfoPanel',
-            myimage:'#MyImage'
+            myimage:'#MyImage',
+            homeView: '#homeView'
         },
 
         control: {
+            homeView : {
+                activeitemchange: 'messageTabActive'
+            },
             'chatlist': {
                 select: 'onChatListTap'
             },
@@ -32,7 +36,12 @@ Ext.define('Chihiro.controller.message.ChatList', {
     launch: function(){
         //聊天好友的列表将在signin的加载
     },
-
+    messageTabActive: function(homepanel, newValue, oldValue) {
+        if(Ext.getCmp('homeView').getActiveItem().title == '聊天') {
+            Ext.getCmp('messagetab').tab.setBadgeText('');
+            unreadMsg = 0;
+        }
+    },
     onChatListTap: function(list, user) {
         if (!this.view) {
             this.view = Ext.create('Chihiro.view.message.Friends');

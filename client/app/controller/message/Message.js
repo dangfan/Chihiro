@@ -102,7 +102,7 @@ Ext.define('Chihiro.controller.message.Message', {
                                 id:'b1'
                             },
                             {
-                                text: '约炮',
+                                text: '寻友',
                                 id:'b2'
                             },
                             {
@@ -151,7 +151,7 @@ Ext.define('Chihiro.controller.message.Message', {
             });
         }
 
-        if(title === '约炮'&& index === 0)
+        if(title === '寻友'&& index === 0)
         {
             Ext.getCmp('homeView').setActiveItem(3);
         }

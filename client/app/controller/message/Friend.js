@@ -235,6 +235,7 @@ Draw.prototype = {
             roCanvas['startY']=mouseY;
         };
         this.canvas.onmousedown = function(event) {
+
             that.drawBegin(event);
 
             var canvas = document.getElementById('RoCanvas');
@@ -258,7 +259,6 @@ Draw.prototype = {
             roCanvas['startY']
         );
         context = this.context;
-
         document.ontouchmove = function(e) {
             that.touchdrawing(e);
         };
@@ -382,6 +382,7 @@ Draw.prototype = {
 
     },
     drawEnd: function() {
+
         paint = false;
 
         clickX = new Array();

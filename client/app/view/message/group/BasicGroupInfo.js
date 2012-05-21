@@ -13,7 +13,7 @@ Ext.define('Chihiro.view.message.group.BasicGroupInfo',{
                 },
                 items:[
                     {
-                        xtype:'textfield',
+                        xtype:'textareafield',
                         id:'groupname',
                         name:'title',
                         label:'群名',

@@ -35,10 +35,10 @@ Ext.define('Chihiro.view.setting.Info', {
                     name: 'gender',
                     options: [{
                         text: '男',
-                        value: 0
+                        value: '男'
                     }, {
                         text: '女',
-                        value: 1
+                        value: '女'
                     }],
                     placeHolder:'未填写'
                 },

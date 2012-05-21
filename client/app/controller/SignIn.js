@@ -68,6 +68,9 @@ Ext.define('Chihiro.controller.SignIn', {
 });
 function successLogin(obj){
     profile = obj;
+    var imagesrc = (profile.portrait) ? profile.portrait : '/portraits/default.png';
+    //var imagesrc = urlprefix + '/portraits/default.png';
+    profile.portrait = imagesrc;
     if(profile.birthday && profile.birthday != 'null') profile.birthday = new Date(profile.birthday);
     if(profile.interests && profile.interests != 'null') {
         var interest = profile.interests;
@@ -77,13 +80,11 @@ function successLogin(obj){
             else if(interest[i] == ',') interestStr += ' ';
             else interestStr += interest[i];
         }
-        console.log(interestStr);
         profile.interests = interestStr;
     }
     sname = obj.nickname;
     friendList = obj.friends;
     updateProfile();
-    console.log(friendList);
     if(friendList){
         for(var i = 0; i < friendList.length;i++)
         {
@@ -105,17 +106,13 @@ function successLogin(obj){
             var store = Ext.getCmp('ChattingGroups').getStore();
             store.load();
             Ext.getCmp('ChattingGroups').setData(obj);
-            console.log(obj);
         });
     }
     Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
 };
 
 function updateProfile () {
-    var imagesrc = (profile.portrait) ? profile.portrait : '/portraits/default.png';
-    //var imagesrc = urlprefix + '/portraits/default.png';
-    imagesrc = urlprefix + imagesrc;
-    Ext.getCmp('MyImage').setSrc(imagesrc);
+    Ext.getCmp('MyImage').setSrc(profile.portrait);
     Ext.getCmp('MyImage').setWidth(50);
     Ext.getCmp('MyImage').setHeight(50);
     Ext.getCmp('MyInfoPanel').setHtml('<span class="nickname"><b>'+profile.nickname+'</b></span><br />' +
