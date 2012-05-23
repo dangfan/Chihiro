@@ -82,6 +82,7 @@ function successLogin(obj){
         }
         profile.interests = interestStr;
     }
+    sid = obj._id;
     sname = obj.nickname;
     friendList = obj.friends;
     updateProfile();

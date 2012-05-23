@@ -66,7 +66,6 @@ Ext.define('Chihiro.controller.message.Friend', {
         if(msg != '')
         {
             msgtextfield.reset();
-            //console.log(ChattingRecord);
             var ChattingRecord = Ext.getCmp('ChattingContent').getData();
             ChattingRecord.push(
                 {
@@ -96,7 +95,6 @@ Ext.define('Chihiro.controller.message.Friend', {
         {
             if(friendList[i]._id === uid) {
                 socket.emit('send message',{uid:uid,msg:msg,time:time});
-                console.log({uid:uid,msg:msg,time:time});
                 return;
             }
         }
