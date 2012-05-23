@@ -104,6 +104,10 @@ Ext.define('Chihiro.controller.Home', {
             }
         });
 
+        socket.on('topic', function(msg) {
+            console.log(msg);
+        });
+
 
         socket.on('friend confirmed', function(obj) {
             friendList.push(obj.uid);

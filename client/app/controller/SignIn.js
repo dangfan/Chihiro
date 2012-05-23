@@ -86,6 +86,7 @@ function successLogin(obj){
     friendList = obj.friends;
     updateProfile();
     if(friendList){
+        console.log(friendList);
         for(var i = 0; i < friendList.length;i++)
         {
             friendList[i].lastmsg = '呵呵';

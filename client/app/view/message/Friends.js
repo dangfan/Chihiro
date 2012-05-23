@@ -38,7 +38,6 @@ Ext.define('Chihiro.view.message.Friends', {
                         xtype:'panel',
                         id:'friendInfoPanel',
                         padding:8
-                        //html:'<span class="nickname"><b>党主席</b></span><br /><p style="font-size: 12px"><b>好基友一辈子</b></p>'
                     },
                     {
                         xtype: 'spacer'
