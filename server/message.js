@@ -39,7 +39,7 @@ function sendMessage(data) {
     });
 }
 
-function getMessages(targetUid) {
+function getMessages(targetUid, callback) {
     var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
