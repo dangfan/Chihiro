@@ -170,6 +170,7 @@ function findActivityByParticipant(callback) {
         if (!uid) callback({});
         console.log('find activity by participants:' + uid);
         redis.smembers('activities_participate:' + uid, function (err, data) {
+            console.log(data);
             if (!data) callback({});
             console.log('activities_participate data: ' + data);
             var objs = new Array();
