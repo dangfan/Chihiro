@@ -4,7 +4,7 @@ Ext.define('Chihiro.controller.message.Message', {
     config: {
         refs: {
             chatlist: 'chatlist',
-            carousel: '#messagepanel',
+            carousel: '#messagetab',
             button:'#chatgroup',
             icon:'#ChatHelper',
             floatingbutton:'#floatingButton'

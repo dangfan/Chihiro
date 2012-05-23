@@ -25,7 +25,7 @@ Ext.define('Chihiro.controller.message.GroupList', {
     },
 
     onGroupListTap: function(list, user) {
-        chattingID = user.data.id;
+        chattingID = user.raw.id;
 
         if (!this.view) {
             this.view = Ext.create('Chihiro.view.message.Groups');
@@ -36,14 +36,14 @@ Ext.define('Chihiro.controller.message.GroupList', {
         store.load();
 
         var time = getCurrentTime();
-//        Ext.getCmp('GroupChattingContent').setData([
-//            {
-//                id: "407788",
-//                nickname:"程序猿",
-//                xindex:'1',
-//                message:'Hello!这是群组聊天的测试消息!',
-//                time:time
-//            }]);
+        Ext.getCmp('GroupChattingContent').setData([
+            {
+                id: "407788",
+                nickname:"程序猿",
+                xindex:'1',
+                message:'Hello!这是群组聊天的测试消息!',
+                time:time
+            }]);
 
         var view = this.view;
         view.setUser(user);

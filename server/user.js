@@ -66,7 +66,6 @@ function login(usr, callback, socket) {
     // Save in redis
     redis.set('sid:' + sid, usr._id);
     // delete usr['null'];
-    console.log(usr._id);
     if (!usr.friends) {
         redis.smembers('friends:' + usr._id, function (err, obj) {
             usr.friends = obj;
@@ -79,16 +78,18 @@ function login(usr, callback, socket) {
         var tmp = usr.friends;
         var length = tmp.length;
         usr.friends = new Array();
-        for (var uid in tmp) {
-            uid = tmp[uid];
+        for (var i in tmp) {
+            (function() {
+            var uid = tmp[i];
             redis.hgetall('users:' + uid, function (err, u) {
                 if (!('_id' in u)) {
                     db.users.findOne({_id: db.ObjectId(uid)},
-                        function (err, u) {
-                            processUser(u, function(t) {
+                        function (err, ua) {
+                            processUser(ua, function(t) {
                                 usr.friends.push(t.obj);
                                 if (!--length) finish();
                             });
+                            setUserData(ua);
                         });
                 } else {
                     processUser(u, function (t) {
@@ -97,6 +98,7 @@ function login(usr, callback, socket) {
                     });
                 }
             });
+            })();
         }
         if (!length) finish();
         function finish() {
@@ -358,7 +360,10 @@ function getInfoById(uid, callback) {
     redis.hgetall('users:' + uid, function (err, usr) {
         if (!usr) {
             db.users.find({_id: db.ObjectId(uid)},
-                function (err, usr) { processUser(usr, callback); });
+                function (err, usr) {
+                    processUser(usr, callback);
+                    setUserData(usr);
+                });
         } else {
             processUser(usr, callback);
         }
@@ -371,7 +376,10 @@ function getInfoByEmail(email, callback) {
     redis.get('emails:' + email, function (err, uid) {
         if (!uid) {
             db.users.findOne({email: email},
-                function (err, usr) { processUser(usr, callback); });
+                function (err, usr) {
+                    processUser(usr, callback);
+                    setUserData(usr);
+                });
         } else {
             getInfoById(uid, callback);
         }
@@ -384,7 +392,10 @@ function getInfoByPhone(phone, callback) {
     redis.get('phones:' + phone, function (err, uid) {
         if (!uid) {
             db.users.findOne({phone: phone},
-                function (err, usr) { processUser(usr, callback); });
+                function (err, usr) {
+                    processUser(usr, callback);
+                    setUserData(usr);
+                });
         } else {
             getInfoById(uid, callback);
         }
@@ -406,7 +417,6 @@ function processUser(usr, callback) {
 }
 
 function setUserData(usr) {
-    console.log(usr);
     for (key in usr) {
         if (key == 'interests') {
             redis.hset('users:' + usr._id, key, JSON.stringify(usr[key]));

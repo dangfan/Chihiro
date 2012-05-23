@@ -66,13 +66,14 @@ Ext.define('Chihiro.controller.Home', {
                 var ChattingRecord = Ext.getCmp('ChattingContent').getData();
                 ChattingRecord.push(
                     {
-                        id: msg.from,
+                        id: '',
                         image:'',
                         nickname:msg.nickname,
                         xindex:'1',
                         message:msg.message,
                         time:msg.time
                     });
+                console.log(msg.message);
                 Ext.getCmp('ChattingContent').setData([]);
                 if(Ext.getCmp('homeView').getActiveItem().title != '聊天') Ext.getCmp('messagetab').tab.setBadgeText(++unreadMsg);
 
@@ -101,6 +102,54 @@ Ext.define('Chihiro.controller.Home', {
                 var store = Ext.getCmp('ChattingFriends').getStore();
                 store.load();
                 Ext.getCmp('ChattingFriends').setData(friendList);
+            }
+        });
+
+        socket.on('topic', function(msg) {
+            var chattinglists = Ext.getCmp('ChattingGroups');
+            var myChattingGroup = chattinglists.getData();
+
+            if(msg.uid === sid)
+                return;
+
+            if(msg.tid === chattingID){
+                var ChattingRecord = Ext.getCmp('GroupChattingContent').getData();
+                ChattingRecord.push(
+                    {
+                        id: '',
+                        image:'',
+                        nickname:msg.nickname,
+                        xindex:'1',
+                        message:msg.msg,
+                        time:''
+                    });
+                Ext.getCmp('GroupChattingContent').setData([]);
+                if(Ext.getCmp('homeView').getActiveItem().title != '聊天') Ext.getCmp('messagetab').tab.setBadgeText(++unreadMsg);
+
+                var store = Ext.getCmp('GroupChattingContent').getStore();
+                store.load();
+                Ext.getCmp('GroupChattingContent').setData(ChattingRecord);
+
+                var scroller = Ext.getCmp('GroupChattingContent').getScrollable();
+                scroller.getScroller().scrollToEnd();
+            }
+            else{
+                console.log(myChattingGroup);
+                if(Ext.getCmp('homeView').getActiveItem().title != '聊天') Ext.getCmp('messagetab').tab.setBadgeText(++unreadMsg);
+                if(!myChattingGroup)
+                    return;
+                for(var i = 0; i < myChattingGroup.length;i++)
+                {
+                    if(myChattingGroup[i].id === msg.tid) {
+                        myChattingGroup[i].lastmsg = msg.msg;
+                        myChattingGroup[i].lasttime = msg.time;
+                    }
+                }
+
+                Ext.getCmp('ChattingGroups').setData([]);
+                var store = Ext.getCmp('ChattingGroups').getStore();
+                store.load();
+                Ext.getCmp('ChattingGroups').setData(myChattingGroup);
             }
         });
 

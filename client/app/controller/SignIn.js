@@ -82,10 +82,12 @@ function successLogin(obj){
         }
         profile.interests = interestStr;
     }
+    sid = obj._id;
     sname = obj.nickname;
     friendList = obj.friends;
     updateProfile();
     if(friendList){
+        console.log(friendList);
         for(var i = 0; i < friendList.length;i++)
         {
             friendList[i].lastmsg = '呵呵';

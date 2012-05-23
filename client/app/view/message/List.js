@@ -3,8 +3,7 @@ Ext.define('Chihiro.view.message.List', {
     requires: [
         'Ext.SegmentedButton'
     ],
-    xtype: 'messagepanel',
-    id:'messagepanel',
+    xtype: 'MessagePanel',
 
     config: {
         items:[
