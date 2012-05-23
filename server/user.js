@@ -79,16 +79,17 @@ function login(usr, callback, socket) {
         var length = tmp.length;
         usr.friends = new Array();
         for (var i in tmp) {
+            (function() {
             var uid = tmp[i];
             redis.hgetall('users:' + uid, function (err, u) {
                 if (!('_id' in u)) {
                     db.users.findOne({_id: db.ObjectId(uid)},
                         function (err, ua) {
-                            console.log(ua);
                             processUser(ua, function(t) {
                                 usr.friends.push(t.obj);
                                 if (!--length) finish();
                             });
+                            setUserData(ua);
                         });
                 } else {
                     processUser(u, function (t) {
@@ -97,6 +98,7 @@ function login(usr, callback, socket) {
                     });
                 }
             });
+            })();
         }
         if (!length) finish();
         function finish() {
@@ -358,7 +360,10 @@ function getInfoById(uid, callback) {
     redis.hgetall('users:' + uid, function (err, usr) {
         if (!usr) {
             db.users.find({_id: db.ObjectId(uid)},
-                function (err, usr) { processUser(usr, callback); });
+                function (err, usr) {
+                    processUser(usr, callback);
+                    setUserData(usr);
+                });
         } else {
             processUser(usr, callback);
         }
@@ -371,7 +376,10 @@ function getInfoByEmail(email, callback) {
     redis.get('emails:' + email, function (err, uid) {
         if (!uid) {
             db.users.findOne({email: email},
-                function (err, usr) { processUser(usr, callback); });
+                function (err, usr) {
+                    processUser(usr, callback);
+                    setUserData(usr);
+                });
         } else {
             getInfoById(uid, callback);
         }
@@ -384,7 +392,10 @@ function getInfoByPhone(phone, callback) {
     redis.get('phones:' + phone, function (err, uid) {
         if (!uid) {
             db.users.findOne({phone: phone},
-                function (err, usr) { processUser(usr, callback); });
+                function (err, usr) {
+                    processUser(usr, callback);
+                    setUserData(usr);
+                });
         } else {
             getInfoById(uid, callback);
         }
@@ -406,7 +417,6 @@ function processUser(usr, callback) {
 }
 
 function setUserData(usr) {
-    console.log(usr);
     for (key in usr) {
         if (key == 'interests') {
             redis.hset('users:' + usr._id, key, JSON.stringify(usr[key]));
