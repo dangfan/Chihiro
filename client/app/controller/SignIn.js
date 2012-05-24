@@ -90,8 +90,15 @@ function successLogin(obj){
         console.log(friendList);
         for(var i = 0; i < friendList.length;i++)
         {
-            friendList[i].lastmsg = '呵呵';
-            friendList[i].lasttime ='很久以前';
+            if(friendList[i].lastmsg){
+                var msg = friendList[i].lastmsg.split('|');
+                friendList[i].lastmsg = msg[2];
+                friendList[i].lasttime =msg[1];
+            }
+            else{
+                friendList[i].lastmsg = '快开始你们的第一次聊天吧～';
+                friendList[i].lasttime ='Never';
+            }
         }
         Ext.getCmp('ChattingFriends').setData(friendList);
 
@@ -99,9 +106,9 @@ function successLogin(obj){
             var grouplist = obj;
             for(var i = 0; i < grouplist.length;i++)
             {
-                grouplist[i].lastmsg = '求基友！';
-                grouplist[i].lasttime ='刚刚';
-                grouplist[i].portrait = 'http://hdn.xnimg.cn/photos/hdn221/20120331/0950/tiny_twM9_56111n019117.jpg';
+                grouplist[i].lastmsg = '';
+                grouplist[i].lasttime ='';
+                grouplist[i].portrait = 'resources/icons/group.jpg';
             }
 
             Ext.getCmp('ChattingGroups').setData([]);

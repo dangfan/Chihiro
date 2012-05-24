@@ -65,8 +65,12 @@ Ext.define('Chihiro.controller.List', {
 
     addFriend: function() {
         var uid = Ext.getCmp('userlist').getSelection()[0].raw._id;
-        for(var i = 0; i < friendList.length || friendList[i].id != uid;i++);
-        if(i == friendList.length) alert("该用户已经是您的好友了！");
+        console.log(uid);
+        console.log(friendList);
+        var i;
+        for(i = 0; i < friendList.length && friendList[i]._id != uid;i++);
+
+        if(i < friendList.length) alert("该用户已经是您的好友了！");
         else {
                 socket.emit('send friend request',uid);
                 console.log(Ext.getCmp('userlist').getSelection()[0].raw._id);
@@ -90,6 +94,12 @@ Ext.define('Chihiro.controller.List', {
 
     onListTap: function(list, user) {
 
+        console.log(user.data);
+        if(user.data.birthday){
+            var birthday = user.data.birthday.split('T');
+            user.data.birthday = birthday[0];
+        }
+
         if(Ext.getCmp('MyCarousel'))
         {
             var carou = Ext.getCmp('MyCarousel');
@@ -106,7 +116,6 @@ Ext.define('Chihiro.controller.List', {
 
             information = Ext.getCmp('DetailPanel').down('detailInformation');
             information.setData(user.data);
-
             Ext.getCmp('DetailPanel').show();
             return;
         }
@@ -233,6 +242,19 @@ Ext.define('Chihiro.controller.List', {
 
         if(flag === 'friend')
         {
+            if(user.data.birthday){
+                var birthday = user.data.birthday.split('T');
+                user.data.birthday = birthday[0];
+            }
+            if(user.data.interests){
+                var interestString = user.data.interests;
+                console.log(interestString);
+                interestString = interestString.replace(/"([^"]*)"/g, "$1");
+                if(interestString.indexOf("[") >= 0)
+                    interestString = interestString.slice(1,interestString.length-1);
+                user.data.interests = interestString;
+            }
+
             if(Ext.getCmp('MyCarousel'))
             {
                 var carou = Ext.getCmp('MyCarousel');

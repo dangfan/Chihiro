@@ -32,7 +32,7 @@ Ext.define('Chihiro.view.message.ChattingFriendPanel', {
                     },
 
                     data: [
-                        { text: '修改备注名', sort:' ',func: 'Nickname'},
+                        //{ text: '修改备注名', sort:' ',func: 'Nickname'},
                         { text: '邀请到群组', sort: '   ',func: 'InviteToGroup' }
                     ]
                 },

@@ -24,7 +24,7 @@ Ext.define('Chihiro.view.userlist.Information', {
             '<strong>签名:</strong>{signiture}<br />',
             '<strong>学校:</strong> {school}<br />',
             '</p>',
-            '<p><strong>兴趣爱好</strong><br />{interest}</p>'
+            '<p><strong>兴趣爱好</strong><br />{interests}</p>'
             // {compiled: true}
         )
     }
