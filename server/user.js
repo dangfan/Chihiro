@@ -86,15 +86,25 @@ function login(usr, callback, socket) {
                     db.users.findOne({_id: db.ObjectId(uid)},
                         function (err, ua) {
                             processUser(ua, function(t) {
-                                usr.friends.push(t.obj);
-                                if (!--length) finish();
+                                redis.lrange('messages:' + usr._id + ':' + uid, 0, 0, function (err, msgs) {
+                                    if (msgs.length > 0) {
+                                        t.obj.lastmsg = msgs[0];
+                                    }
+                                    usr.friends.push(t.obj);
+                                    if (!--length) finish();
+                                });
                             });
                             setUserData(ua);
                         });
                 } else {
                     processUser(u, function (t) {
-                        usr.friends.push(t.obj);
-                        if (!--length) finish();
+                        redis.lrange('messages:' + usr._id + ':' + uid, 0, 0, function (err, msgs) {
+                            if (msgs.length > 0) {
+                                t.obj.lastmsg = msgs[0];
+                            }
+                            usr.friends.push(t.obj);
+                            if (!--length) finish();
+                        });
                     });
                 }
             });

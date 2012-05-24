@@ -8,8 +8,10 @@ exports.init = function(_redis, _clients) {
         getMessages:      getMessages,
         createTopic:      createTopic,
         addMembers:       addMembers,
+        modifyIntro:      modifyIntro,
         getTopicInfo:     getTopicInfo,
         subscribeTopic:   subscribeTopic,
+        quitTopic:        quitTopic,
         sendTopicMessage: sendTopicMessage,
         draw:             draw,
         getTopics:        getTopics
@@ -95,6 +97,23 @@ function addMembers(data) {
                 });
             }
         }
+    });
+}
+
+function modifyIntro(data) {
+    var socket = this;
+    socket.get('uid', function (err, uid) {
+        if (!uid) return;
+        if (!data.id || !data.intro) return;
+        redis.set('topics:' + data.id + ':intro', data.intro);
+    });
+}
+
+function quitTopic(id) {
+    var socket = this;
+    socket.get('uid', function (err, uid) {
+        if (!uid || !id) return;
+        redis.srem('topics:' + id + ':members', uid);
     });
 }
 
