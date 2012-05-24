@@ -51,15 +51,61 @@ Ext.define('Chihiro.controller.message.ChatList', {
 //        console.log(user.data);
 //        console.log("正在聊天的好友是："+chattingID);
 
-        var time = getCurrentTime();
-        Ext.getCmp('ChattingContent').setData([
+        socket.emit('get messages',chattingID, function(msg) {
+           console.log(msg);
+            var arr;
+            if(msg.length === 0)
             {
-                id: "407788",
-                nickname:"程序猿",
-                xindex:'1',
-                message:'欢迎使用好友聊天!',
-                time:time
-            }]);
+                var time = getCurrentTime();
+                Ext.getCmp('ChattingContent').setData([
+                    {
+                        id: "407788",
+                        nickname:"程序猿",
+                        xindex:'1',
+                        message:'欢迎使用好友聊天!',
+                        time:time
+                    }]);
+            }
+            else{
+                var ChattingRecord = [];
+                if(msg.length >= 5)
+                    count = 5;
+                else
+                    count = msg.length;
+                for(var i = count-1; i >= 0; i--){
+                    arr=msg[i].split("|");
+                    if(arr[0] === "to"){
+                        ChattingRecord.push(
+                            {
+                                id: '',
+                                image:'',
+                                nickname:sname,
+                                xindex:'0',
+                                message:arr[2],
+                                time:arr[1]
+                            });
+                    } else if(arr[0] === "from"){
+                        ChattingRecord.push(
+                            {
+                                id: '',
+                                image:'',
+                                nickname:user.data.nickname,
+                                xindex:'1',
+                                message:arr[2],
+                                time:arr[1]
+                            });
+                    }
+                }
+
+                Ext.getCmp('ChattingContent').setData([]);
+                var store = Ext.getCmp('ChattingContent').getStore();
+                store.load();
+                Ext.getCmp('ChattingContent').setData(ChattingRecord);
+
+                var scroller = Ext.getCmp('ChattingContent').getScrollable();
+                scroller.getScroller().scrollToEnd();
+            }
+        });
 
         var view = this.view;
         Ext.getCmp('FriendImage').setSrc(user.data.portrait);

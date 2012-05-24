@@ -11,7 +11,9 @@ Ext.define('Chihiro.controller.List', {
             addFriendBtn: '#addFriendBtn',
             deleteFriendBtn: '#deleteFriendBtn',
             simpleFriendlist:'#SimpleFriendList2',
-            MyList:'#SimpleFriendList'
+            MyList:'#SimpleFriendList',
+            invitaionList:"#InvitationList",
+            simplegrouplist:"#SimpleGroupList"
         },
 
         control: {
@@ -37,6 +39,22 @@ Ext.define('Chihiro.controller.List', {
             },
             'MyList':{
                 select:'onMyListTap'
+            },
+            'invitaionList':{
+                select:'selectSomebodyToInvite',
+                deselect:'remainCssToInvite',
+                itemdoubletap:'doubleTap'
+            },
+            'simplegrouplist':{
+                select:'selectSomegroupToInvite',
+                deselect:'remainCssToGroup',
+                itemdoubletap:'doubleTap'
+            },
+            'button[action=InviteFriendsToOneGroup]': {
+                tap: 'InviteFriendsToOneGroup'
+            },
+            'button[action=InviteOneFriendToGroups]': {
+                tap: 'InviteOneFriendToGroups'
             }
         }
     },
@@ -135,8 +153,16 @@ Ext.define('Chihiro.controller.List', {
     },
 
     selectSomebody:function(a,record){
-//        console.log(invitationList);
+        console.log(invitationList);
         invitationList.push(record.data._id);
+    },
+
+    selectSomebodyToInvite:function(a,record){
+        invitationList.push(record.raw._id);
+    },
+
+    selectSomegroupToInvite:function(a,record){
+        invitationList.push(record.raw.id);
     },
 
     remainCss: function(me, record) {
@@ -144,9 +170,37 @@ Ext.define('Chihiro.controller.List', {
 
         for(var i = 0; i < ln; i++)
         {
-            if(invitationList[i] === record.data)
+            if(invitationList[i] === record.data._id)
             {
-                invitationList.pop(record.data);
+                invitationList.pop(record.data._id);
+                console.log(invitationList);
+                return;
+            }
+        }
+    },
+
+    remainCssToInvite: function(me, record) {
+        var ln = invitationList.length;
+
+        for(var i = 0; i < ln; i++)
+        {
+            if(invitationList[i] === record.raw._id)
+            {
+                invitationList.pop(record.raw._id);
+                console.log(invitationList);
+                return;
+            }
+        }
+    },
+
+    remainCssToGroup: function(me, record) {
+        var ln = invitationList.length;
+
+        for(var i = 0; i < ln; i++)
+        {
+            if(invitationList[i] === record.raw.id)
+            {
+                invitationList.pop(record.raw.id);
                 console.log(invitationList);
                 return;
             }
@@ -249,5 +303,44 @@ Ext.define('Chihiro.controller.List', {
             view.show();
             Ext.getCmp('GroupDetailPanel').show();
         }
+    },
+
+    InviteFriendsToOneGroup:function(){
+        var groupId = Ext.getCmp('SimpleFriendList').getSelection()[0].raw.id
+        console.log(groupId);
+        socket.emit('add members',{id:groupId,members:invitationList});
+        Ext.getCmp('SimpleFriendList').setData([]);
+        var store = Ext.getCmp('SimpleFriendList').getStore();
+        store.load();
+
+        var grouplist;
+        socket.emit('get topic list',function(obj) {
+            Ext.getCmp('SimpleFriendList').setData(obj);
+        });
+        Ext.getCmp('SimpleFriendList').setData(friendList);
+
+        if(invitationList.length > 0)
+            alert("群组已加入新成员");
+    },
+
+    InviteOneFriendToGroups:function(){
+        var uid = Ext.getCmp('SimpleFriendList').getSelection()[0].raw._id
+        console.log(uid);
+        console.log(invitationList);
+        for(var i = 0; i < invitationList.length; i++){
+            socket.emit('add members',{id:invitationList[i],members:[uid]});
+        }
+
+        Ext.getCmp('SimpleFriendList').setData([]);
+        var store = Ext.getCmp('SimpleFriendList').getStore();
+        store.load();
+        var grouplist;
+        socket.emit('get topic list',function(obj) {
+            Ext.getCmp('SimpleFriendList').setData(obj);
+        });
+        Ext.getCmp('SimpleFriendList').setData(friendList);
+
+        if(invitationList.length > 0)
+            alert("已邀请该好友加入群组");
     }
 });

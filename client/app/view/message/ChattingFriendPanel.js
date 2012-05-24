@@ -48,7 +48,7 @@ Ext.define('Chihiro.view.message.ChattingFriendPanel', {
                             title: record.get('text')
                         });
                         this.parent.push(panel);
-
+                        invitationList = [];
                         socket.emit('get topic list',function(obj) {
                             var grouplist = obj;
                             Ext.getCmp('SimpleGroupList').setData(grouplist);
