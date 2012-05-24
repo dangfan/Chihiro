@@ -7,6 +7,7 @@ exports.init = function(_redis, _clients) {
         sendMessage:      sendMessage,
         getMessages:      getMessages,
         createTopic:      createTopic,
+        addMembers:       addMembers,
         getTopicInfo:     getTopicInfo,
         subscribeTopic:   subscribeTopic,
         sendTopicMessage: sendTopicMessage,
@@ -73,6 +74,24 @@ function createTopic(data, callback) {
             callback({err: 0, id: id});
             console.log('new topic ' + data.nickname + ' is created.');
         });
+    });
+}
+
+function addMembers(id, members) {
+    var socket = this;
+    socket.get('uid', function (err, uid) {
+        if (!uid || !members) return;
+        redis.sadd('topics:' + id + ':members', members);
+        for (iuid in members) {
+            var userid = members[iuid];
+            redis.sadd('user_topics:' + userid, id);
+            if (userid in clients) {
+                clients[userid].get('redis', function (err, redisp) {
+                    redisp.subscribe('topic:' + id);
+                    redisp.subscribe('draw:' + id);
+                });
+            }
+        }
     });
 }
 
