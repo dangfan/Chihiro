@@ -5,7 +5,9 @@ exports.init = function(_redis, _clients) {
     clients  = _clients;
     return {
         sendMessage:      sendMessage,
+        getMessages:      getMessages,
         createTopic:      createTopic,
+        addMembers:       addMembers,
         getTopicInfo:     getTopicInfo,
         subscribeTopic:   subscribeTopic,
         sendTopicMessage: sendTopicMessage,
@@ -18,23 +20,32 @@ exports.init = function(_redis, _clients) {
 // TODO: offline messages
 function sendMessage(data) {
     var socket = this;
-    socket.get('uid', function (err, uid) {
-        if (!uid) return;
-        redis.hget('users:' + uid, 'nickname', function (err, nickname) {
+    socket.get('uid', function (err, fromUid) {
+        if (!fromUid) return;
+        var toUid = data.uid;
+        redis.hget('users:' + fromUid, 'nickname', function (err, nickname) {
             if (!nickname) return;
-            if (data.uid in clients) {
-                clients[data.uid].emit('messages', {
-                    from: uid,
+            if (toUid in clients) {
+                clients[toUid].emit('messages', {
+                    from: fromUid,
                     nickname: nickname,
                     time: data.time,
                     message: data.msg
                 });
-                redis.sadd('messages:' + data.uid, uid + '|' + data.time + '|' + data.msg);
-                console.log('message to:' + data.uid, nickname + '|' + uid + '|' + data.time + '|' + data.msg);
-            } else {
-                redis.sadd('offline_messages:' + data.uid, uid + '|' + data.time + '|' + data.msg);
-                console.log('offline message to:' + data.uid, nickname + '|' + uid + '|' + data.time + '|' + data.msg);
             }
+            redis.lpush('messages:' + fromUid + ':' + toUid, 'to|' + data.time + '|' + data.msg);
+            redis.lpush('messages:' + toUid + ':' + fromUid, 'from|' + data.time + '|' + data.msg);
+            console.log('message to:' + toUid, nickname + '|' + fromUid + '|' + data.time + '|' + data.msg);
+        });
+    });
+}
+
+function getMessages(targetUid, callback) {
+    var socket = this;
+    socket.get('uid', function (err, uid) {
+        if (!uid) return;
+        redis.lrange('messages:' + uid + ':' + targetUid, 0, 9, function (err, obj) {
+            callback(obj);
         });
     });
 }
@@ -63,6 +74,27 @@ function createTopic(data, callback) {
             callback({err: 0, id: id});
             console.log('new topic ' + data.nickname + ' is created.');
         });
+    });
+}
+
+function addMembers(data) {
+    var socket = this;
+    socket.get('uid', function (err, uid) {
+        if (!uid) return;
+        if (!data.members || !data.id) return;
+        var members = data.members;
+        var id = data.id;
+        redis.sadd('topics:' + id + ':members', members);
+        for (iuid in members) {
+            var userid = members[iuid];
+            redis.sadd('user_topics:' + userid, id);
+            if (userid in clients) {
+                clients[userid].get('redis', function (err, redisp) {
+                    redisp.subscribe('topic:' + id);
+                    redisp.subscribe('draw:' + id);
+                });
+            }
+        }
     });
 }
 

@@ -26,8 +26,9 @@ Ext.define('Chihiro.controller.find.Find', {
                 xtype: 'loadmask',
                 message: '载入中...'
             });
+            locateGeo();
             socket.emit('find closest', function(list) {
-                locateGeo();
+
                 Ext.Viewport.setMasked(false);
                 panel.push(Ext.create('Chihiro.view.find.Nearby', {
                     title: '查找附近的人',
@@ -45,8 +46,8 @@ Ext.define('Chihiro.controller.find.Find', {
                 xtype: 'loadmask',
                 message: '载入中...'
             });
+            locateGeo();
             socket.emit('find by interests', function(list) {
-                locateGeo()
                 Ext.Viewport.setMasked(false);
                 panel.push(Ext.create('Chihiro.view.find.Nearby', {
                     title: '查找相同兴趣的人',

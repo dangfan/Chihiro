@@ -43,7 +43,9 @@ function listen(port) {
         socket.on('remove friend', user.removeFriend);
         socket.on('update portrait', user.updatePortrait);
         socket.on('send message', message.sendMessage);
+        socket.on('get messages', message.getMessages);
         socket.on('create topic', message.createTopic);
+        socket.on('add members', message.addMembers);
         socket.on('get topic info', message.getTopicInfo);
         socket.on('get topic list', message.getTopics);
         socket.on('subscribe topic', message.subscribeTopic);

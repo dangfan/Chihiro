@@ -155,12 +155,7 @@ Ext.define('Chihiro.controller.Home', {
 
 
         socket.on('friend confirmed', function(obj) {
-            friendList.push(obj.uid);
-            console.log(obj);
-            Ext.getCmp('friendlist').setData([]);
-            var store = Ext.getCmp('friendlist').getStore();
-            store.load();
-            Ext.getCmp('friendlist').setData(friendList);
+            addFriendAndShow(obj.uid);
         });
     }
 });
@@ -178,4 +173,12 @@ function locateGeo() {
             }
         }
     })
+};
+function addFriendAndShow(uid)
+{
+    friendList.push(uid);
+    Ext.getCmp('friendlist').setData([]);
+    var store = Ext.getCmp('friendlist').getStore();
+    store.load();
+    Ext.getCmp('friendlist').setData(friendList);
 }
