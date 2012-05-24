@@ -48,6 +48,8 @@ function listen(port) {
         socket.on('add members', message.addMembers);
         socket.on('get topic info', message.getTopicInfo);
         socket.on('get topic list', message.getTopics);
+        socket.on('modify intro', message.modifyIntro);
+        socket.on('quit topic', message.quitTopic);
         socket.on('subscribe topic', message.subscribeTopic);
         socket.on('send topic message', message.sendTopicMessage);
         socket.on('draw', message.draw);
