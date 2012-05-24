@@ -77,10 +77,13 @@ function createTopic(data, callback) {
     });
 }
 
-function addMembers(id, members) {
+function addMembers(data) {
     var socket = this;
     socket.get('uid', function (err, uid) {
-        if (!uid || !members) return;
+        if (!uid) return;
+        if (!data.members || !data.id) return;
+        var members = data.members;
+        var id = data.id;
         redis.sadd('topics:' + id + ':members', members);
         for (iuid in members) {
             var userid = members[iuid];
