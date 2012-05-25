@@ -55,6 +55,9 @@ Ext.define('Chihiro.controller.List', {
             },
             'button[action=InviteOneFriendToGroups]': {
                 tap: 'InviteOneFriendToGroups'
+            },
+            'button[action=QuitGroup]': {
+                tap: 'QuitGroup'
             }
         }
     },
@@ -79,17 +82,21 @@ Ext.define('Chihiro.controller.List', {
     },
 
     deleteFriend: function() {
-        socket.emit('remove friend',Ext.getCmp('friendlist').getSelection()[0].raw._id);
+        socket.emit('remove friend',Ext.getCmp('SimpleFriendList').getSelection()[0].raw._id);
 
-        var friendId = Ext.getCmp('friendlist').getSelection()[0].raw._id;
+        var friendId = Ext.getCmp('SimpleFriendList').getSelection()[0].raw._id;
         var i;
         for(i=0;friendList[i]._id!=friendId;i++);
         friendList.splice(i,1);
 
-        Ext.getCmp('friendlist').setData([]);
-        var store = Ext.getCmp('friendlist').getStore();
+        Ext.getCmp('SimpleFriendList').setData([]);
+        var store = Ext.getCmp('SimpleFriendList').getStore();
         store.load();
-        Ext.getCmp('friendlist').setData(friendList);
+        socket.emit('get topic list',function(obj) {
+            Ext.getCmp('SimpleFriendList').setData(obj);
+        });
+        Ext.getCmp('SimpleFriendList').setData(friendList);
+
     },
 
     onListTap: function(list, user) {
@@ -368,5 +375,22 @@ Ext.define('Chihiro.controller.List', {
 
         if(invitationList.length > 0)
             alert("已邀请该好友加入群组");
+    },
+
+    QuitGroup:function(){
+
+        var groupId = Ext.getCmp('SimpleFriendList').getSelection()[0].raw.id
+        console.log(groupId);
+        socket.emit('quit topic',groupId);
+
+        Ext.getCmp('SimpleFriendList').setData([]);
+        var store = Ext.getCmp('SimpleFriendList').getStore();
+        store.load();
+        socket.emit('get topic list',function(obj) {
+            Ext.getCmp('SimpleFriendList').setData(obj);
+            console.log(obj);
+        });
+        Ext.getCmp('SimpleFriendList').setData(friendList);
+        alert("已退出该群！");
     }
 });

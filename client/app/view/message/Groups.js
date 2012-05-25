@@ -30,8 +30,8 @@ Ext.define('Chihiro.view.message.Groups', {
                         //src: 'http://kiva.org/img/w80h80/1053367.jpg',
                         marginTop:5,
                         marginLeft:15,
-                        height:50,
-                        width:50
+                        height:60,
+                        width:60
                     },
                     {
                         xtype:'panel',
