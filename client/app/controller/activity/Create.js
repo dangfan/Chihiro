@@ -27,7 +27,7 @@ Ext.define('Chihiro.controller.activity.Create',{
     toMapLocate:function(){
         var val = Ext.getCmp('basicactivityinfo').getValues();
         //console.log(val);
-        if(val.cost.length == 0 || val.location.length == 0 || val.name.length == 0 || val.type.length == 0){
+        if(val.cost.length == 0 || val.location.length == 0 || val.name.length == 0){
             Ext.Msg.alert('请完整填写信息！');
             return;
         }else if(val.date.getFullYear() == new Date().getFullYear()
@@ -56,16 +56,18 @@ Ext.define('Chihiro.controller.activity.Create',{
                 id: 'maplocate'
             })
         }
-
+        console.log(val);
         createActivity.name  = val.name;
         createActivity.location = val.location;
         createActivity.cost = val.cost;
-        createActivity.type = val.type;
+        createActivity.type = "resources/icons/" + val.type;
         createActivity.date = val.date.toString().substr(0, 14);
         createActivity.starttime = val.starttime;
         createActivity.endtime = val.endtime;
         createActivity.sponsor = sname;
+        createActivity.typeText = Ext.getCmp('activitytype')._value._data.text;
 
+        console.log(createActivity);
         var mark=new Object();
         var geocoder = new google.maps.Geocoder();
         geocoder.geocode( { 'address': val.location}, function(results, status) {
@@ -74,13 +76,18 @@ Ext.define('Chihiro.controller.activity.Create',{
                 mark.longitude = results[0].geometry.location.ab;
                 mark.latitude = results[0].geometry.location.$a;
                 createActivity.mark = mark;
+                var mapMarker = new google.maps.Marker({
+                    id: 'geoLocMarker',
+                    position: results[0].geometry.location,
+                    map: Ext.getCmp('mylocation').getMap(),
+                    visible: true
+                });
                 Ext.getCmp('maplocate').down('detailMap');
                 Ext.getCmp('createactivity').push(Ext.getCmp('maplocate'));
             } else {
                 alert("地图中未标注此地点");
             }
         });
-        //console.log(createActivity);
     },
     toDetailActivity: function(){
         if(!Ext.getCmp('detailactivity')){
@@ -103,7 +110,8 @@ Ext.define('Chihiro.controller.activity.Create',{
         }
         console.log(createActivity);
         createActivity.detail = val.detail;
-        if(createOrEdit == 1){
+        if(createOrEdit != 0){
+            createActivity._id = createOrEdit;
             socket.emit('update activity', createActivity, function(msg){
                 if(msg.err == 0){
                     Ext.Msg.alert('活动修改成功');

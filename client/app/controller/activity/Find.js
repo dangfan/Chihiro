@@ -233,7 +233,7 @@ Ext.define('Chihiro.controller.activity.Find',{
         }
     },
     participateActivity: function(){
-        var activityId = Ext.getCmp('nearactivitylist').getSelection()[0]._id;
+        var activityId = Ext.getCmp('nearactivitylist').getSelection()[0].raw._id;
         socket.emit('participate activity', activityId, function(msg){
             if(msg.err == 0){
                 Ext.Msg.alert('参加成功！');
@@ -264,14 +264,14 @@ Ext.define('Chihiro.controller.activity.Find',{
             });
         }
         Ext.getCmp('detailinfo').setValue(Ext.getCmp('sponseactivitylist').getSelection()[0].data.detail);
-        createOrEdit = 1;
+        createOrEdit = Ext.getCmp('sponseactivitylist').getSelection()[0].raw._id;
         Ext.getCmp('activitydetail').hide();
         Ext.Viewport.setActiveItem(Ext.getCmp('createactivity'));
     },
     quitActivity: function(){
-        var activityId = Ext.getCmp('participateactivitylist').getSelection()[0]._id;
+        var activityId = Ext.getCmp('participateactivitylist').getSelection()[0].raw._id;
         socket.emit('unparticipate activity',activityId,function(msg){
-            if(err == 0){
+            if(msg.err == 0){
                 Ext.Msg.alert('退出成功');
             }
             else{
@@ -280,17 +280,20 @@ Ext.define('Chihiro.controller.activity.Find',{
         });
     },
     inviteFriends:function(){
+        var activityId = Ext.getCmp('sponseactivitylist').getSelection()[0].raw._id;
+        Ext.getCmp('activitydetail').hide();
+
         if(!Ext.getCmp('SimpleFriendListPanel')){
             Ext.create('Chihiro.view.userlist.SimpleFriendList',{
                 id: 'SimpleFriendListPanel'
             });
         }
-        console.log(Ext.getCmp('SimpleFriendListPanel'));
         invitationList = [];
-        var temp = Ext.getCmp('ChattingGroups').data;
+        Ext.getCmp('SimpleFriendList2').setData([]);
+        var store = Ext.getCmp('SimpleFriendList2').getStore();
+        store.load();
+        Ext.getCmp('SimpleFriendList2').setData(friendList);
 
-        var activityId = Ext.getCmp('sponseactivitylist').getSelection()[0]._id;
-        Ext.getCmp('activitydetail').hide();
         Ext.Viewport.setActiveItem(Ext.getCmp('SimpleFriendListPanel'));
     },
     inviteFriendsConfirm: function(){

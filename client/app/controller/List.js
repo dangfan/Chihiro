@@ -92,11 +92,13 @@ Ext.define('Chihiro.controller.List', {
         Ext.getCmp('SimpleFriendList').setData([]);
         var store = Ext.getCmp('SimpleFriendList').getStore();
         store.load();
+
         socket.emit('get topic list',function(obj) {
             Ext.getCmp('SimpleFriendList').setData(obj);
         });
         Ext.getCmp('SimpleFriendList').setData(friendList);
 
+        Ext.getCmp('SimpleFriendList').setData(friendList);
     },
 
     onListTap: function(list, user) {
