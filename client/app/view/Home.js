@@ -12,7 +12,7 @@ Ext.define("Chihiro.view.Home", {
 
         items: [
             {
-                xtype: 'messagepanel',
+                xtype: 'MessagePanel',
                 id: 'messagetab',
                 title:'聊天',
                 iconCls:'info'

@@ -90,15 +90,20 @@ Ext.define('Chihiro.controller.message.Group',{
         if(msg != '')
         {
             msgtextfield.reset();
-            Ext.getCmp('GroupChattingContent').setData([
+            var ChattingRecord = Ext.getCmp('GroupChattingContent').getData();
+            ChattingRecord.push(
                 {
                     id: '',
                     image:'',
-                    nickname:"党熊",
+                    nickname:sname,
                     xindex:'0',
                     message:msg,
                     time:time
-                }]);
+                });
+            Ext.getCmp('GroupChattingContent').setData([]);
+            var store = Ext.getCmp('GroupChattingContent').getStore();
+            store.load();
+            Ext.getCmp('GroupChattingContent').setData(ChattingRecord);
 
             var scroller = Ext.getCmp('GroupChattingContent').getScrollable();
             scroller.getScroller().scrollToEnd();
@@ -109,7 +114,6 @@ Ext.define('Chihiro.controller.message.Group',{
 
         var uid = Ext.getCmp('ChattingGroups').getSelection()[0].raw.id;
         socket.emit('send topic message',{id:uid,msg:msg});
-        console.log({id:uid,msg:msg});
 //        var grouplist;
 //        socket.emit('get topic list',function(obj) {
 //            grouplist = obj;
@@ -154,6 +158,10 @@ Ext.define('Chihiro.controller.message.Group',{
         a.hide();
 
         view.show();
+
+        if(Ext.getCmp('ChattingGroups')){
+            Ext.getCmp('ChattingGroups').deselectAll();
+        }
     },
 
     inviteFriends:function(){

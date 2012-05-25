@@ -62,6 +62,7 @@ Ext.define('Chihiro.controller.activity.Find',{
     },
     showNearActivity: function(){
         if(Ext.getCmp('homeView').getActiveItem().title=='活动'){
+            locateGeo();
             socket.emit('find closest activities',function(msg){
                 Ext.Viewport.setMasked({
                     xtype: 'loadmask',

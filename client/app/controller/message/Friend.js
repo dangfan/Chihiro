@@ -66,7 +66,6 @@ Ext.define('Chihiro.controller.message.Friend', {
         if(msg != '')
         {
             msgtextfield.reset();
-            //console.log(ChattingRecord);
             var ChattingRecord = Ext.getCmp('ChattingContent').getData();
             ChattingRecord.push(
                 {
@@ -96,21 +95,18 @@ Ext.define('Chihiro.controller.message.Friend', {
         {
             if(friendList[i]._id === uid) {
                 socket.emit('send message',{uid:uid,msg:msg,time:time});
-                console.log({uid:uid,msg:msg,time:time});
                 return;
             }
         }
         socket.emit('add friend',uid, function(result) {
-            if(result.err) aleart('添加好友失败了:(');
+            if(result.err) alert('添加好友失败了:(');
             else {
-                alert('但愿添加好友成功');
-                newfriend = Ext.getCmp('ChattingFriends').getSelection()[0].raw;
-                friendList.push(newfriend);
+                alert('添加好友成功');
+                var uid = Ext.getCmp('ChattingFriends').getSelection()[0].raw._id;
+                addFriendAndShow(uid);
             }
-            //TODO: 等待乾坤的addfriend接口
         });
 
-//        console.log(friendList);
     },
 
     ShowActions:function(img,obj,other){
@@ -128,6 +124,19 @@ Ext.define('Chihiro.controller.message.Friend', {
 
                 var user = Ext.getCmp('ChattingFriends').getSelection()[0];
                 information = Ext.getCmp('DetailPanel').down('detailInformation');
+                console.log(user.data);
+                if(user.data.birthday){
+                    var birthday = user.data.birthday.split('T');
+                    user.data.birthday = birthday[0];
+                }
+                if(user.data.interests){
+                    var interestString = user.data.interests;
+                    console.log(interestString);
+                    interestString = interestString.replace(/"([^"]*)"/g, "$1");
+                    if(interestString.indexOf("[") >= 0)
+                        interestString = interestString.slice(1,interestString.length-1);
+                    user.data.interests = interestString;
+                }
                 information.setData(user.data);
 
                 var button = this.getDeletebutton();
@@ -147,6 +156,20 @@ Ext.define('Chihiro.controller.message.Friend', {
 
             var view = this.view;
             var user = Ext.getCmp('ChattingFriends').getSelection()[0];
+
+            console.log(user);
+            if(user.data.birthday){
+                var birthday = user.data.birthday.split('T');
+                user.data.birthday = birthday[0];
+            }
+            if(user.data.interests){
+                var interestString = user.data.interests;
+                console.log(interestString);
+                interestString = interestString.replace(/"([^"]*)"/g, "$1");
+                if(interestString.indexOf("[") >= 0)
+                    interestString = interestString.slice(1,interestString.length-1);
+                user.data.interests = interestString;
+            }
             view.setUser(user);
 
             if (!view.getParent()) {
@@ -158,6 +181,10 @@ Ext.define('Chihiro.controller.message.Friend', {
             a.hide();
 
             view.show();
+        }
+
+        if(Ext.getCmp('ChattingFriends')){
+            Ext.getCmp('ChattingFriends').deselectAll();
         }
     },
 
