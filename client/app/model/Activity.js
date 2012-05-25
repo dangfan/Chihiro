@@ -12,6 +12,7 @@ Ext.define('Chihiro.model.Activity',{
             'location',
             'mark',
             'cost',
+            'typeText',
             'type',
             'sponsor',
             'detail',

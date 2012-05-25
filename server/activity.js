@@ -71,7 +71,7 @@ function removeActivity(activityid, callback) {
     });
 }
 
-function updateActivityDetails(activity) {
+function updateActivityDetails(activity, callback) {
     var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) return;
@@ -82,6 +82,7 @@ function updateActivityDetails(activity) {
             // set in redis
             for (key in activity)
                 redis.hset('activities:' + activity._id, key, activity[key]);
+            callback({err: 0, msg: ''});
         });
     });
 }

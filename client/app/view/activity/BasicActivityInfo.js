@@ -58,10 +58,22 @@ Ext.define('Chihiro.view.activity.BasicActivityInfo',{
                         label:'花费'
                     },
                     {
-                        xtype:'textfield',
+                        xtype: 'selectfield',
                         name:'type',
                         id: 'activitytype',
-                        label:'类型'
+                        label:'类型',
+                        options: [
+                            {text: '体育', value: 'icon_pe.png'},
+                            {text: '旅游', value: 'icon_travel.png'},
+                            {text: '学习', value: 'icon_study.png'},
+                            {text: '购物', value: 'icon_shop.png'},
+                            {text: '音乐', value: 'icon_music.png'},
+                            {text: '电影', value: 'icon_movies.png'},
+                            {text: '美术', value: 'icon_art.png'},
+                            {text: '饮食', value: 'icon_food.png'},
+                            {text: '游戏', value: 'icon_game.png'},
+                            {text: '其它', value: 'icon_other.png'}
+                        ]
                     }
                 ]
             },

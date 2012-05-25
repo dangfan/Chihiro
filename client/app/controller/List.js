@@ -53,17 +53,16 @@ Ext.define('Chihiro.controller.List', {
     },
 
     deleteFriend: function() {
-        socket.emit('remove friend',Ext.getCmp('friendlist').getSelection()[0].raw._id);
-
-        var friendId = Ext.getCmp('friendlist').getSelection()[0].raw._id;
+        socket.emit('remove friend',Ext.getCmp('SimpleFriendList').getSelection()[0].raw._id);
+        var friendId = Ext.getCmp('SimpleFriendList').getSelection()[0].raw._id;
         var i;
         for(i=0;friendList[i]._id!=friendId;i++);
         friendList.splice(i,1);
 
-        Ext.getCmp('friendlist').setData([]);
-        var store = Ext.getCmp('friendlist').getStore();
+        Ext.getCmp('SimpleFriendList').setData([]);
+        var store = Ext.getCmp('SimpleFriendList').getStore();
         store.load();
-        Ext.getCmp('friendlist').setData(friendList);
+        Ext.getCmp('SimpleFriendList').setData(friendList);
     },
 
     onListTap: function(list, user) {
