@@ -282,6 +282,12 @@ function findClosest(callback) {
     });
 }
 
+function intersection(a, b) {
+    for (var i = 0; i != a.length; ++i)
+        for (var j = 0; j != b.length; ++j)
+            if (a[i] == b[j]) return true;
+    return false;
+}
 
 // Find nearby users by interests
 function findByInterests(callback) {
@@ -306,9 +312,8 @@ function findByInterests(callback) {
                     obj.documents[0].results.forEach(function (result) {
                         var obj = result.obj;
                         if (obj._id == uid) return;
-                        console.log(typeof(obj.interests));
-                        console.log(obj.interests);
-                        if (obj.interests.filter(function(n){return interests.indexOf(n)!=-1}).length == 0) return;
+                        if (!('interests' in obj)) return;
+                        if (!intersection(obj.interests, interests)) return;
                         obj.dis = result.dis;
                         delete obj.password;
                         delete obj.email;
