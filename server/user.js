@@ -305,7 +305,7 @@ function findByInterests(callback) {
                     geoNear:            'users',
                     near:               eval(location),
                     spherical:          true,
-                    maxDistance:        1 / 6371,       // 1km
+                    maxDistance:        10000 / 6371,       // 1km
                     distanceMultiplier: 6371000
                 }, function (err, obj) {
                     var data = new Array();
