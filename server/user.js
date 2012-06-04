@@ -313,6 +313,7 @@ function findByInterests(callback) {
                         var obj = result.obj;
                         if (obj._id == uid) return;
                         if (!('interests' in obj)) return;
+                        console.log(obj.interests, interests);
                         if (!intersection(obj.interests, interests)) return;
                         obj.dis = result.dis;
                         delete obj.password;
