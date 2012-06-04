@@ -305,7 +305,7 @@ function findByInterests(callback) {
                     geoNear:            'users',
                     near:               eval(location),
                     spherical:          true,
-                    maxDistance:        10000 / 6371,       // 1km
+                    maxDistance:        1 / 6371,       // 1km
                     distanceMultiplier: 6371000
                 }, function (err, obj) {
                     var data = new Array();
@@ -313,7 +313,6 @@ function findByInterests(callback) {
                         var obj = result.obj;
                         if (obj._id == uid) return;
                         if (!('interests' in obj)) return;
-                        console.log(obj.interests, interests);
                         if (!intersection(obj.interests, interests)) return;
                         obj.dis = result.dis;
                         delete obj.password;
