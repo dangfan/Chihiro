@@ -12,7 +12,7 @@ Ext.define('Chihiro.view.setting.Shortcut', {
                         html: '<div class="demo-weather">' +
                             '<tpl for=".">' +
                             '<div class="day">' +
-                            '<a href="#" class="colorPicker" onclick="ChooseShortcut(\'resources/icons/11.jpg\');return false;" style="background:#87CEFA;">&nbsp;</a>' +
+                            '<a href="#" class="colorPicker" onclick="ChooseShortcut(\'resources/icons/1.jpg\');return false;" style="background:#87CEFA;">&nbsp;</a>' +
                             '<div class="date" >Shortcut 1' +
                             '</div>' +
                             '<tpl for="weatherIconUrl">' +
@@ -27,7 +27,7 @@ Ext.define('Chihiro.view.setting.Shortcut', {
                         html: '<div class="demo-weather">' +
                             '<tpl for=".">' +
                             '<div class="day">' +
-                            '<a href="#" class="colorPicker" onclick="ChooseShortcut(\'resources/icons/22.jpg\');return false;" style="background:#FFFF00;">&nbsp;</a>' +
+                            '<a href="#" class="colorPicker" onclick="ChooseShortcut(\'resources/icons/2.jpg\');return false;" style="background:#FFFF00;">&nbsp;</a>' +
                             '<div class="date">Shortcut 2</div>' +
                             '<tpl for="weatherIconUrl">' +
                             '<a href="#"><img src="resources/icons/22.jpg"></a>'+
@@ -41,7 +41,7 @@ Ext.define('Chihiro.view.setting.Shortcut', {
                         html: '<div class="demo-weather">' +
                             '<tpl for=".">' +
                             '<div class="day">' +
-                            '<a href="#" class="colorPicker" onclick="ChooseShortcut(\'resources/icons/33.jpg\');return false;" style="background:#000000;">&nbsp;</a>' +
+                            '<a href="#" class="colorPicker" onclick="ChooseShortcut(\'resources/icons/3.jpg\');return false;" style="background:#000000;">&nbsp;</a>' +
                             '<div class="date">Shortcut 3</div>' +
                             '<tpl for="weatherIconUrl">' +
                             '<a href="#"><img src="resources/icons/33.jpg"></a>'+
@@ -55,7 +55,7 @@ Ext.define('Chihiro.view.setting.Shortcut', {
                         html: '<div class="demo-weather">' +
                             '<tpl for=".">' +
                             '<div class="day">' +
-                            '<a href="#" class="colorPicker" onclick="ChooseShortcut(\'resources/icons/44.jpg\');return false;" style="background:#00BFFF;">&nbsp;</a>' +
+                            '<a href="#" class="colorPicker" onclick="ChooseShortcut(\'resources/icons/4.jpg\');return false;" style="background:#00BFFF;">&nbsp;</a>' +
                             '<div class="date">Shortcut 4</div>' +
                             '<tpl for="weatherIconUrl">' +
                             '<a href="#"><img src="resources/icons/44.jpg"></a>'+
@@ -69,7 +69,7 @@ Ext.define('Chihiro.view.setting.Shortcut', {
                         html: '<div class="demo-weather">' +
                             '<tpl for=".">' +
                             '<div class="day">' +
-                            '<a href="#" class="colorPicker" onclick="ChooseShortcut(\'resources/icons/55.jpg\');return false;" style="background:#FF3030;">&nbsp;</a>' +
+                            '<a href="#" class="colorPicker" onclick="ChooseShortcut(\'resources/icons/5.jpg\');return false;" style="background:#FF3030;">&nbsp;</a>' +
                             '<div class="date">Shortcut 5</div>' +
                             '<tpl for="weatherIconUrl">' +
                             '<a href="#"><img src="resources/icons/55.jpg" ></a>'+
