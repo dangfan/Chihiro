@@ -157,7 +157,8 @@ Ext.define('Chihiro.controller.Home', {
 
 
         socket.on('friend confirmed', function(obj) {
-            addFriendAndShow(obj.uid);
+            alert("friend confirmed");
+            addFriendAndShow(obj);
         });
         socket.on('recommend activity', function(obj){
             Ext.Msg.confirm("附近有新活动：" + obj.name, '想去看看吗？', function(choice) {
@@ -227,11 +228,13 @@ function locateGeo() {
         }
     })
 };
-function addFriendAndShow(uid)
+function addFriendAndShow(obj)
 {
-    friendList.push(uid);
-    Ext.getCmp('friendlist').setData([]);
-    var store = Ext.getCmp('friendlist').getStore();
+    console.log(obj);
+    console.log( Ext.getCmp('SimpleFriendList'));
+    friendList.push(obj);
+    Ext.getCmp('SimpleFriendList').setData([]);
+    var store = Ext.getCmp('SimpleFriendList').getStore();
     store.load();
-    Ext.getCmp('friendlist').setData(friendList);
+    Ext.getCmp('SimpleFriendList').setData(friendList);
 }

@@ -86,22 +86,27 @@ Ext.define('Chihiro.controller.List', {
     },
 
     deleteFriend: function() {
-        socket.emit('remove friend',Ext.getCmp('SimpleFriendList').getSelection()[0].raw._id);
+        Ext.Msg.confirm("删除好友", '确认要删除该好友吗？', function(choice) {
+            if(choice == 'yes') {
+                socket.emit('remove friend',Ext.getCmp('SimpleFriendList').getSelection()[0].raw._id);
 
-        var friendId = Ext.getCmp('SimpleFriendList').getSelection()[0].raw._id;
-        var i;
-        for(i=0;friendList[i]._id!=friendId;i++);
-        friendList.splice(i,1);
+                var friendId = Ext.getCmp('SimpleFriendList').getSelection()[0].raw._id;
+                var i;
+                for(i=0;friendList[i]._id!=friendId;i++);
+                friendList.splice(i,1);
 
-        Ext.getCmp('SimpleFriendList').setData([]);
-        var store = Ext.getCmp('SimpleFriendList').getStore();
-        store.load();
+                Ext.getCmp('SimpleFriendList').setData([]);
+                var store = Ext.getCmp('SimpleFriendList').getStore();
+                store.load();
 
-        socket.emit('get topic list',function(obj) {
-            Ext.getCmp('SimpleFriendList').setData(obj);
+                socket.emit('get topic list',function(obj) {
+                    Ext.getCmp('SimpleFriendList').setData(obj);
+                });
+                Ext.getCmp('SimpleFriendList').setData(friendList);
+                Ext.Msg.alert('成功',"好友已删除");
+                Ext.getCmp('DetailPanel').fireEvent('hide');
+            }
         });
-        Ext.getCmp('SimpleFriendList').setData(friendList);
-
     },
 
     onListTap: function(list, user) {
