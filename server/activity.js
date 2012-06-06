@@ -60,6 +60,7 @@ function addActivity(activity, callback) {
                             var obj = result.obj;
                             if (obj._id in clients) {
                                 clients[obj._id].emit('recommend activity', activity);
+                                console.log('recommend activity to ' + obj._id);
                             }
                         });
                     });

@@ -98,7 +98,6 @@ Ext.define('Chihiro.controller.List', {
         });
         Ext.getCmp('SimpleFriendList').setData(friendList);
 
-        Ext.getCmp('SimpleFriendList').setData(friendList);
     },
 
     onListTap: function(list, user) {
