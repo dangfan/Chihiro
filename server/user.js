@@ -541,6 +541,8 @@ function emitFriendConfirmed(uid) {
         redis.smembers('friendConfirmed:' + uid, function (err, uids) {
             for (i in uids) {
                 getInfoById(uids[i], function (obj) {
+                    console.log(uids[i]);
+                    console.log(obj);
                     clients[uid].emit('friend confirmed', obj.obj);
                 });
                 redis.srem('friendConfirmed:' + uid, uids[i]);
