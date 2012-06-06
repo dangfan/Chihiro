@@ -83,6 +83,10 @@ function login(usr, callback, socket) {
         for (var i in tmp) {
             (function() {
             var uid = tmp[i];
+            if (uid == 'null') {
+                --length;
+                return;
+            }
             redis.hgetall('users:' + uid, function (err, u) {
                 if (!('_id' in u)) {
                     db.users.findOne({_id: db.ObjectId(uid)},
@@ -541,6 +545,8 @@ function emitFriendConfirmed(uid) {
         redis.smembers('friendConfirmed:' + uid, function (err, uids) {
             for (i in uids) {
                 getInfoById(uids[i], function (obj) {
+                    console.log(uids[i]);
+                    console.log(obj);
                     clients[uid].emit('friend confirmed', obj.obj);
                 });
                 redis.srem('friendConfirmed:' + uid, uids[i]);
