@@ -44,6 +44,28 @@ function addActivity(activity, callback) {
                 redis.sadd('activities_createdby:' + uid, activity._id);
                 redis.sadd('activity_participants:' + activity._id, uid);
                 redis.sadd('activities_participate:' + uid, activity._id);
+
+                // tell nearest users
+                redis.get('activity_location:' + activity._id, function (err, location) {
+                    db.executeDbCommand({
+                        geoNear:            'users',
+                        near:               eval(location),
+                        spherical:          true,
+                        maxDistance:        1000 / 6371,
+                        distanceMultiplier: 6371000
+                    }, function (err, obj) {
+                        var data = new Array();
+                        obj.documents[0].results.forEach(function (result) {
+                            var obj = result.obj;
+                            if (obj._id in clients) {
+                                clients[obj._id].emit('recommend activity', activity);
+                            }
+                        });
+                    });
+                });
+
+                // callback
+                console.log('user ' + uid + 'add a new activity');
                 callback({err: 0, msg: '添加活动成功'});
             }
         });
