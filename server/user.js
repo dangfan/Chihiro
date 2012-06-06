@@ -344,7 +344,6 @@ function findByInterests(callback) {
 function recommendByInterests(uid, interests) {
     redis.get('location:' + uid, function (err, location) {
         if (location == null) {
-            callback([]);
             return;
         }
         db.executeDbCommand({
