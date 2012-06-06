@@ -236,6 +236,10 @@ function findActivityByLocation(callback) {
     socket.get('uid', function (err, uid) {
         if (!uid) callback({});
         redis.get('location:' + uid, function (err, location) {
+            if (!location) {
+                callback([]);
+                return;
+            }
             db.executeDbCommand({
                 geoNear:            'activities',
                 near:               eval(location),
