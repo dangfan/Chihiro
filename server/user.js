@@ -83,7 +83,7 @@ function login(usr, callback, socket) {
         for (var i in tmp) {
             (function() {
             var uid = tmp[i];
-            console.log(uid);
+            if (!uid) continue;
             redis.hgetall('users:' + uid, function (err, u) {
                 if (!('_id' in u)) {
                     db.users.findOne({_id: db.ObjectId(uid)},
