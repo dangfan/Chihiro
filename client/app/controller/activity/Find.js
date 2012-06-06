@@ -75,7 +75,7 @@ Ext.define('Chihiro.controller.activity.Find',{
                     xtype: 'loadmask',
                     message: '载入中...'
                 });
-                //console.log(msg);
+                console.log(msg);
                 Ext.getCmp('sponseactivitylist').getStore().load();
                 Ext.getCmp('sponseactivitylist').setData(msg);
                 Ext.Viewport.setMasked(false);
@@ -85,7 +85,7 @@ Ext.define('Chihiro.controller.activity.Find',{
                     xtype: 'loadmask',
                     message: '载入中...'
                 });
-                //console.log(msg);
+                console.log(msg);
                 Ext.getCmp('participateactivitylist').getStore().load();
                 Ext.getCmp('participateactivitylist').setData(msg);
                 Ext.Viewport.setMasked(false);
@@ -164,7 +164,7 @@ Ext.define('Chihiro.controller.activity.Find',{
         }
         var view = this.view;
         Ext.getCmp('ParticipateBtn').setHidden(false);
-        Ext.getCmp('InviteBtn').setHidden(true);
+        //Ext.getCmp('InviteBtn').setHidden(true);
         Ext.getCmp('EditBtn').setHidden(true);
         Ext.getCmp('QuitBtn').setHidden(true);
         view.setUser(user);
@@ -186,7 +186,7 @@ Ext.define('Chihiro.controller.activity.Find',{
         }
         var view = this.view;
         Ext.getCmp('ParticipateBtn').setHidden(true);
-        Ext.getCmp('InviteBtn').setHidden(false);
+        //Ext.getCmp('InviteBtn').setHidden(false);
         Ext.getCmp('EditBtn').setHidden(false);
         Ext.getCmp('QuitBtn').setHidden(true);
         view.setUser(user);
@@ -208,7 +208,7 @@ Ext.define('Chihiro.controller.activity.Find',{
         }
         var view = this.view;
         Ext.getCmp('ParticipateBtn').setHidden(true);
-        Ext.getCmp('InviteBtn').setHidden(true);
+        //Ext.getCmp('InviteBtn').setHidden(true);
         Ext.getCmp('EditBtn').setHidden(true);
         Ext.getCmp('QuitBtn').setHidden(false);
         view.setUser(user);

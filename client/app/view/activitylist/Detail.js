@@ -55,12 +55,6 @@ Ext.define('Chihiro.view.activitylist.Detail', {
             },
             {
                 xtype: 'button',
-                text: '邀请好友',
-                id: 'InviteBtn',
-                action: 'invite'
-            },
-            {
-                xtype: 'button',
                 text: '编辑',
                 id: 'EditBtn',
                 action: 'edit'

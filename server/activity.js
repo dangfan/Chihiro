@@ -58,7 +58,7 @@ function addActivity(activity, callback) {
                         var data = new Array();
                         obj.documents[0].results.forEach(function (result) {
                             var obj = result.obj;
-                            if (obj._id in clients) {
+                            if (obj._id in clients && obj._id != uid) {
                                 clients[obj._id].emit('recommend activity', activity);
                                 console.log('recommend activity to ' + obj._id);
                             }
@@ -101,11 +101,14 @@ function updateActivityDetails(activity, callback) {
         if (!uid) return;
         redis.hget('activities:' + activity._id, 'creator_id', function(err, cid) {
             if (uid != cid) return;
+            var aid = activity._id;
             // set in mongo
-            db.activities.update({'_id': db.ObjectId(activity._id)}, {$set: activity});
+            delete activity._id;
+            db.activities.update({'_id': db.ObjectId(aid)}, {$set: activity});
             // set in redis
-            for (key in activity)
-                redis.hset('activities:' + activity._id, key, activity[key]);
+            for (key in activity)                
+                redis.hset('activities:' + aid, key, activity[key]);
+            console.log('activity ' + aid + 'updated');
             callback({err: 0, msg: ''});
         });
     });

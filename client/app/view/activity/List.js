@@ -26,6 +26,9 @@ Ext.define('Chihiro.view.activity.List', {
                         action: 'refreshList'
                     },
                     {
+                        xtype: 'spacer'
+                    },
+                    {
                         xtype: 'segmentedbutton',
                         id:'activitygroup',
                         allowDepress: false,
@@ -42,6 +45,9 @@ Ext.define('Chihiro.view.activity.List', {
                                 text: '已参加'
                             }
                         ]
+                    },
+                    {
+                        xtype: 'spacer'
                     },
                     {
                         docked: 'right',

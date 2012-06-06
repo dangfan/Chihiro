@@ -228,7 +228,7 @@ function signup(data, callback) {
         password: md5(salt + data.password),
         phone:    data.phone,
         nickname: data.nickname,
-        portrait: 'default.png'
+        portrait: 'resources/icons/default.png'
     }, {
         safe: true      // Check if insert is successful
     }, function (err, objects) {
