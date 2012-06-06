@@ -1,3 +1,4 @@
+var addFriendID;
 Ext.define('Chihiro.controller.List', {
     extend: 'Ext.app.Controller',
 
@@ -73,7 +74,9 @@ Ext.define('Chihiro.controller.List', {
     },
 
     addFriend: function() {
-        var uid = Ext.getCmp('userlist').getSelection()[0].raw._id;
+        var uid;
+        if(addFriendID != null) uid = addFriendID;
+        else uid = Ext.getCmp('userlist').getSelection()[0].raw._id;
         console.log(uid);
         console.log(friendList);
         var i;
@@ -85,6 +88,7 @@ Ext.define('Chihiro.controller.List', {
                 console.log(Ext.getCmp('userlist').getSelection()[0].raw._id);
                 alert("好友申请已经发送");
         }
+        addFriendID = null;
     },
 
     deleteFriend: function() {
@@ -107,13 +111,11 @@ Ext.define('Chihiro.controller.List', {
     },
 
     onListTap: function(list, user) {
-
         console.log(user.data);
         if(user.data.birthday){
             var birthday = user.data.birthday.split('T');
             user.data.birthday = birthday[0];
         }
-
         if(Ext.getCmp('MyCarousel'))
         {
             var carou = Ext.getCmp('MyCarousel');

@@ -112,6 +112,7 @@ function updateActivityDetails(activity, callback) {
 }
 
 function addParticipants(data, callback) {
+    console.log(data);
     var socket = this;
     socket.get('uid', function (err, uid) {
         if (!uid) {

@@ -236,16 +236,20 @@ Ext.define('Chihiro.controller.activity.Find',{
         }
     },
     participateActivity: function(){
-        var activityId = Ext.getCmp('nearactivitylist').getSelection()[0].raw._id;
+        var activityId;
+        console.log("addActivity:" + addActivityID);
+        if(addActivityID != null) activityId = addActivityID;
+        else activityId = Ext.getCmp('nearactivitylist').getSelection()[0].raw._id;
         socket.emit('participate activity', activityId, function(msg){
             if(msg.err == 0){
-                Ext.Msg.alert('参加成功！');
+                Ext.Msg.alert('恭喜','参加成功！',Ext.emptyFn);
                 //TODO: 参加活动列表
             }
             else{
-                Ext.Msg.alert('网络忙，请稍后再试');
+                Ext.Msg.alert('抱歉','网络忙，请稍后再试',Ext.emptyFn);
             }
         });
+        addActivityID = null;
     },
     editActivity: function(){
         if(!Ext.getCmp('createactivity')){

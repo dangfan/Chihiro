@@ -160,15 +160,56 @@ Ext.define('Chihiro.controller.Home', {
             addFriendAndShow(obj.uid);
         });
         socket.on('recommend activity', function(obj){
-            console.log(obj);
-            alert("Sb recommend an activity");
+            Ext.Msg.confirm("附近有新活动：" + obj.name, '想去看看吗？', function(choice) {
+                if(choice == 'yes') {
+                    addActivityID = obj._id;
+                    console.log(obj);
+                    var user = obj;
+                    user.data = user;
+                    console.log(user.data);
+                    var view;
+                    if(Ext.getCmp('activitydetail')) view = Ext.getCmp('activitydetail');
+                    else view = Ext.create('Chihiro.view.activitylist.Detail');
+                    Ext.getCmp('ParticipateBtn').setHidden(false);
+                    Ext.getCmp('InviteBtn').setHidden(true);
+                    Ext.getCmp('EditBtn').setHidden(true);
+                    Ext.getCmp('QuitBtn').setHidden(true);
+                    view.setUser(user);
+                    view.updateUser(user);
+                    if (!view.getParent()) {
+                        Ext.Viewport.add(view);
+                    }
+                    view.show();
+                }
+            });
         });
         socket.on('recommend by interests', function(id) {
             socket.emit('get info by id',id,function(msg) {
-                console.log(msg.obj);
-                alert("Sb recommend a friend");
+                Ext.Msg.confirm(msg.obj.nickname + "和你有共同兴趣！", '想去加他为好友吗？', function(choice) {
+                    if(choice == 'yes') {
+                        addFriendID = id;
+                        var user = msg.obj;
+                        user.data = user;
+                        console.log(user.data);
+                        if(user.data.birthday){
+                            var birthday = user.data.birthday.split('T');
+                            birthday = birthday[0];
+                        }
+                        var view;
+                        if(Ext.getCmp('DetailPanel')) view = Ext.getCmp('DetailPanel');
+                        else view = Ext.create('Chihiro.view.userlist.Detail');
+                        Ext.getCmp('addFriendBtn').setHidden(false);
+                        Ext.getCmp('deleteFriendBtn').setHidden(true);
+                        view.setUser(user);
+                        view.updateUser(user);
+                        if (!view.getParent()) {
+                            Ext.Viewport.add(view);
+                        }
+                        view.show();
+                    }
+                });
             });
-        })
+        });
     }
 });
 function locateGeo() {
