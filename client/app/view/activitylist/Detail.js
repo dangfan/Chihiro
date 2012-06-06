@@ -1,6 +1,6 @@
 var addActivityID;
 Ext.define('Chihiro.view.activitylist.Detail', {
-    extend: 'Ext.Panel',
+    extend: 'Ext.form.Panel',
     xtype: 'activitydetail',
     id: 'activitydetail',
 
@@ -91,7 +91,7 @@ Ext.define('Chihiro.view.activitylist.Detail', {
             map = this.down('detailMap');
         carousel.setActiveItem(0);
         basicInformation.setData(newUser.data);
-        detailInformation.setData(newUser.data);
+        //detailInformation.setData(newUser.data);
         var geocoder = new google.maps.Geocoder();
         geocoder.geocode( { 'address': newUser.data.location}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {

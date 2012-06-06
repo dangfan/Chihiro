@@ -44,12 +44,14 @@ Ext.define('Chihiro.view.message.ChattingGroupPanel', {
 
                 listeners: {
                     itemtap: function(view, index, target, record) {
+                        console.log(record.get('func'));
                         this.parent.push(Ext.create('Chihiro.view.message.other.' + record.get('func'), {
                             title: record.get('text')
                         }));
                         invitationList = [];
                         Ext.getCmp('InvitationList').setData([]);
                         var store = Ext.getCmp('InvitationList').getStore();
+                        console.log(2);
                         store.load();
                         Ext.getCmp('InvitationList').setData(friendList);
                     }

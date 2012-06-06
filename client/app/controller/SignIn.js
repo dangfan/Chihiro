@@ -86,6 +86,7 @@ function successLogin(obj){
     sid = obj._id;
     sname = obj.nickname;
     friendList = obj.friends;
+    console.log(obj);
     updateProfile();
     if(friendList){
         console.log(friendList);
@@ -116,6 +117,7 @@ function successLogin(obj){
             var store = Ext.getCmp('ChattingGroups').getStore();
             store.load();
             Ext.getCmp('ChattingGroups').setData(obj);
+            globalgrouplist = obj;
         });
     }
     Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
