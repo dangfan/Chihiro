@@ -116,11 +116,9 @@ Ext.define('Chihiro.controller.List', {
             if(Ext.getCmp('homeView').getActiveItem().title=='通讯录'){
                 Ext.getCmp('addFriendBtn').setHidden(true);
                 Ext.getCmp('deleteFriendBtn').setHidden(false);
-                Ext.getCmp('talktofriendBtn').setHidden(true);
             }else if(Ext.getCmp('homeView').getActiveItem().title=='找朋友'){
                 Ext.getCmp('addFriendBtn').setHidden(false);
                 Ext.getCmp('deleteFriendBtn').setHidden(true);
-                Ext.getCmp('talktofriendBtn').setHidden(true);
             }
 
             information = Ext.getCmp('DetailPanel').down('detailInformation');
@@ -134,11 +132,9 @@ Ext.define('Chihiro.controller.List', {
         if(Ext.getCmp('homeView').getActiveItem().title=='通讯录'){
             Ext.getCmp('addFriendBtn').setHidden(true);
             Ext.getCmp('deleteFriendBtn').setHidden(false);
-            Ext.getCmp('talktofriendBtn').setHidden(true);
         }else if(Ext.getCmp('homeView').getActiveItem().title=='找朋友'){
             Ext.getCmp('addFriendBtn').setHidden(false);
             Ext.getCmp('deleteFriendBtn').setHidden(true);
-            Ext.getCmp('talktofriendBtn').setHidden(true);
         }
 
         var view = this.view;
@@ -270,7 +266,6 @@ Ext.define('Chihiro.controller.List', {
                 carou.setActiveItem(0);
                 Ext.getCmp('addFriendBtn').setHidden(true);
                 Ext.getCmp('deleteFriendBtn').setHidden(false);
-                Ext.getCmp('talktofriendBtn').setHidden(true);
 
                 information = Ext.getCmp('DetailPanel').down('detailInformation');
                 information.setData(user.data);
@@ -283,7 +278,6 @@ Ext.define('Chihiro.controller.List', {
 
             Ext.getCmp('addFriendBtn').setHidden(true);
             Ext.getCmp('deleteFriendBtn').setHidden(false);
-            Ext.getCmp('talktofriendBtn').setHidden(true);
 
             var view = this.view;
             view.setUser(user);

@@ -43,38 +43,6 @@ Ext.define('Chihiro.view.setting.Privacy', {
                             value:2
                         }
                         ]
-                    },
-                    {
-                        xtype: 'selectfield',
-                        label: '手机号码可见性',
-                        name: 'locationVisibility',
-                        options: [{
-                            text: '对所有人可见',
-                            value: 0
-                        }, {
-                            text: '仅对好友可见',
-                            value: 1
-                        },{
-                            text:'对所有人都不可见',
-                            value:2
-                        }
-                        ]
-                    },
-                    {
-                        xtype: 'selectfield',
-                        label: '邮箱地址可见性',
-                        name: 'locationVisibility',
-                        options: [{
-                            text: '对所有人可见',
-                            value: 0
-                        }, {
-                            text: '仅对好友可见',
-                            value: 1
-                        },{
-                            text:'对所有人都不可见',
-                            value:2
-                        }
-                        ]
                     }
                 ]
             },

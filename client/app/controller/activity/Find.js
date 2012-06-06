@@ -19,9 +19,6 @@ Ext.define('Chihiro.controller.activity.Find',{
             homeView: {
                 activeitemchange: 'showNearActivity'
             },
-            'button[action=refreshList]':{
-                tap: 'refreshActivity'
-            },
             'button[action=createActivity]':{
                 tap: 'createActivity'
             },
@@ -237,6 +234,7 @@ Ext.define('Chihiro.controller.activity.Find',{
         socket.emit('participate activity', activityId, function(msg){
             if(msg.err == 0){
                 Ext.Msg.alert('参加成功！');
+                //TODO: 参加活动列表
             }
             else{
                 Ext.Msg.alert('网络忙，请稍后再试');
@@ -273,6 +271,7 @@ Ext.define('Chihiro.controller.activity.Find',{
         socket.emit('unparticipate activity',activityId,function(msg){
             if(msg.err == 0){
                 Ext.Msg.alert('退出成功');
+                //TODO:已参加列表的修改
             }
             else{
                 Ext.Msg.alert('网络忙，请稍后再试');

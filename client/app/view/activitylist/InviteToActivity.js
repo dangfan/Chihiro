@@ -1,9 +1,8 @@
-Ext.define('Chihiro.view.activitylist.DetailInformation', {
-    extend:  'Ext.navigation.View',
-    xtype: 'detailinformation',
-
+Ext.define('Chihiro.view.activitylist.InviteToActivity', {
+    extend: 'Ext.Panel',
+    xtype:'invitecandidatelist'})
+/*
     config: {
-        title: '邀请好友加入活动',
         items: [{
             width: 400,
             height: 400,
@@ -47,5 +46,4 @@ Ext.define('Chihiro.view.activitylist.DetailInformation', {
             }
         ]
     }
-
-});
+});*/

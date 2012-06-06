@@ -9,6 +9,7 @@ Ext.define('Chihiro.view.activitylist.Detail', {
     ],
 
     config: {
+        scrollable: false,
         baseCls: Ext.baseCSSPrefix + 'sheet',
         modal: true,
         centered : false,

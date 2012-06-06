@@ -157,6 +157,16 @@ Ext.define('Chihiro.controller.Home', {
         socket.on('friend confirmed', function(obj) {
             addFriendAndShow(obj.uid);
         });
+        socket.on('recommend activity', function(obj){
+            console.log(obj);
+            alert("Sb recommend an activity");
+        });
+        socket.on('recommend by interests', function(id) {
+            socket.emit('get info by id',id,function(msg) {
+                console.log(msg.obj);
+                alert("Sb recommend a friend");
+            });
+        })
     }
 });
 function locateGeo() {
