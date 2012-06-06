@@ -45,7 +45,7 @@ Ext.define('Chihiro.view.message.ChattingGroupData', {
             {
                 xtype: 'button',
                 text: '退出该群',
-                id: 'quitGroup'
+                action: 'QuitGroup'
             }
         ]
     },

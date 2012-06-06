@@ -42,6 +42,7 @@ Ext.define('Chihiro.view.userlist.GroupDetail', {
             {
                 xtype: 'button',
                 text: '退出该群',
+                action: 'QuitGroup',
                 id:'quitGroupBtn'
             }
         ]

@@ -35,7 +35,6 @@ Ext.define('Chihiro.view.message.other.Nickname', {
                         text: '保存修改',
                         ui: 'confirm',
                         width: '40%'
-                        //action: 'optionalConfirm'
                     },
                     {
                         xtype: 'spacer'

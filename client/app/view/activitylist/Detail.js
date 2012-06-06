@@ -94,7 +94,15 @@ Ext.define('Chihiro.view.activitylist.Detail', {
         geocoder.geocode( { 'address': newUser.data.location}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 map.setMapCenter(results[0].geometry.location);
+                console.log(results[0].geometry.location);
                 map.setMapOptions({zoom: newUser.data.zoom});
+                var mapMarker = new google.maps.Marker({
+                    id: 'geoLocMarker',
+                    position: results[0].geometry.location,
+                    map: Ext.getCmp('detailMapDisplay').getMap(),
+                    visible: true
+                });
+                //Ext.getCmp('maplocate').down('detailMap');
             } else {
                 alert("Geocode was not successful for the following reason: " + status);
             }

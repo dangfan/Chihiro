@@ -11,17 +11,32 @@ Ext.define('Chihiro.view.activitylist.ListItem', {
             },
             getDis: {
                 setHtml: 'dis'
+            },
+            getType: {
+                setSrc: 'type',
+                layout:{
+                    type: 'card'
+                }
+            },
+            getLocation: {
+                setHtml: 'location'
             }
         },
 
         cls: Ext.baseCSSPrefix + 'list-item',
-
         name: {
             cls: 'name'
         },
 
+        type: {
+            docked: 'left'
+        },
         dis: {
             docked: 'right'
+        },
+
+        location: {
+            cls: 'use'
         },
 
         layout: {
@@ -45,6 +60,22 @@ Ext.define('Chihiro.view.activitylist.ListItem', {
     updateDis:function(newDis){
         if(newDis){
             this.add(newDis);
+        }
+    },
+    applyType: function(config){
+        return Ext.factory(config, Ext.Img, this.getType());
+    },
+    updateType: function(newType){
+        if(newType){
+            this.add(newType);
+        }
+    },
+    applyLocation: function(config){
+        return Ext.factory(config, Ext.Component, this.getLocation());
+    },
+    updateLocation: function(newLocation){
+        if(newLocation){
+            this.add(newLocation);
         }
     }
 });

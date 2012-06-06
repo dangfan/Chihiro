@@ -68,7 +68,7 @@ Ext.define('Chihiro.controller.SignIn', {
 });
 function successLogin(obj){
     profile = obj;
-    var imagesrc = (profile.portrait) ? profile.portrait : '/portraits/default.png';
+    var imagesrc = (profile.portrait) ? profile.portrait : 'resources/icons/徐涵.png';
     //var imagesrc = urlprefix + '/portraits/default.png';
     profile.portrait = imagesrc;
     if(profile.birthday && profile.birthday != 'null') profile.birthday = new Date(profile.birthday);
@@ -90,8 +90,25 @@ function successLogin(obj){
         console.log(friendList);
         for(var i = 0; i < friendList.length;i++)
         {
-            friendList[i].lastmsg = '呵呵';
-            friendList[i].lasttime ='很久以前';
+            if(friendList[i].nickname === '徐涵')
+                friendList[i].portrait = 'resources/icons/徐涵.png';
+            if(friendList[i].nickname === '丁鹏')
+                friendList[i].portrait = 'resources/icons/丁鹏.png';
+            if(friendList[i].nickname === '党凡')
+                friendList[i].portrait = 'resources/icons/党凡.png';
+            if(friendList[i].nickname === '钱堃')
+                friendList[i].portrait = 'resources/icons/钱堃.png';
+            if(friendList[i].nickname === '蔡梦琳')
+                friendList[i].portrait = 'resources/icons/蔡梦琳.png';
+            if(friendList[i].lastmsg){
+                var msg = friendList[i].lastmsg.split('|');
+                friendList[i].lastmsg = msg[2];
+                friendList[i].lasttime =msg[1];
+            }
+            else{
+                friendList[i].lastmsg = '快开始你们的第一次聊天吧～';
+                friendList[i].lasttime ='Never';
+            }
         }
         Ext.getCmp('ChattingFriends').setData(friendList);
 
@@ -99,9 +116,9 @@ function successLogin(obj){
             var grouplist = obj;
             for(var i = 0; i < grouplist.length;i++)
             {
-                grouplist[i].lastmsg = '求基友！';
-                grouplist[i].lasttime ='刚刚';
-                grouplist[i].portrait = 'http://hdn.xnimg.cn/photos/hdn221/20120331/0950/tiny_twM9_56111n019117.jpg';
+                grouplist[i].lastmsg = '';
+                grouplist[i].lasttime ='';
+                grouplist[i].portrait = 'resources/icons/group.jpg';
             }
 
             Ext.getCmp('ChattingGroups').setData([]);

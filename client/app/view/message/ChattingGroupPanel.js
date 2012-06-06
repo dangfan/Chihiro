@@ -33,6 +33,7 @@ Ext.define('Chihiro.view.message.ChattingGroupPanel', {
                     data: [
                         { text: '修改群公告', sort:' ',func: 'GroupInfoModify'},
                         { text: '邀请好友', sort: '   ',func: 'InviteToGroup' }
+
                     ]
                 },
                 itemTpl: '<div class="contact"><strong>{text}</strong></div>',
@@ -46,6 +47,11 @@ Ext.define('Chihiro.view.message.ChattingGroupPanel', {
                         this.parent.push(Ext.create('Chihiro.view.message.other.' + record.get('func'), {
                             title: record.get('text')
                         }));
+                        invitationList = [];
+                        Ext.getCmp('InvitationList').setData([]);
+                        var store = Ext.getCmp('InvitationList').getStore();
+                        store.load();
+                        Ext.getCmp('InvitationList').setData(friendList);
                     }
                 }
             }

@@ -24,14 +24,6 @@ Ext.define('Chihiro.controller.contact.Contact',{
                 Ext.getCmp('SimpleFriendList').setData(obj);
             });
 
-//            var mycontact = [];
-//
-//            if(friendList){
-//                for(i=0; i < friendList.length;i++){
-//                    mycontact.push(friendList[i]);
-//                }
-//            }
-
             Ext.getCmp('SimpleFriendList').setData(friendList);
 
         }

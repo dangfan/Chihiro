@@ -3,7 +3,7 @@ Ext.define('Chihiro.view.activity.Create',{
     xtype: 'createform',
 
     config: {
-        autoDestroy: false,
+        //autoDestroy: false,
         fullscreen: true,
         scrollable: true,
         defaultBackButtonText: '返回',

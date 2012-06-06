@@ -5,7 +5,7 @@ Ext.define('Chihiro.view.message.other.InviteToGroup', {
     config: {
         items: [{
             width: 400,
-            height: 500,
+            height: 400,
             xtype: 'list',
             allowDeselect:false,
             mode:'MULTI',
@@ -19,11 +19,31 @@ Ext.define('Chihiro.view.message.other.InviteToGroup', {
                 proxy: {
                     type: 'localstorage'
                 }
-                //TODO: still have hard code in group
             },
             itemTpl: '<div class="contact"><strong>{nickname}</strong> </div>',
             grouped: true
-        }
+        },
+            {
+                xtype: 'panel',
+                layout: 'hbox',
+                defaults: {
+                    xtype: 'button'
+                },
+                items: [
+                    {
+                        xtype: 'spacer'
+                    },
+                    {
+                        text: '发送邀请',
+                        ui: 'confirm',
+                        width: '40%',
+                        action: 'InviteOneFriendToGroups'
+                    },
+                    {
+                        xtype: 'spacer'
+                    }
+                ]
+            }
         ]
     }
 });

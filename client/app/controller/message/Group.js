@@ -158,6 +158,10 @@ Ext.define('Chihiro.controller.message.Group',{
         a.hide();
 
         view.show();
+
+        if(Ext.getCmp('ChattingGroups')){
+            Ext.getCmp('ChattingGroups').deselectAll();
+        }
     },
 
     inviteFriends:function(){

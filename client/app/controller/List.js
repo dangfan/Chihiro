@@ -11,7 +11,9 @@ Ext.define('Chihiro.controller.List', {
             addFriendBtn: '#addFriendBtn',
             deleteFriendBtn: '#deleteFriendBtn',
             simpleFriendlist:'#SimpleFriendList2',
-            MyList:'#SimpleFriendList'
+            MyList:'#SimpleFriendList',
+            invitaionList:"#InvitationList",
+            simplegrouplist:"#SimpleGroupList"
         },
 
         control: {
@@ -37,6 +39,25 @@ Ext.define('Chihiro.controller.List', {
             },
             'MyList':{
                 select:'onMyListTap'
+            },
+            'invitaionList':{
+                select:'selectSomebodyToInvite',
+                deselect:'remainCssToInvite',
+                itemdoubletap:'doubleTap'
+            },
+            'simplegrouplist':{
+                select:'selectSomegroupToInvite',
+                deselect:'remainCssToGroup',
+                itemdoubletap:'doubleTap'
+            },
+            'button[action=InviteFriendsToOneGroup]': {
+                tap: 'InviteFriendsToOneGroup'
+            },
+            'button[action=InviteOneFriendToGroups]': {
+                tap: 'InviteOneFriendToGroups'
+            },
+            'button[action=QuitGroup]': {
+                tap: 'QuitGroup'
             }
         }
     },
@@ -47,8 +68,12 @@ Ext.define('Chihiro.controller.List', {
 
     addFriend: function() {
         var uid = Ext.getCmp('userlist').getSelection()[0].raw._id;
-        for(var i = 0; i < friendList.length || friendList[i].id != uid;i++);
-        if(i == friendList.length) alert("该用户已经是您的好友了！");
+        console.log(uid);
+        console.log(friendList);
+        var i;
+        for(i = 0; i < friendList.length && friendList[i]._id != uid;i++);
+
+        if(i < friendList.length) alert("该用户已经是您的好友了！");
         else {
                 socket.emit('send friend request',uid);
                 console.log(Ext.getCmp('userlist').getSelection()[0].raw._id);
@@ -57,20 +82,32 @@ Ext.define('Chihiro.controller.List', {
     },
 
     deleteFriend: function() {
-        socket.emit('remove friend',Ext.getCmp('friendlist').getSelection()[0].raw._id);
+        socket.emit('remove friend',Ext.getCmp('SimpleFriendList').getSelection()[0].raw._id);
 
-        var friendId = Ext.getCmp('friendlist').getSelection()[0].raw._id;
+        var friendId = Ext.getCmp('SimpleFriendList').getSelection()[0].raw._id;
         var i;
         for(i=0;friendList[i]._id!=friendId;i++);
         friendList.splice(i,1);
 
-        Ext.getCmp('friendlist').setData([]);
-        var store = Ext.getCmp('friendlist').getStore();
+        Ext.getCmp('SimpleFriendList').setData([]);
+        var store = Ext.getCmp('SimpleFriendList').getStore();
         store.load();
-        Ext.getCmp('friendlist').setData(friendList);
+
+        socket.emit('get topic list',function(obj) {
+            Ext.getCmp('SimpleFriendList').setData(obj);
+        });
+        Ext.getCmp('SimpleFriendList').setData(friendList);
+
+        Ext.getCmp('SimpleFriendList').setData(friendList);
     },
 
     onListTap: function(list, user) {
+
+        console.log(user.data);
+        if(user.data.birthday){
+            var birthday = user.data.birthday.split('T');
+            user.data.birthday = birthday[0];
+        }
 
         if(Ext.getCmp('MyCarousel'))
         {
@@ -88,7 +125,6 @@ Ext.define('Chihiro.controller.List', {
 
             information = Ext.getCmp('DetailPanel').down('detailInformation');
             information.setData(user.data);
-
             Ext.getCmp('DetailPanel').show();
             return;
         }
@@ -139,8 +175,16 @@ Ext.define('Chihiro.controller.List', {
     },
 
     selectSomebody:function(a,record){
-//        console.log(invitationList);
+        console.log(invitationList);
         invitationList.push(record.data._id);
+    },
+
+    selectSomebodyToInvite:function(a,record){
+        invitationList.push(record.raw._id);
+    },
+
+    selectSomegroupToInvite:function(a,record){
+        invitationList.push(record.raw.id);
     },
 
     remainCss: function(me, record) {
@@ -148,9 +192,37 @@ Ext.define('Chihiro.controller.List', {
 
         for(var i = 0; i < ln; i++)
         {
-            if(invitationList[i] === record.data)
+            if(invitationList[i] === record.data._id)
             {
-                invitationList.pop(record.data);
+                invitationList.pop(record.data._id);
+                console.log(invitationList);
+                return;
+            }
+        }
+    },
+
+    remainCssToInvite: function(me, record) {
+        var ln = invitationList.length;
+
+        for(var i = 0; i < ln; i++)
+        {
+            if(invitationList[i] === record.raw._id)
+            {
+                invitationList.pop(record.raw._id);
+                console.log(invitationList);
+                return;
+            }
+        }
+    },
+
+    remainCssToGroup: function(me, record) {
+        var ln = invitationList.length;
+
+        for(var i = 0; i < ln; i++)
+        {
+            if(invitationList[i] === record.raw.id)
+            {
+                invitationList.pop(record.raw.id);
                 console.log(invitationList);
                 return;
             }
@@ -179,6 +251,19 @@ Ext.define('Chihiro.controller.List', {
 
         if(flag === 'friend')
         {
+            if(user.data.birthday){
+                var birthday = user.data.birthday.split('T');
+                user.data.birthday = birthday[0];
+            }
+            if(user.data.interests){
+                var interestString = user.data.interests;
+                console.log(interestString);
+                interestString = interestString.replace(/"([^"]*)"/g, "$1");
+                if(interestString.indexOf("[") >= 0)
+                    interestString = interestString.slice(1,interestString.length-1);
+                user.data.interests = interestString;
+            }
+
             if(Ext.getCmp('MyCarousel'))
             {
                 var carou = Ext.getCmp('MyCarousel');
@@ -253,5 +338,61 @@ Ext.define('Chihiro.controller.List', {
             view.show();
             Ext.getCmp('GroupDetailPanel').show();
         }
+    },
+
+    InviteFriendsToOneGroup:function(){
+        var groupId = Ext.getCmp('SimpleFriendList').getSelection()[0].raw.id
+        console.log(groupId);
+        socket.emit('add members',{id:groupId,members:invitationList});
+        Ext.getCmp('SimpleFriendList').setData([]);
+        var store = Ext.getCmp('SimpleFriendList').getStore();
+        store.load();
+
+        var grouplist;
+        socket.emit('get topic list',function(obj) {
+            Ext.getCmp('SimpleFriendList').setData(obj);
+        });
+        Ext.getCmp('SimpleFriendList').setData(friendList);
+
+        if(invitationList.length > 0)
+            alert("群组已加入新成员");
+    },
+
+    InviteOneFriendToGroups:function(){
+        var uid = Ext.getCmp('SimpleFriendList').getSelection()[0].raw._id
+        console.log(uid);
+        console.log(invitationList);
+        for(var i = 0; i < invitationList.length; i++){
+            socket.emit('add members',{id:invitationList[i],members:[uid]});
+        }
+
+        Ext.getCmp('SimpleFriendList').setData([]);
+        var store = Ext.getCmp('SimpleFriendList').getStore();
+        store.load();
+        var grouplist;
+        socket.emit('get topic list',function(obj) {
+            Ext.getCmp('SimpleFriendList').setData(obj);
+        });
+        Ext.getCmp('SimpleFriendList').setData(friendList);
+
+        if(invitationList.length > 0)
+            alert("已邀请该好友加入群组");
+    },
+
+    QuitGroup:function(){
+
+        var groupId = Ext.getCmp('SimpleFriendList').getSelection()[0].raw.id
+        console.log(groupId);
+        socket.emit('quit topic',groupId);
+
+        Ext.getCmp('SimpleFriendList').setData([]);
+        var store = Ext.getCmp('SimpleFriendList').getStore();
+        store.load();
+        socket.emit('get topic list',function(obj) {
+            Ext.getCmp('SimpleFriendList').setData(obj);
+            console.log(obj);
+        });
+        Ext.getCmp('SimpleFriendList').setData(friendList);
+        alert("已退出该群！");
     }
 });

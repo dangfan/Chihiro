@@ -4,7 +4,7 @@ Ext.define('Chihiro.view.message.other.Canvas', {
     id:'chattingCanvas',
 
     config: {
-        html: '<canvas id="RoCanvas" width="410" height="500" style="border:1pt solid black;margin:auto;cursor:crosshair;clear:both;">您的浏览器不支持canvas!</canvas>' +
+        html: '<canvas id="RoCanvas" width="410" height="550" style="border:1pt solid black;margin:auto;cursor:crosshair;clear:both;">您的浏览器不支持canvas!</canvas>' +
             '<div style="clear:both;">&nbsp;</div> ' +
             '<div style="float:left;">Colors:</div> ' +
             '<a href="#" class="colorPicker" onclick="setColor(\'#FFF\');return false;" style="background:#FFF;">&nbsp;</a>' +

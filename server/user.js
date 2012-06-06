@@ -28,7 +28,8 @@ exports.init = function(_db, _redis, _clients) {
         sendFriendRequest:  sendFriendRequest,
         addFriend:          addFriend,
         removeFriend:       removeFriend,
-        updatePortrait:     updatePortrait
+        updatePortrait:     updatePortrait,
+        hideInNearest:      hideInNearest
     };
 }
 
@@ -261,6 +262,9 @@ function findClosest(callback) {
                 var data = new Array();
                 obj.documents[0].results.forEach(function (result) {
                     if (result.obj._id == uid) return;
+                    if ('privacy' in result.obj
+                        && result.obj.privacy == '1')
+                        return;
                     var obj = result.obj;
                     obj.dis = result.dis.toFixed(0)+'m';
                     delete obj.password;
@@ -278,6 +282,12 @@ function findClosest(callback) {
     });
 }
 
+function intersection(a, b) {
+    for (var i = 0; i != a.length; ++i)
+        for (var j = 0; j != b.length; ++j)
+            if (a[i] == b[j]) return true;
+    return false;
+}
 
 // Find nearby users by interests
 function findByInterests(callback) {
@@ -290,7 +300,7 @@ function findByInterests(callback) {
                     callback([]);
                     return;
                 }
-                var interests = eval(usr.interests);
+                var interests = JSON.parse(usr.interests);
                 db.executeDbCommand({
                     geoNear:            'users',
                     near:               eval(location),
@@ -302,7 +312,8 @@ function findByInterests(callback) {
                     obj.documents[0].results.forEach(function (result) {
                         var obj = result.obj;
                         if (obj._id == uid) return;
-                        if (obj.interests.filter(function(n){return interests.indexOf(n)!=-1}).length == 0) return;
+                        if (!('interests' in obj)) return;
+                        if (!intersection(obj.interests, interests)) return;
                         obj.dis = result.dis;
                         delete obj.password;
                         delete obj.email;
@@ -519,5 +530,13 @@ function findByPhones(phones, callback) {
                 }
             });
         }
+    });
+}
+
+function hideInNearest(val) {
+    var socket = this;
+    socket.get('uid', function (err, uid) {
+        if (!uid) return;
+        db.users.update({'_id': db.ObjectId(uid)}, {$set: {privacy: val}});
     });
 }
