@@ -34,8 +34,7 @@ Ext.define('Chihiro.view.setting.Main', {
                         { text: '我的帐户', sort:' ',func: 'Account'},
                         { text: '上传头像', sort:' ',func: 'Shortcut'},
                         //{ text: '推送', sort:'  ',func: 'Push' },
-                        { text: '隐私', sort:'  ',func: 'Privacy' },
-                        { text: '关于千寻', sort: '   ',func: 'About' }
+                        { text: '隐私', sort:'  ',func: 'Privacy' }
                     ]
                 },
                 itemTpl: '<div class="contact"><strong>{text}</strong></div>',

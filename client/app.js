@@ -25,6 +25,7 @@ Ext.application({
         'contact.List',
         'activity.List', 'activity.BasicActivityInfo','activity.Create','activity.DetailActivityInfo','activity.MapLocate',
         'activitylist.BasicInformation','activitylist.Detail','activitylist.DetailInformation','activitylist.List','activitylist.ListItem','activitylist.Map',
+        'activitylist.InviteToActivity',
         'find.Main', 'find.Email', 'find.Phone', 'find.Contact', 'find.Nearby',
         'setting.Main',
         'userlist.List', 'userlist.MyList','userlist.Detail','userlist.GroupDetail', 'userlist.ListItem','userlist.SimpleFriendList',

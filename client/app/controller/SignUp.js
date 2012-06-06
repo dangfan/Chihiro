@@ -47,8 +47,6 @@ Ext.define('Chihiro.controller.SignUp',{
         } else {
             delete val.confirmPW;
             socket.emit('signup', val, function(msg) {
-                //console.log('hello');
-                console.log(msg);
                 if (!msg.err) {
                     window.localStorage.setItem('sid', msg.msg);
                     Ext.Viewport.setActiveItem(Ext.getCmp('signupView'));
@@ -68,6 +66,7 @@ Ext.define('Chihiro.controller.SignUp',{
     },
 
     toHome: function() {
+        locateGeo();
         Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
     },
 

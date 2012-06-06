@@ -42,6 +42,7 @@ Ext.define('Chihiro.view.setting.Privacy', {
                             value: 1
                         }
                         ]
+<<<<<<< HEAD
                     },
                     {
                         xtype: 'selectfield',
@@ -68,6 +69,8 @@ Ext.define('Chihiro.view.setting.Privacy', {
                             value: 1
                         }
                         ]
+=======
+>>>>>>> 9e1cb5805ba8a6e71e5c60a2a744658c87dbed09
                     }
                 ]
             },

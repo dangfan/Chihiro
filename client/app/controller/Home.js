@@ -62,6 +62,14 @@ Ext.define('Chihiro.controller.Home', {
         socket.on('messages', function(msg) {
             var chattinglists = Ext.getCmp('ChattingFriends');
             var myChattingFriend = chattinglists.getData();
+            for(var i = 0; i < friendList.length;i++)
+            {
+                if(friendList[i]._id === msg.from) {
+                    friendList[i].lastmsg = msg.message;
+                    friendList[i].lasttime = msg.time;
+                }
+            }
+
             if(msg.from === chattingID){
                 var ChattingRecord = Ext.getCmp('ChattingContent').getData();
                 ChattingRecord.push(
@@ -90,13 +98,6 @@ Ext.define('Chihiro.controller.Home', {
                 if(!friendList)
                     return;
                 console.log(friendList);
-                for(var i = 0; i < friendList.length;i++)
-                {
-                    if(friendList[i]._id === msg.from) {
-                        friendList[i].lastmsg = msg.message;
-                        friendList[i].lasttime = msg.time;
-                    }
-                }
 
                 Ext.getCmp('ChattingFriends').setData([]);
                 var store = Ext.getCmp('ChattingFriends').getStore();
@@ -111,6 +112,14 @@ Ext.define('Chihiro.controller.Home', {
 
             if(msg.uid === sid)
                 return;
+
+            for(var i = 0; i < myChattingGroup.length;i++)
+            {
+                if(myChattingGroup[i].id === msg.tid) {
+                    myChattingGroup[i].lastmsg = msg.msg;
+                    myChattingGroup[i].lasttime = msg.time;
+                }
+            }
 
             if(msg.tid === chattingID){
                 var ChattingRecord = Ext.getCmp('GroupChattingContent').getData();
@@ -138,13 +147,6 @@ Ext.define('Chihiro.controller.Home', {
                 if(Ext.getCmp('homeView').getActiveItem().title != '聊天') Ext.getCmp('messagetab').tab.setBadgeText(++unreadMsg);
                 if(!myChattingGroup)
                     return;
-                for(var i = 0; i < myChattingGroup.length;i++)
-                {
-                    if(myChattingGroup[i].id === msg.tid) {
-                        myChattingGroup[i].lastmsg = msg.msg;
-                        myChattingGroup[i].lasttime = msg.time;
-                    }
-                }
 
                 Ext.getCmp('ChattingGroups').setData([]);
                 var store = Ext.getCmp('ChattingGroups').getStore();
@@ -157,6 +159,16 @@ Ext.define('Chihiro.controller.Home', {
         socket.on('friend confirmed', function(obj) {
             addFriendAndShow(obj.uid);
         });
+        socket.on('recommend activity', function(obj){
+            console.log(obj);
+            alert("Sb recommend an activity");
+        });
+        socket.on('recommend by interests', function(id) {
+            socket.emit('get info by id',id,function(msg) {
+                console.log(msg.obj);
+                alert("Sb recommend a friend");
+            });
+        })
     }
 });
 function locateGeo() {

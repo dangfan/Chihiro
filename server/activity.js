@@ -60,6 +60,7 @@ function addActivity(activity, callback) {
                             var obj = result.obj;
                             if (obj._id in clients) {
                                 clients[obj._id].emit('recommend activity', activity);
+                                console.log('recommend activity to ' + obj._id);
                             }
                         });
                     });
@@ -236,6 +237,10 @@ function findActivityByLocation(callback) {
     socket.get('uid', function (err, uid) {
         if (!uid) callback({});
         redis.get('location:' + uid, function (err, location) {
+            if (!location) {
+                callback([]);
+                return;
+            }
             db.executeDbCommand({
                 geoNear:            'activities',
                 near:               eval(location),

@@ -22,7 +22,8 @@ Ext.define('Chihiro.view.activitylist.BasicInformation', {
             '<strong>费用:</strong> {cost}<br />',
             '<strong>类型:</strong>{typeText}<br />',
             '<p >',
-            '<strong>发起人:</strong>{sponsor}<br />'
+            '<strong>发起人:</strong>{sponsor}<br />',
+            '<strong>详细介绍:</strong> {detail}<br />'
         )
     }
 });

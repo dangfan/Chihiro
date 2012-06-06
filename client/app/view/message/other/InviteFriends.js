@@ -1,16 +1,15 @@
-Ext.define('Chihiro.view.activitylist.DetailInformation', {
-    extend:  'Ext.navigation.View',
-    xtype: 'detailinformation',
+Ext.define('Chihiro.view.message.other.InviteFriends', {
+    extend: 'Ext.Panel',
+    xtype:'invitationlist',
 
     config: {
-        title: '邀请好友加入活动',
         items: [{
             width: 400,
             height: 400,
             xtype: 'list',
             allowDeselect:false,
             mode:'MULTI',
-            id: 'InviteCandidateList',
+            id: 'InvitationList',
             store:{
                 fields: ['nickname','id'],
                 sorters: 'nickname',
@@ -35,10 +34,10 @@ Ext.define('Chihiro.view.activitylist.DetailInformation', {
                         xtype: 'spacer'
                     },
                     {
-                        text: '发送邀请',
+                        text: '邀请好友',
                         ui: 'confirm',
                         width: '40%',
-                        action: 'InviteOneFriendToGroups'
+                        action: 'InviteFriendsToOneGroup'
                     },
                     {
                         xtype: 'spacer'
@@ -47,5 +46,4 @@ Ext.define('Chihiro.view.activitylist.DetailInformation', {
             }
         ]
     }
-
 });
