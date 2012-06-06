@@ -252,6 +252,10 @@ function findClosest(callback) {
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.get('location:' + uid, function (err, location) {
+            if (location == null) {
+                callback([]);
+                return;
+            }
             db.executeDbCommand({
                 geoNear:            'users',
                 near:               eval(location),
@@ -260,12 +264,6 @@ function findClosest(callback) {
                 distanceMultiplier: 6371000
             }, function (err, obj) {
                 var data = new Array();
-                if (!('results' in obj.documents[0])) {
-                    console.log(location);
-                    console.log(obj);
-                    callback([]);
-                    return;
-                }
                 obj.documents[0].results.forEach(function (result) {
                     if (result.obj._id == uid) return;
                     if ('privacy' in result.obj
