@@ -8,15 +8,15 @@ Ext.define('Chihiro.controller.activity.Invite',{
         },
         control:
         {
-            'button[action=invite]':{
+            /*'button[action=invite]':{
                 tap: 'inviteFriends'
-            },
+            },*/
             'button[action=InviteFriendsToActivity]':{
                 tap: 'inviteFriendsToActivity'
             }
         }
     },
-    inviteFriends:function(){
+    /*inviteFriends:function(){
         var activityId = Ext.getCmp('sponseactivitylist').getSelection()[0].raw._id;
         Ext.getCmp('activitydetail').hide();
 
@@ -25,7 +25,6 @@ Ext.define('Chihiro.controller.activity.Invite',{
                 id: 'SimpleFriendListPanel'
             });
         }
-        invitationListForActivity = [];
         Ext.getCmp('SimpleFriendList2').setData([]);
         var store = Ext.getCmp('SimpleFriendList2').getStore();
         store.load();
@@ -38,7 +37,7 @@ Ext.define('Chihiro.controller.activity.Invite',{
             console.log('活动邀请好友');
             Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
         }
-    },
+    },*/
     inviteFriendsToActivity: function(){
         var aid;
         if(Ext.getCmp('activitypanel').getActiveIndex() === 0)
@@ -51,16 +50,18 @@ Ext.define('Chihiro.controller.activity.Invite',{
         console.log(invitationListForActivity);
         var ids = [];
         for(var i = 0; i < invitationListForActivity.length; i++){
-            ids.push[invitationListForActivity[i]];
+            ids.push(invitationListForActivity[i]);
         }
         var obj = {};
+        obj.aid = aid;
+        obj.ids = ids;
         console.log(ids);
-        /*socket.emit('add participants',obj,function(msg){
+        socket.emit('add participants',obj,function(msg){
             console.log(msg);
-            if(msg == '1')
+            if(msg.err == '0')
                 Ext.Msg.alert('好友邀请成功');
             else
                 Ext.Msg.alert('好友邀请失败');
-        });*/
+        });
     }
 });
