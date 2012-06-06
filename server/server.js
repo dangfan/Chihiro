@@ -63,6 +63,7 @@ function listen(port) {
         socket.on('find activity by creator', activity.findActivityByCreator);
         socket.on('find activity by participant', activity.findActivityByParticipant);
         socket.on('find closest activities', activity.findActivityByLocation);
+        socket.on('add participants', activity.addParticipants);
     });
 }
 

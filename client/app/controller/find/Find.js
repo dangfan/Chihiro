@@ -67,6 +67,7 @@ Ext.define('Chihiro.controller.find.Find', {
             });
             var fields = ["phoneNumbers"];
             navigator.contacts.find(fields, function (contacts) {
+                console.log(contacts);
                 var numbers = new Array();
                 for(i in t) {
                     if(t[i].phoneNumbers.length == 0) continue;

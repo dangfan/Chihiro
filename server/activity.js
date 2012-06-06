@@ -18,7 +18,8 @@ exports.init = function(_db, _redis, _clients, _socket) {
         getActivityById:            getActivityById,
         findActivityByCreator:      findActivityByCreator,
         findActivityByParticipant:  findActivityByParticipant,
-        findActivityByLocation:     findActivityByLocation
+        findActivityByLocation:     findActivityByLocation,
+        addParticipants:            addParticipants
     };
 }
 
@@ -84,6 +85,25 @@ function updateActivityDetails(activity, callback) {
                 redis.hset('activities:' + activity._id, key, activity[key]);
             callback({err: 0, msg: ''});
         });
+    });
+}
+
+function addParticipants(data, callback) {
+    var socket = this;
+    socket.get('uid', functioni (err, uid) {
+        if (!uid) {
+            callback({err: 1, msg: 'please log in'});
+            return;
+        }
+        if (!data.aid || !data.ids) {
+            callback({err: 1, msg: 'please provide complete info'});
+            return;
+        }
+        for (var i = 0; i != data.ids.length; ++i) {
+            redis.sadd('activity_participants:' + data.aid, data.ids[i]);
+            redis.sadd('activities_participate:' + data.ids[i], data.aid);
+            callback({err: 0, msg: ''});
+        }
     });
 }
 
