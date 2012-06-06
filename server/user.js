@@ -29,7 +29,8 @@ exports.init = function(_db, _redis, _clients) {
         addFriend:          addFriend,
         removeFriend:       removeFriend,
         updatePortrait:     updatePortrait,
-        hideInNearest:      hideInNearest
+        hideInNearest:      hideInNearest,
+        requireFriendConfirm:requireFriendConfirm
     };
 }
 
@@ -252,6 +253,10 @@ function findClosest(callback) {
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.get('location:' + uid, function (err, location) {
+            if (location == null) {
+                callback([]);
+                return;
+            }
             db.executeDbCommand({
                 geoNear:            'users',
                 near:               eval(location),
@@ -295,6 +300,10 @@ function findByInterests(callback) {
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         redis.get('location:' + uid, function (err, location) {
+            if (location == null) {
+                callback([]);
+                return;
+            }
             redis.hgetall('users:' + uid, function (err, usr) {
                 if (!usr.hasOwnProperty('interests')) {
                     callback([]);
@@ -331,6 +340,32 @@ function findByInterests(callback) {
     });
 }
 
+// Find nearby users by interests
+function recommendByInterests(uid, interests) {
+    redis.get('location:' + uid, function (err, location) {
+        if (location == null) {
+            callback([]);
+            return;
+        }
+        db.executeDbCommand({
+            geoNear:            'users',
+            near:               eval(location),
+            spherical:          true,
+            maxDistance:        1 / 6371,       // 1km
+            distanceMultiplier: 6371000
+        }, function (err, obj) {
+            obj.documents[0].results.forEach(function (result) {
+                var obj = result.obj;
+                if (obj._id == uid) return;
+                if (!obj.interests) return;
+                if (!intersection(obj.interests, interests)) return;
+                if (obj._id in clients)
+                    clients[obj._id].emit('recommend by interests', uid);
+            });
+        });
+    });
+}
+
 function updateLocation(data) {
     var socket = this;
     socket.get('uid', function (err, uid) {
@@ -353,6 +388,9 @@ function updateProfile(data, callback) {
         // set in redis
         data._id = uid;
         setUserData(data);
+
+        if (data.interests)
+            recommendByInterests(uid, data.interests);
         
         console.log('user ' + uid + ' updated its profile.');
 
@@ -453,9 +491,20 @@ function setUserData(usr) {
 function sendFriendRequest(desUsrId) {
     var socket = this;
     socket.get('uid', function (err, uid) {
-        redis.sadd('friendRequests:' + desUsrId, uid);
-        console.log('user ' + uid + ' added ' + desUsrId + ' as friend');
-        emitFriendRequests(desUsrId);
+        redis.hget('users:' + uid, 'requireConfirm', function (err, val) {
+            if (val == '0') {
+                redis.sadd('friends:' + uid, desUsrId);
+                redis.sadd('friends:' + desUsrId, uid);
+                db.users.update({'_id': db.ObjectId(uid)},
+                    {$addToSet: {friends: desUsrId}});
+                db.users.update({'_id': db.ObjectId(desUsrId)},
+                    {$addToSet: {friends: uid}});
+            } else {
+                redis.sadd('friendRequests:' + desUsrId, uid);
+                console.log('user ' + uid + ' added ' + desUsrId + ' as friend');
+                emitFriendRequests(desUsrId);
+            }
+        });
     });
 }
 
@@ -515,6 +564,7 @@ function removeFriend(desUsrId) {
 }
 
 function findByPhones(phones, callback) {
+    console.log(phones);
     var socket = this;
     socket.get('uid', function  (err, t) {
         if (!t) return;
@@ -539,5 +589,14 @@ function hideInNearest(val) {
         if (!uid) return;
         db.users.update({'_id': db.ObjectId(uid)}, {$set: {privacy: val}});
         redis.hset('users:' + uid, 'privacy', val);
+    });
+}
+
+function requireFriendConfirm(val) {
+    var socket = this;
+    socket.get('uid', function (err, uid) {
+        if (!uid) return;
+        db.users.update({'_id': db.ObjectId(uid)}, {$set: {requireConfirm: val}});
+        redis.hset('users:' + uid, 'requireConfirm', val);
     });
 }

@@ -55,6 +55,11 @@ Ext.define('Chihiro.controller.message.Friend', {
         if(Ext.getCmp('ChattingGroups')){
             Ext.getCmp('ChattingGroups').deselectAll();
         }
+
+        Ext.getCmp('ChattingFriends').setData([]);
+        var store = Ext.getCmp('ChattingFriends').getStore();
+        store.load();
+        Ext.getCmp('ChattingFriends').setData(friendList);
     },
 
 
@@ -65,6 +70,7 @@ Ext.define('Chihiro.controller.message.Friend', {
 
         if(msg != '')
         {
+            console.log(msg);
             msgtextfield.reset();
             var ChattingRecord = Ext.getCmp('ChattingContent').getData();
             ChattingRecord.push(
@@ -83,30 +89,31 @@ Ext.define('Chihiro.controller.message.Friend', {
 
             var scroller = Ext.getCmp('ChattingContent').getScrollable();
             scroller.getScroller().scrollToEnd();
+            var uid = Ext.getCmp('ChattingFriends').getSelection()[0].raw._id;
+
+            //检查好友列表，若有该人，则发送送消息；否则发送接收好友请求
+            for(var i = 0; i < friendList.length;i++)
+            {
+                if(friendList[i]._id === uid) {
+                    socket.emit('send message',{uid:uid,msg:msg,time:time});
+                    friendList[i].lastmsg = msg;
+                    friendList[i].lasttime = time;
+                    return;
+                }
+            }
+
+            socket.emit('add friend',uid, function(result) {
+                if(result.err) alert('添加好友失败了:(');
+                else {
+                    alert('添加好友成功');
+                    var uid = Ext.getCmp('ChattingFriends').getSelection()[0].raw;
+                    addFriendAndShow(uid);
+                }
+            });
         }
 
         var scroller = Ext.getCmp('ChattingContent').getScrollable();
         scroller.getScroller().scrollToEnd();
-
-        var uid = Ext.getCmp('ChattingFriends').getSelection()[0].raw._id;
-
-        //检查好友列表，若有该人，则发送送消息；否则发送接收好友请求
-        for(var i = 0; i < friendList.length;i++)
-        {
-            if(friendList[i]._id === uid) {
-                socket.emit('send message',{uid:uid,msg:msg,time:time});
-                return;
-            }
-        }
-        socket.emit('add friend',uid, function(result) {
-            if(result.err) alert('添加好友失败了:(');
-            else {
-                alert('添加好友成功');
-                var uid = Ext.getCmp('ChattingFriends').getSelection()[0].raw;
-                addFriendAndShow(uid);
-            }
-        });
-
     },
 
     ShowActions:function(img,obj,other){

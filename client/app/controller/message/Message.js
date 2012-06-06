@@ -135,9 +135,10 @@ Ext.define('Chihiro.controller.message.Message', {
 
         if(title === '刷新'&& index === 0 )
         {
-            //var object = Ext.getCmp('ChattingFriends');
-            //object.getStore().load();
-            alert("等待聊天好友接口");
+            Ext.getCmp('ChattingFriends').setData([]);
+            var store = Ext.getCmp('ChattingFriends').getStore();
+            store.load();
+            Ext.getCmp('ChattingFriends').setData(friendList);
         }
 
         if(title === '刷新'&& index === 1 )
