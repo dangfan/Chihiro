@@ -492,17 +492,17 @@ function sendFriendRequest(desUsrId) {
     var socket = this;
     socket.get('uid', function (err, uid) {
         redis.hget('users:' + uid, 'requireConfirm', function (err, val) {
-            if (val == null || val == '1') {
-                redis.sadd('friendRequests:' + desUsrId, uid);
-                console.log('user ' + uid + ' added ' + desUsrId + ' as friend');
-                emitFriendRequests(desUsrId);
-            } else {
+            if (val == '0') {
                 redis.sadd('friends:' + uid, desUsrId);
                 redis.sadd('friends:' + desUsrId, uid);
                 db.users.update({'_id': db.ObjectId(uid)},
                     {$addToSet: {friends: desUsrId}});
                 db.users.update({'_id': db.ObjectId(desUsrId)},
                     {$addToSet: {friends: uid}});
+            } else {
+                redis.sadd('friendRequests:' + desUsrId, uid);
+                console.log('user ' + uid + ' added ' + desUsrId + ' as friend');
+                emitFriendRequests(desUsrId);
             }
         });
     });
