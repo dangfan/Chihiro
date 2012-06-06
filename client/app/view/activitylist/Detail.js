@@ -1,3 +1,4 @@
+var addActivityID;
 Ext.define('Chihiro.view.activitylist.Detail', {
     extend: 'Ext.Panel',
     xtype: 'activitydetail',
@@ -78,7 +79,7 @@ Ext.define('Chihiro.view.activitylist.Detail', {
 
         //we fire this event so the controller can deselect all items immediately.
         me.fireEvent('hideanimationstart', me);
-
+        addActivityID = null;
         //show the mask again
         me.callParent();
     },

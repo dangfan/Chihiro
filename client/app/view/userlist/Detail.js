@@ -58,7 +58,7 @@ Ext.define('Chihiro.view.userlist.Detail', {
 
         //we fire this event so the controller can deselect all items immediately.
         me.fireEvent('hideanimationstart', me);
-
+        addFriendID = null;
         //show the mask again
         me.callParent();
     },

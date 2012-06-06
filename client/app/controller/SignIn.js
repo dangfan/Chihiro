@@ -81,7 +81,7 @@ function successLogin(obj){
             else if(interest[i] == ',') interestStr += ' ';
             else interestStr += interest[i];
         }
-        profile.interests = interestStr;
+        profile.interests = interestStr + "";
     }
     sid = obj._id;
     sname = obj.nickname;
