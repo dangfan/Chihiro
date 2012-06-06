@@ -20,7 +20,6 @@ Ext.define('Chihiro.view.find.Main', {
                 data: [
                     { text: '按邮箱地址查找好友', way: 'Email' },
                     { text: '按手机号查找好友', way: 'Phone' },
-                    { text: '通过手机通讯录', way: 'Contact' },
                     { text: '查找附近的人', way: 'Nearby' },
                     { text: '查找相同兴趣的人', way: 'Interest'}
                 ]
