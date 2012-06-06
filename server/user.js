@@ -538,5 +538,6 @@ function hideInNearest(val) {
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         db.users.update({'_id': db.ObjectId(uid)}, {$set: {privacy: val}});
+        redis.hset('users:' + uid, 'privacy', val);
     });
 }
