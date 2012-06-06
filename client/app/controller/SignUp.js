@@ -81,7 +81,7 @@ Ext.define('Chihiro.controller.SignUp',{
         socket.emit('update profile', val);
         console.log(val);
         for (var i in val) {
-            profile[i] = val.i;
+            profile[i] = val[i];
         }
         console.log(profile);
         this.toHome();
