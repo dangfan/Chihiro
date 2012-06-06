@@ -91,7 +91,9 @@ Ext.define('Chihiro.controller.message.Friend', {
             scroller.getScroller().scrollToEnd();
             var uid = Ext.getCmp('ChattingFriends').getSelection()[0].raw._id;
 
+
             //检查好友列表，若有该人，则发送送消息；否则发送接收好友请求
+            if(friendList != null)
             for(var i = 0; i < friendList.length;i++)
             {
                 if(friendList[i]._id === uid) {

@@ -69,7 +69,7 @@ Ext.define('Chihiro.controller.SignIn', {
 });
 function successLogin(obj){
     profile = obj;
-    var imagesrc = (profile.portrait) ? 'portraits/' + profile.portrait : 'resources/default.png';
+    var imagesrc = (profile.portrait) ? profile.portrait : 'resources/icons/default.png';
     //var imagesrc = urlprefix + '/portraits/default.png';
     profile.portrait = imagesrc;
     if(profile.birthday && profile.birthday != 'null') profile.birthday = new Date(profile.birthday);
@@ -92,6 +92,7 @@ function successLogin(obj){
         console.log(friendList);
         for(var i = 0; i < friendList.length;i++)
         {
+            if(friendList[i] == null || friendList[i] == 'null') continue;
             if(friendList[i].lastmsg){
                 var msg = friendList[i].lastmsg.split('|');
                 friendList[i].lastmsg = msg[2];

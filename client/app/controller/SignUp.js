@@ -46,9 +46,13 @@ Ext.define('Chihiro.controller.SignUp',{
             alert('两次密码输入不同');
         } else {
             delete val.confirmPW;
+            console.log(val);
             socket.emit('signup', val, function(msg) {
+                alert('oh');
                 if (!msg.err) {
-                    window.localStorage.setItem('sid', msg.msg);
+                    console.log(msg);
+                    window.localStorage.setItem('sid', msg.sid);
+                    profile = msg.obj;
                     Ext.Viewport.setActiveItem(Ext.getCmp('signupView'));
                 } else alert(msg.msg);
             });
@@ -56,23 +60,30 @@ Ext.define('Chihiro.controller.SignUp',{
     },
 
     toOptionalInfoView: function() {
-        var interest = Ext.getCmp('interestinfoView').getValues().interest;
-        interest = interest.split(' ');
-        console.log(interest);
+        var interestStr = Ext.getCmp('interestinfoView').getValues().interest;
+        var interest = interestStr.split(' ');
         socket.emit('update profile', {
             interests: interest
         });
+        profile.interests = interestStr;
+        console.log(profile);
         Ext.getCmp('signupView').push(Ext.getCmp('optionalinfoView'))
     },
 
     toHome: function() {
         locateGeo();
+        updateProfile();
         Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
     },
 
     emitThenToHome: function() {
         var val = Ext.getCmp('optionalinfoView').getValues();
         socket.emit('update profile', val);
+        console.log(val);
+        for (var i in val) {
+            profile[i] = val.i;
+        }
+        console.log(profile);
         this.toHome();
     }
 });

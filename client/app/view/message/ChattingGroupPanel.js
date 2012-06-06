@@ -49,11 +49,12 @@ Ext.define('Chihiro.view.message.ChattingGroupPanel', {
                             title: record.get('text')
                         }));
                         invitationList = [];
-                        Ext.getCmp('InvitationList').setData([]);
-                        var store = Ext.getCmp('InvitationList').getStore();
-                        console.log(2);
-                        store.load();
-                        Ext.getCmp('InvitationList').setData(friendList);
+                        if(Ext.getCmp('InvitationList') != null){
+                            Ext.getCmp('InvitationList').setData([]);
+                            var store = Ext.getCmp('InvitationList').getStore();
+                            store.load();
+                            Ext.getCmp('InvitationList').setData(friendList);
+                        }
                     }
                 }
             }

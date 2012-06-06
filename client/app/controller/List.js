@@ -412,7 +412,6 @@ Ext.define('Chihiro.controller.List', {
     },
 
     QuitGroup:function(){
-
         var groupId = Ext.getCmp('SimpleFriendList').getSelection()[0].raw.id
         console.log(groupId);
         socket.emit('quit topic',groupId);

@@ -230,11 +230,13 @@ function locateGeo() {
 };
 function addFriendAndShow(obj)
 {
-    console.log(obj);
-    console.log( Ext.getCmp('SimpleFriendList'));
-    friendList.push(obj);
-    Ext.getCmp('SimpleFriendList').setData([]);
-    var store = Ext.getCmp('SimpleFriendList').getStore();
-    store.load();
-    Ext.getCmp('SimpleFriendList').setData(friendList);
+    if(friendList != null){
+        friendList.push(uid);
+        Ext.getCmp('ChattingFriends').setData([]);
+        var store = Ext.getCmp('ChattingFriends').getStore();
+        store.load();
+        Ext.getCmp('ChattingFriends').setData(friendList);
+    } else{
+        Ext.getCmp('ChattingFriends').setData(friendList);
+    }
 }

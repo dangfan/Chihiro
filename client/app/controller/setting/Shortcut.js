@@ -79,3 +79,18 @@ function react (msg) {
         Ext.getCmp('setPortrait').setSrc(msg.src);
     }
 }
+
+function ChooseShortcut(url)
+{
+    console.log(url);
+    profile.portrait = url;
+    socket.emit('update profile', {portrait: url}, function(msg) {
+        if(msg.err == 0)
+        {
+            alert(msg.msg);
+            updateProfile();
+        }
+        else alert(msg.msg);
+    });
+
+}
