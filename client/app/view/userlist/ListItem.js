@@ -15,7 +15,7 @@ Ext.define('Chihiro.view.userlist.ListItem', {
             },
 
             getAvatar: {
-                setSrc: 'image'
+                setSrc: 'portrait'
             },
 
             getDistance: {
