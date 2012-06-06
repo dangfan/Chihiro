@@ -38,10 +38,10 @@ Ext.define('Chihiro.view.setting.Main', {
                     ]
                 },
                 itemTpl: '<div class="contact"><strong>{text}</strong></div>',
-
-                onItemDisclosure: function(record, btn, index) {
-                    Ext.Msg.alert('Tap', 'Disclose more info for ' + record.get('firstName'), Ext.emptyFn);
-                },
+//
+//                onItemDisclosure: function(record, btn, index) {
+//                    Ext.Msg.alert('Tap', 'Disclose more info for ' + record.get('firstName'), Ext.emptyFn);
+//                },
 
                 listeners: {
                     itemtap: function(view, index, target, record) {

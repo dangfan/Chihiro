@@ -586,7 +586,7 @@ If you are unsure which license is appropriate for your use, please contact the 
         //<feature logger>
         /**
          * @private
-         * @property
+         *
          */
         Logger: {
             log: function(message, priority) {

@@ -1,3 +1,4 @@
+var addFriendID;
 Ext.define('Chihiro.controller.List', {
     extend: 'Ext.app.Controller',
 
@@ -13,6 +14,7 @@ Ext.define('Chihiro.controller.List', {
             simpleFriendlist:'#SimpleFriendList2',
             MyList:'#SimpleFriendList',
             invitaionList:"#InvitationList",
+            invitationListForActivity: "#invitecandidatelist",
             simplegrouplist:"#SimpleGroupList"
         },
 
@@ -45,6 +47,11 @@ Ext.define('Chihiro.controller.List', {
                 deselect:'remainCssToInvite',
                 itemdoubletap:'doubleTap'
             },
+            'invitationListForActivity':{
+                select:'selectSomebodyToInviteForActivity',
+                deselect:'remainCssToInviteForActivity',
+                itemdoubletap:'doubleTapForActivity'
+            },
             'simplegrouplist':{
                 select:'selectSomegroupToInvite',
                 deselect:'remainCssToGroup',
@@ -67,7 +74,9 @@ Ext.define('Chihiro.controller.List', {
     },
 
     addFriend: function() {
-        var uid = Ext.getCmp('userlist').getSelection()[0].raw._id;
+        var uid;
+        if(addFriendID != null) uid = addFriendID;
+        else uid = Ext.getCmp('userlist').getSelection()[0].raw._id;
         console.log(uid);
         console.log(friendList);
         var i;
@@ -79,6 +88,7 @@ Ext.define('Chihiro.controller.List', {
                 console.log(Ext.getCmp('userlist').getSelection()[0].raw._id);
                 alert("好友申请已经发送");
         }
+        addFriendID = null;
     },
 
     deleteFriend: function() {
@@ -101,13 +111,11 @@ Ext.define('Chihiro.controller.List', {
     },
 
     onListTap: function(list, user) {
-
         console.log(user.data);
         if(user.data.birthday){
             var birthday = user.data.birthday.split('T');
             user.data.birthday = birthday[0];
         }
-
         if(Ext.getCmp('MyCarousel'))
         {
             var carou = Ext.getCmp('MyCarousel');
@@ -175,9 +183,13 @@ Ext.define('Chihiro.controller.List', {
     },
 
     selectSomebodyToInvite:function(a,record){
+        console.log(record.raw._id);
         invitationList.push(record.raw._id);
     },
-
+    selectSomebodyToInviteForActivity: function(a,record){
+        console.log(record.raw._id);
+        invitationListForActivity.push(record.raw._id);
+    },
     selectSomegroupToInvite:function(a,record){
         invitationList.push(record.raw.id);
     },
@@ -210,6 +222,19 @@ Ext.define('Chihiro.controller.List', {
         }
     },
 
+    remainCssToInviteForActivity: function(me, record){
+        var ln = invitationListForActivity.length;
+
+        for(var i = 0; i < ln; i++)
+        {
+            if(invitationListForActivity[i] === record.raw._id)
+            {
+                invitationListForActivity.pop(record.raw._id);
+                console.log(invitationListForActivity);
+                return;
+            }
+        }
+    },
     remainCssToGroup: function(me, record) {
         var ln = invitationList.length;
 
@@ -234,6 +259,15 @@ Ext.define('Chihiro.controller.List', {
         }
     },
 
+    doubleTapForActivity: function(me, index, target, record, e, eOpts){
+        var item = me.container.getViewItems()[me.getStore().indexOf(record)];
+        if (Ext.isElement(item)) {
+            item = Ext.get(item);
+        }
+        if (item) {
+            item.removeCls([me.getPressedCls(), me.getSelectedCls()]);
+        }
+    },
     onMyListTap: function(list, user) {
 
         var flag = 'group';

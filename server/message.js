@@ -93,7 +93,7 @@ function addMembers(data) {
             if (userid in clients) {
                 clients[userid].get('redis', function (err, redisp) {
                     redisp.subscribe('topic:' + id);
-                    redisp.subscribe('draw:' + id);
+                    //redisp.subscribe('draw:' + id);
                 });
             }
         }
@@ -114,6 +114,7 @@ function quitTopic(id) {
     socket.get('uid', function (err, uid) {
         if (!uid || !id) return;
         redis.srem('topics:' + id + ':members', uid);
+        redis.srem('user_topics:' + uid, id);
     });
 }
 
