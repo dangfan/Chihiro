@@ -236,11 +236,11 @@ Ext.define('Chihiro.controller.activity.Find',{
         else activityId = Ext.getCmp('nearactivitylist').getSelection()[0].raw._id;
         socket.emit('participate activity', activityId, function(msg){
             if(msg.err == 0){
-                Ext.Msg.alert('恭喜','参加成功！');
+                Ext.Msg.alert('恭喜','参加成功！',Ext.emptyFn);
                 //TODO: 参加活动列表
             }
             else{
-                Ext.Msg.alert('抱歉','网络忙，请稍后再试');
+                Ext.Msg.alert('抱歉','网络忙，请稍后再试',Ext.emptyFn);
             }
         });
         addActivityID = null;
