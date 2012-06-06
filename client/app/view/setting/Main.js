@@ -49,6 +49,14 @@ Ext.define('Chihiro.view.setting.Main', {
                         var panel = Ext.create('Chihiro.view.setting.' + record.get('func'), {
                             title: record.get('text')
                         });
+                        if(index == 4){
+                            Ext.getCmp('geoVisible').setValue(profile.privacy);
+                            if(!(profile.requireConfirm == '0'))
+                                Ext.getCmp('friendverify').setChecked(true);
+                            else
+                                Ext.getCmp('friendverify').setChecked(false);
+                            console.log(Ext.getCmp('friendverify'));
+                        }
                         if(panel.isXType('formpanel')) panel.setValues(profile);
                         panel.fireEvent('show',panel);
                         this.parent.push(panel);

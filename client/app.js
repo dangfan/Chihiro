@@ -8,7 +8,7 @@ Ext.application({
     controllers: ['SignIn', 'SignUp', 'Setting', 'List', 'Home', 'find.Find','find.Email','find.Phone',
         'contact.Contact', 'activity.Find', 'activity.Create',
         'message.Message','message.ChatList','message.GroupList','message.Friend','message.Group','message.Other',
-        'setting.Main','setting.Info','setting.Account','setting.Shortcut','setting.Status'],
+        'setting.Main','setting.Info','setting.Account','setting.Shortcut','setting.Status', 'setting.Privacy'],
 
     models: ['User', 'Message','ChattingFriends','ChattingGroups','ChattingContent','Activity','Contact'],
 
@@ -30,7 +30,7 @@ Ext.application({
         'userlist.List', 'userlist.MyList','userlist.Detail','userlist.GroupDetail', 'userlist.ListItem','userlist.SimpleFriendList',
         'message.List','message.GroupList','message.Groups','message.ChatList','message.ChatListItem','message.Friends','message.Content',
         'message.Sentence','message.ChattingFriendData','message.ChattingGroupData','message.ChattingGroupPanel','message.ChattingFriendPanel','message.GroupContent',
-        'message.other.Nickname','message.other.Canvas','message.other.InviteToGroup','message.GroupListItem'
+        'message.other.Nickname','message.other.Canvas','message.other.InviteToGroup','message.GroupListItem', 'message.other.GroupInfoModify'
     ],
 
     icon: {

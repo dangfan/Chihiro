@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Chihiro.view.other.GroupInfoModify', {
+Ext.define('Chihiro.view.message.other.GroupInfoModify', {
     extend:'Ext.form.Panel',
     id: 'changegroupinfo',
     config:{
@@ -25,7 +25,8 @@ Ext.define('Chihiro.view.other.GroupInfoModify', {
                 xtype:'button',
                 text:'确认修改',
                 ui:'confirm',
-                id:'introbutton'
+                id:'introbutton',
+                action: 'groupInfoModifyConfirm'
             }
         ]
     }
