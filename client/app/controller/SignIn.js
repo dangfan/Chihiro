@@ -68,6 +68,7 @@ Ext.define('Chihiro.controller.SignIn', {
 });
 function successLogin(obj){
     profile = obj;
+    console.log(Ext.getCmp('homeView').getActiveItem());
     var imagesrc = (profile.portrait) ? profile.portrait : 'resources/icons/徐涵.png';
     //var imagesrc = urlprefix + '/portraits/default.png';
     profile.portrait = imagesrc;

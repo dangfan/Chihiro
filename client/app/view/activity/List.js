@@ -9,7 +9,7 @@ Ext.define('Chihiro.view.activity.List', {
         'Ext.dataview.List'
     ],
     config: {
-        scrollable: true,
+        //scrollable: true,
         items:[
             {
                 xtype: 'toolbar',
