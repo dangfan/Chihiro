@@ -387,11 +387,7 @@ function updateProfile(data, callback) {
     socket.get('uid', function (err, uid) {
         if (!uid) return;
         // set in mongo
-        db.users.update({'_id': db.ObjectId(uid)}, {$set: data}, {
-        safe: true      // Check if insert is successful
-    }, function (obj) {
-        console.log(obj);
-    });
+        db.users.update({'_id': db.ObjectId(uid)}, {$set: data});
         // set in redis
         data._id = uid;
         setUserData(data);
