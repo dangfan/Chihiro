@@ -42,35 +42,6 @@ Ext.define('Chihiro.view.setting.Privacy', {
                             value: 1
                         }
                         ]
-<<<<<<< HEAD
-                    },
-                    {
-                        xtype: 'selectfield',
-                        label: '手机号码可见性',
-                        name: 'locationVisibility',
-                        options: [{
-                            text: '可见',
-                            value: 0
-                        }, {
-                            text:'不可见',
-                            value: 1
-                        }
-                        ]
-                    },
-                    {
-                        xtype: 'selectfield',
-                        label: '邮箱地址可见性',
-                        name: 'locationVisibility',
-                        options: [{
-                            text: '可见',
-                            value: 0
-                        },{
-                            text:'不可见',
-                            value: 1
-                        }
-                        ]
-=======
->>>>>>> 9e1cb5805ba8a6e71e5c60a2a744658c87dbed09
                     }
                 ]
             },

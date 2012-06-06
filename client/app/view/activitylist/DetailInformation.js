@@ -41,6 +41,7 @@ Ext.define('Chihiro.view.activitylist.DetailInformation', {
 
                 listeners: {
                     itemtap: function(view, index, target, record) {
+                        invitationListForActivity = [];
                         console.log(record.get('func'));
                         this.parent.push(Ext.create('Chihiro.view.activitylist.' + record.get('func'), {
                             title: record.get('text')
