@@ -221,7 +221,7 @@ function locateGeo() {
         }
     })
 };
-function addFriendAndShow(uid)
+function addFriendAndShow(obj)
 {
     if(friendList != null){
         friendList.push(obj);
