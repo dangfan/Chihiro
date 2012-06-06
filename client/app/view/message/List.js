@@ -22,8 +22,8 @@ Ext.define('Chihiro.view.message.List', {
                         //src: 'http://hdn.xnimg.cn/photos/hdn121/20120331/1930/tiny_GRdJ_60512g019117.jpg',
                         marginTop:5,
                         marginLeft:35,
-                        height:50,
-                        width:50
+                        height:60,
+                        width:60
                     },
                     {
                         xtype:'panel',
