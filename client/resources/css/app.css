@@ -6783,3 +6783,6 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input
     float:left;
     display:block;
 }
+
+
+.demo-weather{text-align:center}.day{display:inline-block;background-color:#f9f9f9;color:rgba(0, 0, 0, 0.6);text-shadow:#fff 0 1px 0;width:8em;text-align:center;-webkit-border-radius:15px;border-radius:15px;-webkit-box-shadow:inset 0 0 4px #888888;box-shadow:inset 0 0 4px #888888;box-shadow:inset 0 0 4px #888;padding:1em;margin:.5em}.x-android .day{-webkit-box-shadow:none;box-shadow:none}.date{font-size:.8em}.icon img{-webkit-border-radius:10px;border-radius:10px;margin:.6em;width:3.5em}.temp{margin-top:.2em;display:block;font-size:1.6em;line-height:.5em}.temp_low{display:inline;font-size:.5em;color:rgba(30, 30, 30, 0.5)}.

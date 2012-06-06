@@ -79,3 +79,8 @@ function react (msg) {
         Ext.getCmp('setPortrait').setSrc(msg.src);
     }
 }
+
+function ChooseShortcut(url)
+{
+    alert("The image's url:" + url);
+}

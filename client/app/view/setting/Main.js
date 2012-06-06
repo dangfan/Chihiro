@@ -32,7 +32,7 @@ Ext.define('Chihiro.view.setting.Main', {
                         { text: '个人名片', sort:' ',func: 'Info'},
                         { text: '兴趣签名', sort:' ',func: 'Status'},
                         { text: '我的帐户', sort:' ',func: 'Account'},
-                        { text: '上传头像', sort:' ',func: 'Shortcut'},
+                        { text: '选择头像', sort:' ',func: 'Shortcut'},
                         //{ text: '推送', sort:'  ',func: 'Push' },
                         { text: '隐私', sort:'  ',func: 'Privacy' }
                     ]

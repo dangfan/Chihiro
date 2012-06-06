@@ -188,9 +188,13 @@ function locateGeo() {
 };
 function addFriendAndShow(uid)
 {
-    friendList.push(uid);
-    Ext.getCmp('friendlist').setData([]);
-    var store = Ext.getCmp('friendlist').getStore();
-    store.load();
-    Ext.getCmp('friendlist').setData(friendList);
+    if(friendList != null){
+        friendList.push(uid);
+        Ext.getCmp('ChattingFriends').setData([]);
+        var store = Ext.getCmp('ChattingFriends').getStore();
+        store.load();
+        Ext.getCmp('ChattingFriends').setData(friendList);
+    } else{
+        Ext.getCmp('ChattingFriends').setData(friendList);
+    }
 }
