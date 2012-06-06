@@ -523,6 +523,7 @@ function removeFriend(desUsrId) {
 }
 
 function findByPhones(phones, callback) {
+    console.log(phones);
     var socket = this;
     socket.get('uid', function  (err, t) {
         if (!t) return;
