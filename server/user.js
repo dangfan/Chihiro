@@ -339,6 +339,32 @@ function findByInterests(callback) {
     });
 }
 
+// Find nearby users by interests
+function recommendByInterests(uid, interests) {
+    redis.get('location:' + uid, function (err, location) {
+        if (location == null) {
+            callback([]);
+            return;
+        }
+        db.executeDbCommand({
+            geoNear:            'users',
+            near:               eval(location),
+            spherical:          true,
+            maxDistance:        1 / 6371,       // 1km
+            distanceMultiplier: 6371000
+        }, function (err, obj) {
+            obj.documents[0].results.forEach(function (result) {
+                var obj = result.obj;
+                if (obj._id == uid) return;
+                if (!obj.interests) return;
+                if (!intersection(obj.interests, interests)) return;
+                if (obj._id in clients)
+                    clients[obj._id].emit('recommend by interests', uid);
+            });
+        });
+    });
+}
+
 function updateLocation(data) {
     var socket = this;
     socket.get('uid', function (err, uid) {
@@ -361,6 +387,9 @@ function updateProfile(data, callback) {
         // set in redis
         data._id = uid;
         setUserData(data);
+
+        if (data.interests)
+            recommendByInterests(uid, data.interests);
         
         console.log('user ' + uid + ' updated its profile.');
 
