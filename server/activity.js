@@ -90,7 +90,7 @@ function updateActivityDetails(activity, callback) {
 
 function addParticipants(data, callback) {
     var socket = this;
-    socket.get('uid', functioni (err, uid) {
+    socket.get('uid', function (err, uid) {
         if (!uid) {
             callback({err: 1, msg: 'please log in'});
             return;
