@@ -491,7 +491,7 @@ function setUserData(usr) {
 function sendFriendRequest(desUsrId) {
     var socket = this;
     socket.get('uid', function (err, uid) {
-        redis.hget('users:' + uid, 'requireConfirm', function (err, val) {
+        redis.hget('users:' + desUsrId, 'requireConfirm', function (err, val) {
             if (val == '0') {
                 redis.sadd('friends:' + uid, desUsrId);
                 redis.sadd('friends:' + desUsrId, uid);
