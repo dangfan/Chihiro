@@ -389,7 +389,7 @@ function updateProfile(data, callback) {
         setUserData(data);
 
         if (data.interests)
-            recommendByInterests(uid, interests);
+            recommendByInterests(uid, data.interests);
         
         console.log('user ' + uid + ' updated its profile.');
 
