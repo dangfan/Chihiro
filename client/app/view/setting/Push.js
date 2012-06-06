@@ -17,11 +17,6 @@ Ext.define('Chihiro.view.setting.Push', {
             items: [
                 {
                     xtype: 'checkboxfield',
-                    name: 'onlinereminder',
-                    label:'好友上线提醒'
-                },
-                {
-                    xtype: 'checkboxfield',
                     name: 'acceptable',
                     label:'接受活动的通知'
                 },
@@ -29,41 +24,8 @@ Ext.define('Chihiro.view.setting.Push', {
                     xtype: 'checkboxfield',
                     name: 'acceptable',
                     label:'接受好友推送'
-                },
-                {
-                    xtype: 'checkboxfield',
-                    name: 'acceptable',
-                    label:'通讯录好友注册提醒'
                 }
             ]
-        },
-            {
-                xtype: 'fieldset',
-                defaults: {
-                    labelWidth: '40%'
-                },
-                items: [
-                    {
-                        xtype      : 'spinnerfield',
-                        name       : 'begin',
-                        label      : '开始推送时间',
-                        minValue   : 0,
-                        maxValue   : 24,
-                        defaultValue:8,
-                        increment  : 1,
-                        cycle      : true
-                    },
-                    {
-                        xtype      : 'spinnerfield',
-                        name       : 'end',
-                        label      : '结束推送时间',
-                        minValue   : 0,
-                        maxValue   : 24,
-                        defaultValue:20,
-                        increment  : 1,
-                        cycle      : true
-                    }
-                ]
             },
             {
                 xtype: 'panel',

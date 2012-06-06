@@ -31,7 +31,7 @@ Ext.define('Chihiro.view.message.ChattingGroupPanel', {
                     },
 
                     data: [
-                        { text: '修改群公告', sort:' ',func: 'Nickname'},
+                        { text: '修改群公告', sort:' ',func: 'GroupInfoModify'},
                         { text: '邀请好友', sort: '   ',func: 'InviteToGroup' }
                     ]
                 },

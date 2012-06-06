@@ -41,7 +41,6 @@ Ext.define('Chihiro.view.message.GroupListItem', {
             docked: 'right'
             // hidden: (Ext.os.deviceType === 'Phone') ? true : false
         },
-
         layout: {
             type: 'vbox',
             pack: 'center'
