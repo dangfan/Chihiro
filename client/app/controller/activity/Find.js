@@ -152,6 +152,12 @@ Ext.define('Chihiro.controller.activity.Find',{
         createOrEdit = 0;
         Ext.Viewport.setActiveItem(Ext.getCmp('createactivity'));
     },
+    setList:function(){
+        Ext.getCmp('invitecandidatelist').setData([]);
+        var store = Ext.getCmp('invitecandidatelist').getStore();
+        store.load();
+        Ext.getCmp('invitecandidatelist').setData(friendList);
+    },
     nalOnItemTap: function(list, user){
         if (!this.view) {
             this.view = Ext.create('Chihiro.view.activitylist.Detail');
@@ -171,7 +177,7 @@ Ext.define('Chihiro.controller.activity.Find',{
         if (!view.getParent()) {
             Ext.Viewport.add(view);
         }
-
+        //this.setList();
         view.show();
     },
     salOnItemTap: function(list, user){
@@ -193,7 +199,7 @@ Ext.define('Chihiro.controller.activity.Find',{
         if (!view.getParent()) {
             Ext.Viewport.add(view);
         }
-
+        //this.setList();
         view.show();
     },
     palOnItemTap: function(list, user){
@@ -215,7 +221,7 @@ Ext.define('Chihiro.controller.activity.Find',{
         if (!view.getParent()) {
             Ext.Viewport.add(view);
         }
-
+        //this.setList();
         view.show();
     },
     onHide: function(){
