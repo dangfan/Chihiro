@@ -48,7 +48,6 @@ Ext.define('Chihiro.controller.SignUp',{
             delete val.confirmPW;
             console.log(val);
             socket.emit('signup', val, function(msg) {
-                alert('oh');
                 if (!msg.err) {
                     console.log(msg);
                     window.localStorage.setItem('sid', msg.sid);
