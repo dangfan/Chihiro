@@ -40,6 +40,7 @@ function listen(port) {
         socket.on('get info by phone', user.getInfoByPhone);
         socket.on('send friend request', user.sendFriendRequest);
         socket.on('hide in nearest', user.hideInNearest);
+        socket.on('require friend confirm', user.requireFriendConfirm);
         socket.on('add friend', user.addFriend);
         socket.on('remove friend', user.removeFriend);
         socket.on('update portrait', user.updatePortrait);

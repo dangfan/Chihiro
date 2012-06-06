@@ -29,7 +29,8 @@ exports.init = function(_db, _redis, _clients) {
         addFriend:          addFriend,
         removeFriend:       removeFriend,
         updatePortrait:     updatePortrait,
-        hideInNearest:      hideInNearest
+        hideInNearest:      hideInNearest,
+        requireFriendConfirm:requireFriendConfirm
     };
 }
 
@@ -490,9 +491,20 @@ function setUserData(usr) {
 function sendFriendRequest(desUsrId) {
     var socket = this;
     socket.get('uid', function (err, uid) {
-        redis.sadd('friendRequests:' + desUsrId, uid);
-        console.log('user ' + uid + ' added ' + desUsrId + ' as friend');
-        emitFriendRequests(desUsrId);
+        redis.hget('users:' + uid, 'requireConfirm', function (err, val) {
+            if (val == null || val == '1') {
+                redis.sadd('friendRequests:' + desUsrId, uid);
+                console.log('user ' + uid + ' added ' + desUsrId + ' as friend');
+                emitFriendRequests(desUsrId);
+            } else {
+                redis.sadd('friends:' + uid, desUsrId);
+                redis.sadd('friends:' + desUsrId, uid);
+                db.users.update({'_id': db.ObjectId(uid)},
+                    {$addToSet: {friends: desUsrId}});
+                db.users.update({'_id': db.ObjectId(desUsrId)},
+                    {$addToSet: {friends: uid}});
+            }
+        });
     });
 }
 
@@ -577,5 +589,14 @@ function hideInNearest(val) {
         if (!uid) return;
         db.users.update({'_id': db.ObjectId(uid)}, {$set: {privacy: val}});
         redis.hset('users:' + uid, 'privacy', val);
+    });
+}
+
+function requireFriendConfirm(val) {
+    var socket = this;
+    socket.get('uid', function (err, uid) {
+        if (!uid) return;
+        db.users.update({'_id': db.ObjectId(uid)}, {$set: {requireConfirm: val}});
+        redis.hset('users:' + uid, 'requireConfirm', val);
     });
 }
