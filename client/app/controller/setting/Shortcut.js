@@ -87,8 +87,11 @@ function ChooseShortcut(url)
     socket.emit('update profile', {portrait: url}, function(msg) {
         if(msg.err == 0)
         {
-            alert(msg.msg);
             updateProfile();
+            Ext.Msg.confirm("选择头像", "已经更换新头像！", function(choice) {
+                if(choice == 'yes') {
+                }
+            });
         }
         else alert(msg.msg);
     });

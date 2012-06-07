@@ -107,7 +107,10 @@ Ext.define('Chihiro.controller.message.Friend', {
             socket.emit('add friend',uid, function(result) {
                 if(result.err) alert('添加好友失败了:(');
                 else {
-                    alert('添加好友成功');
+                    Ext.Msg.confirm("添加好友", "添加好友成功啦！", function(choice) {
+                        if(choice == 'yes') {
+                        }
+                    });
                     var uid = Ext.getCmp('ChattingFriends').getSelection()[0].raw;
                     addFriendAndShow(uid);
                 }
