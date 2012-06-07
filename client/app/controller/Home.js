@@ -161,18 +161,18 @@ Ext.define('Chihiro.controller.Home', {
             addFriendAndShow(obj);
         });
         socket.on('recommend activity', function(obj){
+            if(obj.creator_id == sid){
+                return;
+            }
             Ext.Msg.confirm("附近有新活动：" + obj.name, '想去看看吗？', function(choice) {
                 if(choice == 'yes') {
                     addActivityID = obj._id;
-                    console.log(obj);
                     var user = obj;
                     user.data = user;
-                    console.log(user.data);
                     var view;
                     if(Ext.getCmp('activitydetail')) view = Ext.getCmp('activitydetail');
                     else view = Ext.create('Chihiro.view.activitylist.Detail');
                     Ext.getCmp('ParticipateBtn').setHidden(false);
-                    Ext.getCmp('InviteBtn').setHidden(true);
                     Ext.getCmp('EditBtn').setHidden(true);
                     Ext.getCmp('QuitBtn').setHidden(true);
                     view.setUser(user);

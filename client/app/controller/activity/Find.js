@@ -17,7 +17,7 @@ Ext.define('Chihiro.controller.activity.Find',{
         control:
         {
             homeView: {
-                activeitemchange: 'showNearActivity'
+                activeitemchange: 'refreshActivityFirst'
             },
             'button[action=createActivity]':{
                 tap: 'createActivity'
@@ -46,6 +46,9 @@ Ext.define('Chihiro.controller.activity.Find',{
             'button[action=quit]':{
                 tap: 'quitActivity'
             },
+            'button[action=refreshList]':{
+                tap: 'refreshActivityFirst'
+            },
             button: {
                 toggle: 'toggle'
             },
@@ -57,39 +60,9 @@ Ext.define('Chihiro.controller.activity.Find',{
             }
         }
     },
-    showNearActivity: function(){
+    refreshActivityFirst: function(){
         if(Ext.getCmp('homeView').getActiveItem().title=='活动'){
-            locateGeo();
-            socket.emit('find closest activities',function(msg){
-                Ext.Viewport.setMasked({
-                    xtype: 'loadmask',
-                    message: '载入中...'
-                });
-                //console.log(msg);
-                Ext.getCmp('nearactivitylist').getStore().load();
-                Ext.getCmp('nearactivitylist').setData(msg);
-                Ext.Viewport.setMasked(false);
-            });
-            socket.emit('find activity by creator',function(msg){
-                Ext.Viewport.setMasked({
-                    xtype: 'loadmask',
-                    message: '载入中...'
-                });
-                console.log(msg);
-                Ext.getCmp('sponseactivitylist').getStore().load();
-                Ext.getCmp('sponseactivitylist').setData(msg);
-                Ext.Viewport.setMasked(false);
-            });
-            socket.emit('find activity by participant',function(msg){
-                Ext.Viewport.setMasked({
-                    xtype: 'loadmask',
-                    message: '载入中...'
-                });
-                console.log(msg);
-                Ext.getCmp('participateactivitylist').getStore().load();
-                Ext.getCmp('participateactivitylist').setData(msg);
-                Ext.Viewport.setMasked(false);
-            });
+            refreshActivity();
         }
     },
     activeitemChange: function(a,value, oldValue, eOpts){
@@ -140,9 +113,6 @@ Ext.define('Chihiro.controller.activity.Find',{
         };
 
     },
-    refreshActivity: function(){
-        this.showNearActivity();
-    },
     createActivity: function(){
         if(!Ext.getCmp('createactivity')){
             Ext.create('Chihiro.view.activity.Create',{
@@ -159,9 +129,11 @@ Ext.define('Chihiro.controller.activity.Find',{
         Ext.getCmp('invitecandidatelist').setData(friendList);
     },
     nalOnItemTap: function(list, user){
-        if (!this.view) {
+        if (!Ext.getCmp('activitydetail')) {
             this.view = Ext.create('Chihiro.view.activitylist.Detail');
         }
+        else
+            this.view = Ext.getCmp('activitydetail');
         var view = this.view;
         Ext.getCmp('ParticipateBtn').setHidden(false);
         //Ext.getCmp('InviteBtn').setHidden(true);
@@ -181,9 +153,11 @@ Ext.define('Chihiro.controller.activity.Find',{
         view.show();
     },
     salOnItemTap: function(list, user){
-        if (!this.view) {
+        if (!Ext.getCmp('activitydetail')) {
             this.view = Ext.create('Chihiro.view.activitylist.Detail');
         }
+        else
+            this.view = Ext.getCmp('activitydetail');
         var view = this.view;
         Ext.getCmp('ParticipateBtn').setHidden(true);
         //Ext.getCmp('InviteBtn').setHidden(false);
@@ -203,9 +177,11 @@ Ext.define('Chihiro.controller.activity.Find',{
         view.show();
     },
     palOnItemTap: function(list, user){
-        if (!this.view) {
+        if (!Ext.getCmp('activitydetail')) {
             this.view = Ext.create('Chihiro.view.activitylist.Detail');
         }
+        else
+            this.view = Ext.getCmp('activitydetail');
         var view = this.view;
         Ext.getCmp('ParticipateBtn').setHidden(true);
         //Ext.getCmp('InviteBtn').setHidden(true);
@@ -242,8 +218,8 @@ Ext.define('Chihiro.controller.activity.Find',{
         else activityId = Ext.getCmp('nearactivitylist').getSelection()[0].raw._id;
         socket.emit('participate activity', activityId, function(msg){
             if(msg.err == 0){
+                refreshActivity();
                 Ext.Msg.alert('恭喜','参加成功！',Ext.emptyFn);
-                //TODO: 参加活动列表
             }
             else{
                 Ext.Msg.alert('抱歉','网络忙，请稍后再试',Ext.emptyFn);
@@ -280,13 +256,14 @@ Ext.define('Chihiro.controller.activity.Find',{
         var activityId = Ext.getCmp('participateactivitylist').getSelection()[0].raw._id;
         socket.emit('unparticipate activity',activityId,function(msg){
             if(msg.err == 0){
+                refreshActivity();
                 Ext.Msg.alert('退出成功');
-                //TODO:已参加列表的修改
             }
             else{
                 Ext.Msg.alert('网络忙，请稍后再试');
             }
         });
+
     },
     inviteFriends:function(){
         var activityId = Ext.getCmp('sponseactivitylist').getSelection()[0].raw._id;
@@ -312,3 +289,26 @@ Ext.define('Chihiro.controller.activity.Find',{
         }
     }
 });
+function refreshActivity(){
+    console.log('123');
+    locateGeo();
+    socket.emit('find closest activities',function(msg){
+        //console.log(msg);
+        Ext.getCmp('nearactivitylist').setData([]);
+        Ext.getCmp('nearactivitylist').getStore().load();
+        Ext.getCmp('nearactivitylist').setData(msg);
+    });
+    socket.emit('find activity by creator',function(msg){
+        //console.log(msg);
+        Ext.getCmp('sponseactivitylist').setData([]);
+        Ext.getCmp('sponseactivitylist').getStore().load();
+        Ext.getCmp('sponseactivitylist').setData(msg);
+    });
+    socket.emit('find activity by participant',function(msg){
+        console.log('participant');
+        console.log(msg);
+        Ext.getCmp('participateactivitylist').setData([]);
+        Ext.getCmp('participateactivitylist').getStore().load();
+        Ext.getCmp('participateactivitylist').setData(msg);
+    });
+}

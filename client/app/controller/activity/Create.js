@@ -117,6 +117,7 @@ Ext.define('Chihiro.controller.activity.Create',{
                     Ext.Msg.alert('活动修改成功');
                     Ext.getCmp('createactivity').pop(2);
                     Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
+                    refreshActivity();
                 }
                 else{
                     Ext.Msg.alert('活动修改失败，请稍后再试');
@@ -128,6 +129,7 @@ Ext.define('Chihiro.controller.activity.Create',{
                     Ext.Msg.alert('活动添加成功');
                     Ext.getCmp('createactivity').pop(2);
                     Ext.Viewport.setActiveItem(Ext.getCmp('homeView'));
+                    refreshActivity();
                 }
                 else{
                     Ext.Msg.alert('活动添加失败，请稍后再试');
@@ -135,4 +137,4 @@ Ext.define('Chihiro.controller.activity.Create',{
             });
         }
     }
-})
+});
