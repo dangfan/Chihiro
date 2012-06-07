@@ -82,7 +82,11 @@ Ext.define('Chihiro.controller.List', {
         var i;
         for(i = 0; i < friendList.length && friendList[i]._id != uid;i++);
 
-        if(i < friendList.length) alert("该用户已经是您的好友了！");
+        if(i < friendList.length)
+            Ext.Msg.confirm("邀请好友", "该用户已经是您的好友！", function(choice) {
+                if(choice == 'yes') {
+                }
+            });
         else {
                 socket.emit('send friend request',uid);
                 console.log(Ext.getCmp('userlist').getSelection()[0].raw._id);
@@ -387,7 +391,10 @@ Ext.define('Chihiro.controller.List', {
         Ext.getCmp('SimpleFriendList').setData(friendList);
 
         if(invitationList.length > 0)
-            alert("群组已加入新成员");
+            Ext.Msg.confirm("邀请好友", "已经邀请好友加入该群！", function(choice) {
+                if(choice == 'yes') {
+                }
+            });
     },
 
     InviteOneFriendToGroups:function(){
@@ -408,7 +415,10 @@ Ext.define('Chihiro.controller.List', {
         Ext.getCmp('SimpleFriendList').setData(friendList);
 
         if(invitationList.length > 0)
-            alert("已邀请该好友加入群组");
+            Ext.Msg.confirm("邀请好友", "已经邀请好友加入群！", function(choice) {
+                if(choice == 'yes') {
+                }
+            });
     },
 
     QuitGroup:function(){

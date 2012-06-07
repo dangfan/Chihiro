@@ -43,8 +43,7 @@ Ext.define('Chihiro.controller.Home', {
             var clock = getCurrentTime();
             user.lastmsg = user.nickname + "想加您为好友！回复任意内容即可确认";
             user.lasttime = clock;
-            console.log(user);
-
+            Ext.getCmp('messagetab').tab.setBadgeText(++unreadMsg);
             var chattinglists = Ext.getCmp('ChattingFriends');
             var myChattingFriend = chattinglists.getData();
             var newuser = [user];
@@ -81,7 +80,6 @@ Ext.define('Chihiro.controller.Home', {
                         message:msg.message,
                         time:msg.time
                     });
-                console.log(msg.message);
                 Ext.getCmp('ChattingContent').setData([]);
                 if(Ext.getCmp('homeView').getActiveItem().title != '聊天') Ext.getCmp('messagetab').tab.setBadgeText(++unreadMsg);
 
@@ -93,12 +91,9 @@ Ext.define('Chihiro.controller.Home', {
                 scroller.getScroller().scrollToEnd();
             }
             else{
-                console.log(msg.from + '!='+ chattingID);
                 if(Ext.getCmp('homeView').getActiveItem().title != '聊天') Ext.getCmp('messagetab').tab.setBadgeText(++unreadMsg);
                 if(!friendList)
                     return;
-                console.log(friendList);
-
                 Ext.getCmp('ChattingFriends').setData([]);
                 var store = Ext.getCmp('ChattingFriends').getStore();
                 store.load();
@@ -231,12 +226,12 @@ function locateGeo() {
 function addFriendAndShow(obj)
 {
     if(friendList != null){
-        friendList.push(uid);
-        Ext.getCmp('ChattingFriends').setData([]);
-        var store = Ext.getCmp('ChattingFriends').getStore();
+        friendList.push(obj);
+        Ext.getCmp('SimpleFriendList').setData([]);
+        var store = Ext.getCmp('SimpleFriendList').getStore();
         store.load();
-        Ext.getCmp('ChattingFriends').setData(friendList);
+        Ext.getCmp('SimpleFriendList').setData(friendList);
     } else{
-        Ext.getCmp('ChattingFriends').setData(friendList);
+        Ext.getCmp('SimpleFriendList').setData(friendList);
     }
 }
